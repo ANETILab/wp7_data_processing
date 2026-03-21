@@ -235,6 +235,10 @@
   "number_of_records": 3607417,
   "number_of_unique_devices": 42040
  },
+ "2024-02-29": {
+  "number_of_records": 3655958,
+  "number_of_unique_devices": 42232
+ },
  "2024-10-01": {
   "number_of_records": 2607352,
   "number_of_unique_devices": 42610
@@ -598,5 +602,9 @@
  "2024-12-30": {
   "number_of_records": 4347222,
   "number_of_unique_devices": 41795
+ },
+ "2024-12-31": {
+  "number_of_records": 4633809,
+  "number_of_unique_devices": 41808
  }
 }

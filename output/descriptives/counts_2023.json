@@ -362,5 +362,9 @@
  "2023-12-30": {
   "number_of_records": 3898482,
   "number_of_unique_devices": 41614
+ },
+ "2023-12-31": {
+  "number_of_records": 3531549,
+  "number_of_unique_devices": 41741
  }
 }

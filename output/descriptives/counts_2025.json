@@ -1454,5 +1454,9 @@
  "2025-12-30": {
   "number_of_records": 5000001,
   "number_of_unique_devices": 75188
+ },
+ "2025-12-31": {
+  "number_of_records": 5000001,
+  "number_of_unique_devices": 77516
  }
 }
