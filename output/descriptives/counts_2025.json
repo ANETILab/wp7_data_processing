@@ -144,8 +144,8 @@
   "number_of_unique_devices": 43308
  },
  "2025-02-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43156
+  "number_of_records": 5062872,
+  "number_of_unique_devices": 43160
  },
  "2025-02-07": {
   "number_of_records": 4976087,
@@ -244,100 +244,100 @@
   "number_of_unique_devices": 42025
  },
  "2025-03-03": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42487
+  "number_of_records": 5115730,
+  "number_of_unique_devices": 42489
  },
  "2025-03-04": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42547
+  "number_of_records": 5186579,
+  "number_of_unique_devices": 42554
  },
  "2025-03-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42655
+  "number_of_records": 5706059,
+  "number_of_unique_devices": 42675
  },
  "2025-03-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43080
+  "number_of_records": 5456046,
+  "number_of_unique_devices": 43096
  },
  "2025-03-07": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42796
+  "number_of_records": 5627584,
+  "number_of_unique_devices": 42823
  },
  "2025-03-08": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42059
+  "number_of_records": 5411152,
+  "number_of_unique_devices": 42072
  },
  "2025-03-09": {
   "number_of_records": 4969471,
   "number_of_unique_devices": 43271
  },
  "2025-03-10": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43985
+  "number_of_records": 6033264,
+  "number_of_unique_devices": 44022
  },
  "2025-03-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 44196
+  "number_of_records": 6313508,
+  "number_of_unique_devices": 44244
  },
  "2025-03-12": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 44122
+  "number_of_records": 6296469,
+  "number_of_unique_devices": 44167
  },
  "2025-03-13": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 44090
+  "number_of_records": 5793069,
+  "number_of_unique_devices": 44129
  },
  "2025-03-14": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43563
+  "number_of_records": 5792803,
+  "number_of_unique_devices": 43611
  },
  "2025-03-15": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43078
+  "number_of_records": 5403209,
+  "number_of_unique_devices": 43118
  },
  "2025-03-16": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43769
+  "number_of_records": 5095616,
+  "number_of_unique_devices": 43775
  },
  "2025-03-17": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 44155
+  "number_of_records": 6289873,
+  "number_of_unique_devices": 44255
  },
  "2025-03-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42141
+  "number_of_records": 5557071,
+  "number_of_unique_devices": 42171
  },
  "2025-03-19": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42835
+  "number_of_records": 5968644,
+  "number_of_unique_devices": 42906
  },
  "2025-03-20": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43012
+  "number_of_records": 6112763,
+  "number_of_unique_devices": 43092
  },
  "2025-03-21": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43606
+  "number_of_records": 6036149,
+  "number_of_unique_devices": 43685
  },
  "2025-03-22": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43086
+  "number_of_records": 5187246,
+  "number_of_unique_devices": 43102
  },
  "2025-03-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43484
+  "number_of_records": 5131651,
+  "number_of_unique_devices": 43489
  },
  "2025-03-24": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43199
+  "number_of_records": 5579152,
+  "number_of_unique_devices": 43245
  },
  "2025-03-25": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43529
+  "number_of_records": 5695361,
+  "number_of_unique_devices": 43585
  },
  "2025-03-26": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 37657
+  "number_of_records": 5406317,
+  "number_of_unique_devices": 37703
  },
  "2025-03-27": {
   "number_of_records": 4974267,
@@ -356,108 +356,108 @@
   "number_of_unique_devices": 38604
  },
  "2025-03-31": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 39464
+  "number_of_records": 5234723,
+  "number_of_unique_devices": 39483
  },
  "2025-04-01": {
   "number_of_records": 4889172,
   "number_of_unique_devices": 39674
  },
  "2025-04-02": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 40588
+  "number_of_records": 6251097,
+  "number_of_unique_devices": 40731
  },
  "2025-04-03": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42996
+  "number_of_records": 6172249,
+  "number_of_unique_devices": 43067
  },
  "2025-04-04": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 43284
+  "number_of_records": 6480364,
+  "number_of_unique_devices": 43372
  },
  "2025-04-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42512
+  "number_of_records": 5978662,
+  "number_of_unique_devices": 42564
  },
  "2025-04-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41013
+  "number_of_records": 5454876,
+  "number_of_unique_devices": 41039
  },
  "2025-04-07": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41507
+  "number_of_records": 6340463,
+  "number_of_unique_devices": 41652
  },
  "2025-04-08": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41687
+  "number_of_records": 6659925,
+  "number_of_unique_devices": 41823
  },
  "2025-04-09": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41783
+  "number_of_records": 6703445,
+  "number_of_unique_devices": 41934
  },
  "2025-04-10": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41806
+  "number_of_records": 6825792,
+  "number_of_unique_devices": 41964
  },
  "2025-04-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41660
+  "number_of_records": 6964291,
+  "number_of_unique_devices": 41813
  },
  "2025-04-12": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 40536
+  "number_of_records": 6073650,
+  "number_of_unique_devices": 40635
  },
  "2025-04-13": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42081
+  "number_of_records": 5529235,
+  "number_of_unique_devices": 42116
  },
  "2025-04-14": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42325
+  "number_of_records": 6404438,
+  "number_of_unique_devices": 42419
  },
  "2025-04-15": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42145
+  "number_of_records": 6672242,
+  "number_of_unique_devices": 42283
  },
  "2025-04-16": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42032
+  "number_of_records": 6568730,
+  "number_of_unique_devices": 42130
  },
  "2025-04-17": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41945
+  "number_of_records": 6475512,
+  "number_of_unique_devices": 42039
  },
  "2025-04-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 42164
+  "number_of_records": 6285507,
+  "number_of_unique_devices": 42236
  },
  "2025-04-19": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41629
+  "number_of_records": 5581820,
+  "number_of_unique_devices": 41698
  },
  "2025-04-20": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 41454
+  "number_of_records": 5241877,
+  "number_of_unique_devices": 41467
  },
  "2025-04-21": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 46910
+  "number_of_records": 5786966,
+  "number_of_unique_devices": 47011
  },
  "2025-04-22": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 45565
+  "number_of_records": 5098919,
+  "number_of_unique_devices": 45590
  },
  "2025-04-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 46361
+  "number_of_records": 6205507,
+  "number_of_unique_devices": 46505
  },
  "2025-04-24": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 46803
+  "number_of_records": 6277811,
+  "number_of_unique_devices": 46932
  },
  "2025-04-25": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 46956
+  "number_of_records": 5713751,
+  "number_of_unique_devices": 47065
  },
  "2025-04-26": {
   "number_of_records": 4087063,
@@ -472,128 +472,128 @@
   "number_of_unique_devices": 46745
  },
  "2025-04-29": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 48618
+  "number_of_records": 6349473,
+  "number_of_unique_devices": 48784
  },
  "2025-04-30": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 49005
+  "number_of_records": 6468815,
+  "number_of_unique_devices": 49221
  },
  "2025-05-01": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 49011
+  "number_of_records": 5836966,
+  "number_of_unique_devices": 49154
  },
  "2025-05-02": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 53896
+  "number_of_records": 6562361,
+  "number_of_unique_devices": 54304
  },
  "2025-05-03": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 52756
+  "number_of_records": 6503132,
+  "number_of_unique_devices": 53119
  },
  "2025-05-04": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 52990
+  "number_of_records": 6637473,
+  "number_of_unique_devices": 53343
  },
  "2025-05-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 53106
+  "number_of_records": 6576678,
+  "number_of_unique_devices": 53449
  },
  "2025-05-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58566
+  "number_of_records": 8021932,
+  "number_of_unique_devices": 59323
  },
  "2025-05-07": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 59209
+  "number_of_records": 8522749,
+  "number_of_unique_devices": 60133
  },
  "2025-05-08": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 59036
+  "number_of_records": 7924597,
+  "number_of_unique_devices": 59935
  },
  "2025-05-09": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 59031
+  "number_of_records": 8240180,
+  "number_of_unique_devices": 59778
  },
  "2025-05-10": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58132
+  "number_of_records": 7623383,
+  "number_of_unique_devices": 58703
  },
  "2025-05-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 57459
+  "number_of_records": 6449868,
+  "number_of_unique_devices": 57852
  },
  "2025-05-12": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58604
+  "number_of_records": 7390802,
+  "number_of_unique_devices": 59229
  },
  "2025-05-13": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58096
+  "number_of_records": 8103194,
+  "number_of_unique_devices": 58765
  },
  "2025-05-14": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58357
+  "number_of_records": 8016641,
+  "number_of_unique_devices": 59058
  },
  "2025-05-15": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 57106
+  "number_of_records": 7506899,
+  "number_of_unique_devices": 57785
  },
  "2025-05-16": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 61017
+  "number_of_records": 7633795,
+  "number_of_unique_devices": 62034
  },
  "2025-05-17": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58843
+  "number_of_records": 6524654,
+  "number_of_unique_devices": 59365
  },
  "2025-05-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58643
+  "number_of_records": 6354448,
+  "number_of_unique_devices": 59126
  },
  "2025-05-19": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 59625
+  "number_of_records": 7076840,
+  "number_of_unique_devices": 60375
  },
  "2025-05-20": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58199
+  "number_of_records": 5797850,
+  "number_of_unique_devices": 58506
  },
  "2025-05-21": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 58677
+  "number_of_records": 5525966,
+  "number_of_unique_devices": 58884
  },
  "2025-05-22": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 59289
+  "number_of_records": 6721327,
+  "number_of_unique_devices": 59773
  },
  "2025-05-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 63055
+  "number_of_records": 7059869,
+  "number_of_unique_devices": 63757
  },
  "2025-05-24": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 61953
+  "number_of_records": 6309565,
+  "number_of_unique_devices": 62414
  },
  "2025-05-25": {
   "number_of_records": 4897538,
   "number_of_unique_devices": 61895
  },
  "2025-05-26": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 62814
+  "number_of_records": 6807890,
+  "number_of_unique_devices": 63442
  },
  "2025-05-27": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 61635
+  "number_of_records": 7077834,
+  "number_of_unique_devices": 62333
  },
  "2025-05-28": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 63689
+  "number_of_records": 5723388,
+  "number_of_unique_devices": 63949
  },
  "2025-05-29": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 66650
+  "number_of_records": 6064139,
+  "number_of_unique_devices": 67016
  },
  "2025-05-30": {
   "number_of_records": 4863762,
@@ -604,60 +604,60 @@
   "number_of_unique_devices": 67759
  },
  "2025-06-01": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 68347
+  "number_of_records": 5686403,
+  "number_of_unique_devices": 68603
  },
  "2025-06-02": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 69225
+  "number_of_records": 6058204,
+  "number_of_unique_devices": 69587
  },
  "2025-06-03": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 70239
+  "number_of_records": 6316593,
+  "number_of_unique_devices": 70719
  },
  "2025-06-04": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 69778
+  "number_of_records": 5681514,
+  "number_of_unique_devices": 70266
  },
  "2025-06-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 71839
+  "number_of_records": 6187917,
+  "number_of_unique_devices": 72361
  },
  "2025-06-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 72908
+  "number_of_records": 6018325,
+  "number_of_unique_devices": 73354
  },
  "2025-06-07": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 71698
+  "number_of_records": 5447342,
+  "number_of_unique_devices": 71902
  },
  "2025-06-08": {
   "number_of_records": 4918376,
   "number_of_unique_devices": 72373
  },
  "2025-06-09": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74220
+  "number_of_records": 5987862,
+  "number_of_unique_devices": 74691
  },
  "2025-06-10": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74407
+  "number_of_records": 5985836,
+  "number_of_unique_devices": 74811
  },
  "2025-06-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 75401
+  "number_of_records": 6408055,
+  "number_of_unique_devices": 75990
  },
  "2025-06-12": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 75884
+  "number_of_records": 6148371,
+  "number_of_unique_devices": 76398
  },
  "2025-06-13": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76740
+  "number_of_records": 6956634,
+  "number_of_unique_devices": 77831
  },
  "2025-06-14": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74353
+  "number_of_records": 5477658,
+  "number_of_unique_devices": 74634
  },
  "2025-06-15": {
   "number_of_records": 4732349,
@@ -668,48 +668,48 @@
   "number_of_unique_devices": 75262
  },
  "2025-06-17": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76072
+  "number_of_records": 6490827,
+  "number_of_unique_devices": 76962
  },
  "2025-06-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81245
+  "number_of_records": 6295700,
+  "number_of_unique_devices": 81858
  },
  "2025-06-19": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 82338
+  "number_of_records": 6782322,
+  "number_of_unique_devices": 83050
  },
  "2025-06-20": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 83021
+  "number_of_records": 6716121,
+  "number_of_unique_devices": 83783
  },
  "2025-06-21": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81742
+  "number_of_records": 6262524,
+  "number_of_unique_devices": 82297
  },
  "2025-06-22": {
   "number_of_records": 4560833,
   "number_of_unique_devices": 75087
  },
  "2025-06-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76001
+  "number_of_records": 5616192,
+  "number_of_unique_devices": 76436
  },
  "2025-06-24": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 72432
+  "number_of_records": 5497151,
+  "number_of_unique_devices": 72705
  },
  "2025-06-25": {
   "number_of_records": 4234032,
   "number_of_unique_devices": 63158
  },
  "2025-06-26": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 71840
+  "number_of_records": 5370727,
+  "number_of_unique_devices": 72050
  },
  "2025-06-27": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 75418
+  "number_of_records": 5338727,
+  "number_of_unique_devices": 75840
  },
  "2025-06-28": {
   "number_of_records": 4964392,
@@ -720,28 +720,28 @@
   "number_of_unique_devices": 72490
  },
  "2025-06-30": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 71735
+  "number_of_records": 5456036,
+  "number_of_unique_devices": 72031
  },
  "2025-07-01": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 73590
+  "number_of_records": 5572558,
+  "number_of_unique_devices": 73998
  },
  "2025-07-02": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74875
+  "number_of_records": 5176977,
+  "number_of_unique_devices": 74998
  },
  "2025-07-03": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76465
+  "number_of_records": 6103721,
+  "number_of_unique_devices": 76926
  },
  "2025-07-04": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77824
+  "number_of_records": 6183706,
+  "number_of_unique_devices": 78579
  },
  "2025-07-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74709
+  "number_of_records": 5572148,
+  "number_of_unique_devices": 75004
  },
  "2025-07-06": {
   "number_of_records": 3898546,
@@ -752,20 +752,20 @@
   "number_of_unique_devices": 75537
  },
  "2025-07-08": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76489
+  "number_of_records": 5729378,
+  "number_of_unique_devices": 77267
  },
  "2025-07-09": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76365
+  "number_of_records": 6011044,
+  "number_of_unique_devices": 76837
  },
  "2025-07-10": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 73325
+  "number_of_records": 5335151,
+  "number_of_unique_devices": 73444
  },
  "2025-07-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74832
+  "number_of_records": 5667624,
+  "number_of_unique_devices": 75115
  },
  "2025-07-12": {
   "number_of_records": 4730507,
@@ -776,84 +776,84 @@
   "number_of_unique_devices": 74312
  },
  "2025-07-14": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76244
+  "number_of_records": 5319923,
+  "number_of_unique_devices": 76401
  },
  "2025-07-15": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77365
+  "number_of_records": 5451070,
+  "number_of_unique_devices": 77578
  },
  "2025-07-16": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77501
+  "number_of_records": 6398967,
+  "number_of_unique_devices": 78145
  },
  "2025-07-17": {
   "number_of_records": 4834362,
   "number_of_unique_devices": 78682
  },
  "2025-07-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 75346
+  "number_of_records": 5597950,
+  "number_of_unique_devices": 75791
  },
  "2025-07-19": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74875
+  "number_of_records": 5321585,
+  "number_of_unique_devices": 75032
  },
  "2025-07-20": {
   "number_of_records": 4987755,
   "number_of_unique_devices": 76170
  },
  "2025-07-21": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78312
+  "number_of_records": 6033945,
+  "number_of_unique_devices": 78813
  },
  "2025-07-22": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78932
+  "number_of_records": 6423949,
+  "number_of_unique_devices": 79649
  },
  "2025-07-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 76913
- },
- "2025-07-24": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78962
- },
- "2025-07-25": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79521
- },
- "2025-07-26": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77557
- },
- "2025-07-27": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77205
- },
- "2025-07-28": {
-  "number_of_records": 5000001,
+  "number_of_records": 6622003,
   "number_of_unique_devices": 77622
  },
+ "2025-07-24": {
+  "number_of_records": 6502571,
+  "number_of_unique_devices": 79574
+ },
+ "2025-07-25": {
+  "number_of_records": 6355002,
+  "number_of_unique_devices": 80163
+ },
+ "2025-07-26": {
+  "number_of_records": 5945929,
+  "number_of_unique_devices": 78008
+ },
+ "2025-07-27": {
+  "number_of_records": 5985269,
+  "number_of_unique_devices": 77653
+ },
+ "2025-07-28": {
+  "number_of_records": 5208416,
+  "number_of_unique_devices": 77702
+ },
  "2025-07-29": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77163
+  "number_of_records": 6709894,
+  "number_of_unique_devices": 77803
  },
  "2025-07-30": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78798
+  "number_of_records": 6284131,
+  "number_of_unique_devices": 79303
  },
  "2025-07-31": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79815
+  "number_of_records": 6681144,
+  "number_of_unique_devices": 80618
  },
  "2025-08-01": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80424
+  "number_of_records": 6384122,
+  "number_of_unique_devices": 81118
  },
  "2025-08-02": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77586
+  "number_of_records": 5165498,
+  "number_of_unique_devices": 77674
  },
  "2025-08-03": {
   "number_of_records": 4753914,
@@ -864,20 +864,20 @@
   "number_of_unique_devices": 76786
  },
  "2025-08-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78531
+  "number_of_records": 5614156,
+  "number_of_unique_devices": 78949
  },
  "2025-08-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79560
+  "number_of_records": 6202628,
+  "number_of_unique_devices": 80138
  },
  "2025-08-07": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80230
+  "number_of_records": 5496544,
+  "number_of_unique_devices": 80584
  },
  "2025-08-08": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78148
+  "number_of_records": 5582916,
+  "number_of_unique_devices": 78486
  },
  "2025-08-09": {
   "number_of_records": 4862905,
@@ -888,160 +888,160 @@
   "number_of_unique_devices": 79032
  },
  "2025-08-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79891
+  "number_of_records": 6355160,
+  "number_of_unique_devices": 80555
  },
  "2025-08-12": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80977
+  "number_of_records": 6108878,
+  "number_of_unique_devices": 81477
  },
  "2025-08-13": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81264
+  "number_of_records": 6499444,
+  "number_of_unique_devices": 82031
  },
  "2025-08-14": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80722
+  "number_of_records": 6951748,
+  "number_of_unique_devices": 81696
  },
  "2025-08-15": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80874
+  "number_of_records": 6926701,
+  "number_of_unique_devices": 81706
  },
  "2025-08-16": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77993
+  "number_of_records": 5766302,
+  "number_of_unique_devices": 78378
  },
  "2025-08-17": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79352
+  "number_of_records": 5399866,
+  "number_of_unique_devices": 79583
  },
  "2025-08-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79721
+  "number_of_records": 6733150,
+  "number_of_unique_devices": 80700
  },
  "2025-08-19": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80459
+  "number_of_records": 7214906,
+  "number_of_unique_devices": 81488
  },
  "2025-08-20": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80763
+  "number_of_records": 7027481,
+  "number_of_unique_devices": 81565
  },
  "2025-08-21": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78605
+  "number_of_records": 6672827,
+  "number_of_unique_devices": 79351
  },
  "2025-08-22": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 72256
+  "number_of_records": 6633123,
+  "number_of_unique_devices": 73500
  },
  "2025-08-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77019
+  "number_of_records": 6197345,
+  "number_of_unique_devices": 77579
  },
  "2025-08-24": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78725
+  "number_of_records": 6040723,
+  "number_of_unique_devices": 79206
  },
  "2025-08-25": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80076
+  "number_of_records": 6831967,
+  "number_of_unique_devices": 81097
  },
  "2025-08-26": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77366
+  "number_of_records": 6535196,
+  "number_of_unique_devices": 78107
  },
  "2025-08-27": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78045
+  "number_of_records": 7214983,
+  "number_of_unique_devices": 78908
  },
  "2025-08-28": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78804
+  "number_of_records": 6761274,
+  "number_of_unique_devices": 79543
  },
  "2025-08-29": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80396
+  "number_of_records": 6797403,
+  "number_of_unique_devices": 81265
  },
  "2025-08-30": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78473
+  "number_of_records": 5928053,
+  "number_of_unique_devices": 78835
  },
  "2025-08-31": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78862
+  "number_of_records": 5481727,
+  "number_of_unique_devices": 79166
  },
  "2025-09-01": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77936
+  "number_of_records": 6230303,
+  "number_of_unique_devices": 78558
  },
  "2025-09-02": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79992
+  "number_of_records": 6263235,
+  "number_of_unique_devices": 80562
  },
  "2025-09-03": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81391
+  "number_of_records": 6437242,
+  "number_of_unique_devices": 82061
  },
  "2025-09-04": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81116
+  "number_of_records": 6591320,
+  "number_of_unique_devices": 81846
  },
  "2025-09-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81804
+  "number_of_records": 6443145,
+  "number_of_unique_devices": 82659
  },
  "2025-09-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79763
+  "number_of_records": 5990550,
+  "number_of_unique_devices": 80301
  },
  "2025-09-07": {
   "number_of_records": 4537348,
   "number_of_unique_devices": 78980
  },
  "2025-09-08": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80311
+  "number_of_records": 6581665,
+  "number_of_unique_devices": 81065
  },
  "2025-09-09": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81372
+  "number_of_records": 5643069,
+  "number_of_unique_devices": 81715
  },
  "2025-09-10": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80904
+  "number_of_records": 6086397,
+  "number_of_unique_devices": 81829
  },
  "2025-09-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80527
+  "number_of_records": 6302870,
+  "number_of_unique_devices": 81325
  },
  "2025-09-12": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80416
+  "number_of_records": 6120389,
+  "number_of_unique_devices": 81557
  },
  "2025-09-13": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78266
+  "number_of_records": 5531671,
+  "number_of_unique_devices": 78746
  },
  "2025-09-14": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78547
+  "number_of_records": 5076967,
+  "number_of_unique_devices": 78604
  },
  "2025-09-15": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80407
+  "number_of_records": 6005634,
+  "number_of_unique_devices": 80965
  },
  "2025-09-16": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80689
+  "number_of_records": 5827192,
+  "number_of_unique_devices": 81173
  },
  "2025-09-17": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80378
+  "number_of_records": 5692951,
+  "number_of_unique_devices": 80758
  },
  "2025-09-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79290
+  "number_of_records": 5216312,
+  "number_of_unique_devices": 79435
  },
  "2025-09-19": {
   "number_of_records": 4900584,
@@ -1060,16 +1060,16 @@
   "number_of_unique_devices": 79942
  },
  "2025-09-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80744
+  "number_of_records": 5333797,
+  "number_of_unique_devices": 81063
  },
  "2025-09-24": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79815
+  "number_of_records": 5647263,
+  "number_of_unique_devices": 80214
  },
  "2025-09-25": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 80992
+  "number_of_records": 5150422,
+  "number_of_unique_devices": 81102
  },
  "2025-09-26": {
   "number_of_records": 4899746,
@@ -1084,24 +1084,24 @@
   "number_of_unique_devices": 77162
  },
  "2025-09-29": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 78698
+  "number_of_records": 5430527,
+  "number_of_unique_devices": 78980
  },
  "2025-09-30": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 61585
+  "number_of_records": 5276173,
+  "number_of_unique_devices": 61723
  },
  "2025-10-01": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74254
+  "number_of_records": 5270255,
+  "number_of_unique_devices": 74435
  },
  "2025-10-02": {
   "number_of_records": 4865105,
   "number_of_unique_devices": 80256
  },
  "2025-10-03": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79284
+  "number_of_records": 5009772,
+  "number_of_unique_devices": 79288
  },
  "2025-10-04": {
   "number_of_records": 4585289,
@@ -1116,16 +1116,16 @@
   "number_of_unique_devices": 70070
  },
  "2025-10-07": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 71928
+  "number_of_records": 5208761,
+  "number_of_unique_devices": 72083
  },
  "2025-10-08": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 71940
+  "number_of_records": 5514319,
+  "number_of_unique_devices": 72262
  },
  "2025-10-09": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 70222
+  "number_of_records": 5728594,
+  "number_of_unique_devices": 70601
  },
  "2025-10-10": {
   "number_of_records": 3478791,
@@ -1180,8 +1180,8 @@
   "number_of_unique_devices": 73499
  },
  "2025-10-23": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 73822
+  "number_of_records": 5031689,
+  "number_of_unique_devices": 73837
  },
  "2025-10-24": {
   "number_of_records": 4105086,
@@ -1200,12 +1200,12 @@
   "number_of_unique_devices": 72314
  },
  "2025-10-28": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 67451
+  "number_of_records": 5798113,
+  "number_of_unique_devices": 67868
  },
  "2025-10-29": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 69873
+  "number_of_records": 5208206,
+  "number_of_unique_devices": 70016
  },
  "2025-10-30": {
   "number_of_records": 4453373,
@@ -1236,8 +1236,8 @@
   "number_of_unique_devices": 73437
  },
  "2025-11-06": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 70805
+  "number_of_records": 5019141,
+  "number_of_unique_devices": 70818
  },
  "2025-11-07": {
   "number_of_records": 4608650,
@@ -1264,8 +1264,8 @@
   "number_of_unique_devices": 74694
  },
  "2025-11-13": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74056
+  "number_of_records": 5244239,
+  "number_of_unique_devices": 74374
  },
  "2025-11-14": {
   "number_of_records": 4980854,
@@ -1316,16 +1316,16 @@
   "number_of_unique_devices": 65176
  },
  "2025-11-26": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 69180
+  "number_of_records": 5240090,
+  "number_of_unique_devices": 69368
  },
  "2025-11-27": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 71321
+  "number_of_records": 5520788,
+  "number_of_unique_devices": 71627
  },
  "2025-11-28": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 73033
+  "number_of_records": 6053337,
+  "number_of_unique_devices": 73580
  },
  "2025-11-29": {
   "number_of_records": 4339591,
@@ -1352,8 +1352,8 @@
   "number_of_unique_devices": 74380
  },
  "2025-12-05": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 72633
+  "number_of_records": 5344343,
+  "number_of_unique_devices": 72911
  },
  "2025-12-06": {
   "number_of_records": 3892061,
@@ -1372,16 +1372,16 @@
   "number_of_unique_devices": 71387
  },
  "2025-12-10": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 72979
+  "number_of_records": 5114004,
+  "number_of_unique_devices": 73087
  },
  "2025-12-11": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74333
+  "number_of_records": 5075331,
+  "number_of_unique_devices": 74374
  },
  "2025-12-12": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77497
+  "number_of_records": 6127607,
+  "number_of_unique_devices": 78301
  },
  "2025-12-13": {
   "number_of_records": 4758756,
@@ -1392,24 +1392,24 @@
   "number_of_unique_devices": 73066
  },
  "2025-12-15": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 74339
+  "number_of_records": 5044429,
+  "number_of_unique_devices": 74363
  },
  "2025-12-16": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 75900
+  "number_of_records": 5599189,
+  "number_of_unique_devices": 76281
  },
  "2025-12-17": {
   "number_of_records": 2979250,
   "number_of_unique_devices": 77837
  },
  "2025-12-18": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81781
+  "number_of_records": 5962698,
+  "number_of_unique_devices": 82323
  },
  "2025-12-19": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 81301
+  "number_of_records": 5578573,
+  "number_of_unique_devices": 81618
  },
  "2025-12-20": {
   "number_of_records": 4822314,
@@ -1436,8 +1436,8 @@
   "number_of_unique_devices": 76222
  },
  "2025-12-26": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 79672
+  "number_of_records": 5257031,
+  "number_of_unique_devices": 79879
  },
  "2025-12-27": {
   "number_of_records": 4578433,
@@ -1448,15 +1448,15 @@
   "number_of_unique_devices": 75588
  },
  "2025-12-29": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 75700
+  "number_of_records": 5348310,
+  "number_of_unique_devices": 75941
  },
  "2025-12-30": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 75188
+  "number_of_records": 5587302,
+  "number_of_unique_devices": 75639
  },
  "2025-12-31": {
-  "number_of_records": 5000001,
-  "number_of_unique_devices": 77516
+  "number_of_records": 5445524,
+  "number_of_unique_devices": 77870
  }
 }
