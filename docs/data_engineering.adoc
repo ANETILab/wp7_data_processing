@@ -1,0 +1,106 @@
+= data engineering
+:author: Gergő Pintér
+:email: gergo.pinter@uni-corvinus.hu
+:lang: en
+:sectnums: |,all|
+:copyright: CC-BY 4.0
+
+
+
+== Introduction
+
+The mobile posotioning data, aquired from Pickwell, contains columns outside device ID, location and timestamp.
+The main goal of the preprocessing is to normalize and restructure the raw data.
+
+We intend to use infostop for stop detection, which requires the data to be sorted by device ID _and_ timestamp.
+However the raw data is stored daily.
+
+.File structure of the raw data
+----
+   ├──YYYY
+   │   ├── MM
+   │   │   ├── DD
+   │   │   │   └── location-82840-part0000.csv.gz
+   │   │   ├── DD
+   │   │   │   └── location-82840-part0000.csv.gz
+   │   │   ├── DD
+   │   │   │   └── location-82840-part0000.csv.gz
+   │   │   │   └── location-82840-part0001.csv.gz <1>
+----
+<1> the parts contain at most 5 million records, so more than one file should be expected in a day folder
+
+.Columns of the raw data
+[cols="2*", options="header"]
+|===========================================================================
+| column              | details
+| timestamp           | unix epoch (integer)
+| device_aid_hashed   | string represented hexadecimal hash value, 32-character long
+| aid_type            | refer to Android or iOS advertisement ID
+| latitude            | float
+| longitude           | float
+| horizontal_accuracy | float
+| altitude            | float
+| altitude_accuracy   | float
+| location_method     | gps, fused, wifi, or cell
+| ip                  | IP address, string
+| OS                  | Android or iOS, shows the same info as the aid_type
+| OS_version          | string
+| manufacturer        | string
+| model               | string
+| carrier             | probably network operator
+|===========================================================================
+
+== Cleaning
+
+The main content of mobile potitioning data sets is the device ID, the location and the timestamp.
+
+=== Drop insignificant columns
+
+To normalize the data, the less significant columns are dropped, including horizontal_accuracy, altitude, altitude_accuracy, ip, model, carrier, OS, OS_version, manufacturer, and location_method.
+
+OS and OS version will be processed as a device-based supplementary table.
+On demand, the rest of the columns as well.
+
+=== Set timezone
+
+The timestamp looks like a unix epoch, which is the number of seconds that have elapsed since 00:00:00 UTC on January 1, 1970. So, the timezone is set to Europe/Budapest.
+
+
+=== Replace device IDs
+
+The hashed device IDs are 32-character long srtings.
+As it is faster to compare integers than strings, I replaced the string IDs to integer ones.
+This also saves storage.
+Considering ASCII represented CSVs, the longest ID it 7 character (as there 1652460 unique devices in the data), which saves 25 bytes as the worst case scenario.
+Given that the data contains 2860417726 records, the ID replacement could save about 66GB of storage, storing uncompressed.
+
+=== Clean OS version
+
+TBW
+
+== Partitioning by device ID
+
+For partitioning the data by device IDs, the same method was used as before, with the former mobile positioning data.
+The first two characters of the hashed ID was used as a partition ID. 
+For example: `17d6021bd57f46018332cba788e055d7` -> `17`.
+As the hash is a hexadecimal number, two digits can represent 256 differnet values, so the data is partitioned to 256 groups.
+
+xref:partition_stats[xrefstyle=short] shows some descriptives about the number of records and unique devices across partitions.
+
+.Partition descriptives
+[cols="3*", options="header", id="partition_stats"]
+|===================================================
+| statistic  | number_of_records | number_of_devices
+| count      | 256               | 256              
+| mean       | 11173507          | 6455             
+| std        | 2886655           | 115              
+| min        | 6552223           | 6153             
+| 25%        | 8822529           | 6382             
+| 50%        | 9466836           | 6459             
+| 75%        | 14584310          | 6536             
+| max        | 16702601          | 6765             
+|===================================================
+
+== Stop detection
+
+== Home detection

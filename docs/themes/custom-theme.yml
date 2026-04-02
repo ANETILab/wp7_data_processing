@@ -1,0 +1,25 @@
+extends: default
+base:
+    font_size: 10
+heading:
+    h1_font_size: 16
+    h2_font_size: 14
+    h3_font_size: 12
+    h4_font_size: 12
+footer:
+    height: 0.75in
+    line-height: 1.2
+    recto:
+        left:
+            content: |
+                {author}
+        right:
+            content: |
+                {page-number}
+    verso:
+        left:
+            content: |
+                {page-number}
+        right:
+            content: |
+                {author}
