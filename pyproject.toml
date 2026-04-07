@@ -9,6 +9,7 @@ dependencies = [
     "dayplot>=0.5.1",
     "geopandas>=1.1.3",
     "h3>=4.4.2",
+    "infostop>=0.1.9",
     "matplotlib>=3.10.8",
     "polars>=1.39.3",
     "polars-h3>=0.6.1",
