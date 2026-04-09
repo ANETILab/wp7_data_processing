@@ -169,4 +169,15 @@ infostop:
 * [ ] distance between stops
 ** previously we had it, but do we need it?
 
+=== Altitude
+
+> I just want to share a little thought regarding the possibility of using altitude in stop detection -- we discussed about this with Riccardo Di Clemente (so shared thoughts).
+> GPS calculates positioning based on the geometry of the satellites up in the sky. As such, we get a highly accurate horizontal position given your device is properly surrounded -- that's not fully true for altitude. Think of it this way: the intersection of range spheres from satellites that are all above you produces a much tighter constraint horizontally than vertically. The "cone" of uncertainty from the satellite geometry is elongated along the vertical axis.
+> Because of this lopsided geometry, the Vertical Dilution of Precision (VDOP) is inherently weaker than the horizontal geometry. As a rule of physics, GPS altitude is typically 1.5 to 3 times less accurate than latitude and longitude (HDOP).
+> In practical numbers, if you have an horizontal accuracy about 5-10 meters -> 15-30 m vertical accuracy (that's a building height).
+> Whatever stop detection algorithms you are using, they will look for a high density of GPS points within a tight radius (a sphere, in the case with altitude) over a specific amount of time.
+> Because vertical GPS data is so noisy, an object sitting perfectly still on a desk might register altitude fluctuations.
+>
+> -- Antonio Desiderio
+
 == Home detection
