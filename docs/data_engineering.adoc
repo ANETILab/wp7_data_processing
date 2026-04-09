@@ -88,10 +88,10 @@ As the hash is a hexadecimal number, two digits can represent 256 differnet valu
 xref:partition_stats[xrefstyle=short] shows some descriptives about the number of records and unique devices across partitions.
 
 .Partition descriptives
-[cols="3*", options="header", id="partition_stats"]
+[cols="2,>2,>2", options="header,unbreakable", id="partition_stats"]
 |===================================================
 | statistic  | number_of_records | number_of_devices
-| count      | 256               | 256              
+// | count      | 256               | 256              
 | mean       | 11173507          | 6455             
 | std        | 2886655           | 115              
 | min        | 6552223           | 6153             
@@ -100,6 +100,28 @@ xref:partition_stats[xrefstyle=short] shows some descriptives about the number o
 | 75%        | 14584310          | 6536             
 | max        | 16702601          | 6765             
 |===================================================
+
+== Descriptives
+
+For WP7, we have one full year (2025), and the last three months from 2023, the two first and the last three from 2024.
+xref:number_of_records_dayplot[xrefstyle=short] shows the activity distribution.
+Summar days seems to have more activity, though May is especially busy, seems all rigth.
+There are also a few "missing" days in October 2025. There are actvitiy, on those days (11-13), it is just much less then normally would.
+I suspect that there was some kinf of service outage (at one of the providers).
+
+Next, I made the same figure, but with the number of unique devices (xref:number_of_unique_devices_dayplot[xrefstyle=short]).
+During summer there are slightly more devices as expected, the end of 2025 also seems to have more devices than the previous year, which is also good, shows that the data may improving.
+The outage is observable in this Figure as expected.
+However, there is on particular day in October, which is an absolute outlier.
+It is abound twenty-something, so I though it would be 23, when there was a "Peace March" (a kind of pro government demonstration).
+
+The issue is that the outlier day is 24 October, which I cannot explain at this point.
+
+.Daily record distribution
+image::../output/descriptives/number_of_records_dayplot.png[id=number_of_records_dayplot]
+
+.Number of daily device distribution
+image::../output/descriptives/number_of_unique_devices_dayplot.png[id=number_of_unique_devices_dayplot]
 
 == Stop detection
 
