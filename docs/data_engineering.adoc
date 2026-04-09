@@ -4,7 +4,8 @@
 :lang: en
 :sectnums: |,all|
 :copyright: CC-BY 4.0
-
+:bibtex-file: references.bib
+:bibtex-style: ieee
 
 
 == Introduction
@@ -124,5 +125,48 @@ image::../output/descriptives/number_of_records_dayplot.png[id=number_of_records
 image::../output/descriptives/number_of_unique_devices_dayplot.png[id=number_of_unique_devices_dayplot]
 
 == Stop detection
+
+As of 9 April, only the first partition (`00`) is being processed, so everything from behind this section refers only to that partition.
+
+For detecting stops, infostop is used cite:[aslak2020infostop].
+As the partitioned data is also sorted coording to the infostop requirements, the stop detection runs about two and a half minutes on partition `00`.
+After clustering the pings into stops, the data looks like xref:stop_labels[xrefstyle=short].
+
+[cols="6*", options="header", id="stop_labels"]
+.After stop detection
+|============================================================================================
+| timestamp                 | device_id | device_aid_type | latitude | longitude | stop_label
+| 2024-10-02 02:37:09+02:00 | 1         | AAID            | 47.4799  | 19.0742   | 2         
+| 2024-10-02 03:17:49+02:00 | 1         | AAID            | 47.48    | 19.0742   | 2         
+| 2024-10-02 03:26:50+02:00 | 1         | AAID            | 47.4768  | 19.0752   | -1        
+|============================================================================================
+
+=== Configuring Infostop
+We used Inforstop before while working with a similar mobile positioning data, from another data aggregator.
+Based on that experience, Sándor Juhász defined parameters for Infostop (see xref:infostop_config[xrefstyle=short]).
+
+[#infostop_config,yaml]
+.Current Infostop configuration
+----
+infostop:
+  # meters - spatial radius for stop detection
+  r1: 200
+  # meters - radius for merging nearby stops into places
+  r2: 75
+  # seconds - minimum duration to count as a stop
+  min_staying_time: 240
+  # seconds - max gap within a stop before it's split
+  max_time_between: 7200
+  # minimum number of pings required inside a stop
+  min_size: 2
+----
+
+=== Additional calculations
+
+* [ ] cluster center
+* [ ] time spent at stop
+** oldest timestamp - latest one
+* [ ] distance between stops
+** previously we had it, but do we need it?
 
 == Home detection
