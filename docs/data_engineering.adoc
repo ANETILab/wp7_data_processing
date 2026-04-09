@@ -181,3 +181,20 @@ infostop:
 > -- Antonio Desiderio
 
 == Home detection
+
+[#hw_config,yaml]
+.Configuration for the home and workplace detection
+----
+# HH:MM as string
+home_hours:
+  begin: "20:00"
+  end: "07:00"
+# HH:MM as string
+work_hours:
+  begin: "09:00"
+  end: "17:00"
+# YYYY-MM-DD as string
+weekday_holidays: []
+# YYYY-MM-DD as string
+weekend_workdays: []
+----
