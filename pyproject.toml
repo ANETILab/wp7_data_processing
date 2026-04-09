@@ -5,6 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "altair==5.4.0",
+    "cmcrameri>=1.9",
     "contextily>=1.7.0",
     "dayplot>=0.5.1",
     "geopandas>=1.1.3",
