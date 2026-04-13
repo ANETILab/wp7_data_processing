@@ -182,6 +182,14 @@ infostop:
 
 == Home detection
 
+
+For the home detection a simplified model (illustrated in xref:home_detection_model[xrefstyle=short]) is used, which defined home hours from 20:00 to 7:00 and the whole at weekends, and defines work hours from 9:00 to 17:00 in weekdays.
+Weekday holidays and weekend workdays are taken care of.
+Home is a hexagon, where an individual has the most stop in the home intervals, work hexagon is analogously where someone has to most stops during workhours.
+
+.A simple home detection model.
+image::../output/figures/home_detection_model.svg[width=75%,id=home_detection_model]
+
 [#hw_config,yaml]
 .Configuration for the home and workplace detection
 ----
@@ -198,3 +206,4 @@ weekday_holidays: ["2023-03-15", "2023-04-07", "2023-04-10", "2023-05-01", "2023
 # YYYY-MM-DD as string
 weekend_workdays: ["2024-08-03", "2024-12-07", "2024-12-14", "2025-05-17", "2025-10-18", "2025-12-13"]
 ----
+
