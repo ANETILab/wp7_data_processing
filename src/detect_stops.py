@@ -125,16 +125,16 @@ if __name__ == "__main__":
         filtered = filter_pings(
             data, min_pings=stop_detections_config["filtering"]["min_pings_per_day"]
         )
+        del data
         filtered = filtered.with_columns(
             pl.col("timestamp").dt.epoch(time_unit="s").alias("epoch")
         )
         clustered = cluster_pings(filtered, model)
+        del filtered
         clustered = assign_stop_ids(clustered)
 
         stops = create_stop_table(clustered, transformer)
         stops.write_parquet(f"{config['dirs']['output']}/stops/{i:02x}.parquet")
 
         del stops
-        del filtered
         del clustered
-        del data
