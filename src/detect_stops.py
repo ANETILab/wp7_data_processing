@@ -118,7 +118,7 @@ if __name__ == "__main__":
     # set up transformer for reprojection
     transformer = Transformer.from_crs(4326, config["crs"])
 
-    for i in range(255):
+    for i in range(256):
         data = pl.read_parquet(
             f"{config['dirs']['output']}/partitioned/{i:02x}/pings.parquet"
         )
