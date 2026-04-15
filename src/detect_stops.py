@@ -131,7 +131,7 @@ if __name__ == "__main__":
         clustered = cluster_pings(filtered, model)
         clustered = assign_stop_ids(clustered)
 
-        stops = create_stop_table(clustered)
+        stops = create_stop_table(clustered, transformer)
         stops.write_parquet(f"{config['dirs']['output']}/stops/{i:02x}.parquet")
 
         del stops
