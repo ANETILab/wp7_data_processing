@@ -15,6 +15,24 @@ Codes are in the `src/` folder, both Jupyter notebooks and scripts.
 
 Outputs, that could be published are generated into the `output/` folder.
 
+### Configuration
+
+The Budapest data consists of multiple intervals. These intervals can be defined in the config.yaml.
+The day key contains a list with objects, storing the start and the end day of the interval.
+The intervals are inclusive, the start and the end day is included, using the daterange function.
+
+```yaml
+days: 
+  - start: 2023-10-01
+    end: 2023-12-31
+  - start: 2024-01-01
+    end: 2024-02-29
+  - start: 2024-10-01
+    end: 2024-12-31
+  - start: 2025-01-01
+    end: 2025-12-31
+```
+
 ### Pipeline
 
 The development and analysis codes are in Jupyter notebook formats, but parts of the pipeline that runs long can be found in scripts.
