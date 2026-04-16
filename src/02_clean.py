@@ -21,6 +21,10 @@ def clean_os_version(x) -> float:
 with open("../config.yaml", "r") as fp:
     config = yaml.safe_load(fp)
 
+days = []
+for i in config["days"]:
+    days += list(daterange(i["start"], i["end"]))
+
 with open("../output/id_lookup/id_lookup.json", "r") as fp:
     lookup = json.load(fp)
 
