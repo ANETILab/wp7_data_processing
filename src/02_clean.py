@@ -47,8 +47,7 @@ to_drop = [
     "location_method",
 ]
 
-OUTPUT = "/mnt/common-hdd/group-dirs/tkom-2026-project/cleaned"
-OUTPUT = "/mnt/common-hdd/group-dirs/tkom-2026-project/partitioned"
+OUTPUT = f"{config['dirs']['output']}/partitioned"
 SET_TIMEZONE = True
 
 for i in daterange(date(2025, 7, 1), date(2025, 12, 31)):
