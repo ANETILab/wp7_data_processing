@@ -163,16 +163,35 @@ As of 9 April, only the first partition (`00`) is being processed, so everything
 
 For detecting stops, infostop is used cite:[aslak2020infostop].
 As the partitioned data is also sorted coording to the infostop requirements, the stop detection runs about two and a half minutes on partition `00`.
-After clustering the pings into stops, the data looks like xref:stop_labels[xrefstyle=short].
+After clustering the pings into stops, the data looks like xref:labeled_pings[xrefstyle=short].
+We feed the whole observation period with the infostop algorithm, then a consecutive number is associated to the stops (`stop_id`).
+Based on the `stop_id` the pings are aggregated, and the following values are calculated (xref:stops[xrefstyle=short]):
 
-[cols="6*", options="header", id="stop_labels"]
+* the number of pings in a stop
+* the interval start, stop, length
+* the center of the pings, and
+* the standard deviation of the longitude and latitude in meters (meter-based projection is required).
+
+
+.After infostop, the labeled places
+[cols="7*", options="header", id="labeled_pings"]
+|=======================================================================================================
+| timestamp                 | device_id | device_aid_type | latitude | longitude | place_label | stop_id
+| 2024-10-02 07:24:06+02:00 | 1         | AAID            | 47.6612  | 19.0764   | 17          | 1      
+| 2024-10-02 07:35:29+02:00 | 1         | AAID            | 47.6612  | 19.0763   | 17          | 1      
+| 2024-10-05 11:06:43+02:00 | 1         | AAID            | 47.4984  | 19.0404   | 14          | 2      
+|=======================================================================================================
+
+
 .After stop detection
-|============================================================================================
-| timestamp                 | device_id | device_aid_type | latitude | longitude | stop_label
-| 2024-10-02 02:37:09+02:00 | 1         | AAID            | 47.4799  | 19.0742   | 2         
-| 2024-10-02 03:17:49+02:00 | 1         | AAID            | 47.48    | 19.0742   | 2         
-| 2024-10-02 03:26:50+02:00 | 1         | AAID            | 47.4768  | 19.0752   | -1        
-|============================================================================================
+[cols="11*", options="header", id="stops"]
+|==============================================================================================================================================================================================
+| device_id | stop_id | interval_start            | interval_stop             | interval_lenght | latitude_mean | longitude_mean | latitude_std | longitude_std | number_of_pings | place_label
+| 1         | 1       | 2024-10-02 07:24:06+02:00 | 2024-10-02 07:35:29+02:00 | 0 days 00:11:23 | 47.6612       | 19.0764        | 4            | 0             | 2               | 17         
+| 1         | 2       | 2024-10-05 11:06:43+02:00 | 2024-10-05 11:22:57+02:00 | 0 days 00:16:14 | 47.4984       | 19.0404        | 0            | 0             | 4               | 14         
+| 1         | 3       | 2024-10-05 17:49:22+02:00 | 2024-10-05 17:59:54+02:00 | 0 days 00:10:32 | 47.4767       | 19.0751        | 0            | 0             | 3               | 8          
+|==============================================================================================================================================================================================
+
 
 === Configuring Infostop
 We used Inforstop before while working with a similar mobile positioning data, from another data aggregator.
@@ -193,14 +212,6 @@ infostop:
   # minimum number of pings required inside a stop
   min_size: 2
 ----
-
-=== Additional calculations
-
-* [ ] cluster center
-* [ ] time spent at stop
-** oldest timestamp - latest one
-* [ ] distance between stops
-** previously we had it, but do we need it?
 
 === Altitude
 
