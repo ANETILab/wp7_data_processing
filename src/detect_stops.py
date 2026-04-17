@@ -97,10 +97,50 @@ def create_stop_table(
 
 if __name__ == "__main__":
     import yaml
+    import argparse
 
-    with open("../config.yaml") as fp:
-        config = yaml.safe_load(fp)
-    with open("05_detect_stops_config.yaml") as fp:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--input",
+        type=str,
+        required=True,
+        help="input directory of the partitioned mobility data",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        required=True,
+        help="output directory",
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        required=True,
+        help="config file (YAML)",
+    )
+    parser.add_argument(
+        "--crs",
+        type=int,
+        required=True,
+        help="meter-unit CRS for the area",
+    )
+    parser.add_argument(
+        "--range_start",
+        type=int,
+        required=False,
+        default=0,
+        help="partition range start",
+    )
+    parser.add_argument(
+        "--range_end",
+        type=int,
+        required=False,
+        default=256,
+        help="partition range end",
+    )
+    opts = parser.parse_args()
+
+    with open(opts.config, "r") as fp:
         stop_detections_config = yaml.safe_load(fp)
 
     # configure infostop
@@ -116,12 +156,10 @@ if __name__ == "__main__":
     )
 
     # set up transformer for reprojection
-    transformer = Transformer.from_crs(4326, config["crs"])
+    transformer = Transformer.from_crs(4326, opts.crs)
 
-    for i in range(256):
-        data = pl.read_parquet(
-            f"{config['dirs']['output']}/partitioned/{i:02x}/pings.parquet"
-        )
+    for i in range(opts.range_start, opts.range_end):
+        data = pl.read_parquet(f"{opts.input}/{i:02x}/pings.parquet")
         filtered = filter_pings(
             data, min_pings=stop_detections_config["filtering"]["min_pings_per_day"]
         )
@@ -134,7 +172,7 @@ if __name__ == "__main__":
         clustered = assign_stop_ids(clustered)
 
         stops = create_stop_table(clustered, transformer)
-        stops.write_parquet(f"{config['dirs']['output']}/stops/{i:02x}.parquet")
+        stops.write_parquet(f"{opts.output}/stops/{i:02x}.parquet")
 
         del stops
         del clustered
