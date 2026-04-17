@@ -2,6 +2,7 @@ import infostop
 import numpy as np
 import polars as pl
 from pyproj import Transformer
+from pathlib import Path
 
 
 def filter_pings(df: pl.DataFrame, min_pings: int) -> pl.DataFrame:
@@ -139,6 +140,7 @@ if __name__ == "__main__":
         help="partition range end",
     )
     opts = parser.parse_args()
+    Path(opts.output).mkdir(parents=True, exist_ok=True)
 
     with open(opts.config, "r") as fp:
         stop_detections_config = yaml.safe_load(fp)
@@ -172,7 +174,7 @@ if __name__ == "__main__":
         clustered = assign_stop_ids(clustered)
 
         stops = create_stop_table(clustered, transformer)
-        stops.write_parquet(f"{opts.output}/stops/{i:02x}.parquet")
+        stops.write_parquet(f"{opts.output}/{i:02x}.parquet")
 
         del stops
         del clustered
