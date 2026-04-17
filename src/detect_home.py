@@ -71,13 +71,14 @@ def map_to_settlements(
 
 if __name__ == "__main__":
     import argparse
+    from pathlib import Path
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--input",
         type=str,
         required=True,
-        help="input directory os the day-structured mobility data",
+        help="input directory of the detected stops",
     )
     parser.add_argument(
         "--output",
@@ -91,13 +92,28 @@ if __name__ == "__main__":
         required=True,
         help="config file (YAML)",
     )
+    parser.add_argument(
+        "--range_start",
+        type=int,
+        required=False,
+        default=0,
+        help="partition range start",
+    )
+    parser.add_argument(
+        "--range_end",
+        type=int,
+        required=False,
+        default=256,
+        help="partition range end",
+    )
     opts = parser.parse_args()
+    Path(opts.output).mkdir(parents=True, exist_ok=True)
 
     with open(opts.config, "r") as fp:
         hd_config = yaml.safe_load(fp)
 
-    for i in range(256):
-        data = pl.read_parquet(f"{opts.input}/stops/{i:02x}.parquet")
+    for i in range(opts.range_start, opts.range_end):
+        data = pl.read_parquet(f"{opts.input}/{i:02x}.parquet")
         data = data.with_columns(
             plh3.int_to_str(
                 plh3.latlng_to_cell(
