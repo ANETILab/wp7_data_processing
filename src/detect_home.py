@@ -70,16 +70,34 @@ def map_to_settlements(
 
 
 if __name__ == "__main__":
-    with open("../config.yaml") as fp:
-        config = yaml.safe_load(fp)
+    import argparse
 
-    output = f"../output/{config['city']}/home_work"
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--input",
+        type=str,
+        required=True,
+        help="input directory os the day-structured mobility data",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        required=True,
+        help="output directory",
+    )
+    parser.add_argument(
+        "--config",
+        type=str,
+        required=True,
+        help="config file (YAML)",
+    )
+    opts = parser.parse_args()
 
-    with open("06_home_detection_config.yaml") as fp:
+    with open(opts.config, "r") as fp:
         hd_config = yaml.safe_load(fp)
 
     for i in range(256):
-        data = pl.read_parquet(f"{config['dirs']['output']}/stops/{i:02x}.parquet")
+        data = pl.read_parquet(f"{opts.input}/stops/{i:02x}.parquet")
         data = data.with_columns(
             plh3.int_to_str(
                 plh3.latlng_to_cell(
@@ -109,16 +127,16 @@ if __name__ == "__main__":
         hw7 = detect_home_work(
             data, hd_config, spatial_id="h3_7", device_id="device_id"
         )
-        hw7.write_csv(f"{output}/home_work_{i:02x}_h3_7.csv")
+        hw7.write_csv(f"{opts.output}/home_work_{i:02x}_h3_7.csv")
         hw8 = detect_home_work(
             data, hd_config, spatial_id="h3_8", device_id="device_id"
         )
-        hw8.write_csv(f"{output}/home_work_{i:02x}_h3_8.csv")
+        hw8.write_csv(f"{opts.output}/home_work_{i:02x}_h3_8.csv")
         hw9 = detect_home_work(
             data, hd_config, spatial_id="h3_9", device_id="device_id"
         )
-        hw9.write_csv(f"{output}/home_work_{i:02x}_h3_9.csv")
+        hw9.write_csv(f"{opts.output}/home_work_{i:02x}_h3_9.csv")
         hw10 = detect_home_work(
             data, hd_config, spatial_id="h3_10", device_id="device_id"
         )
-        hw10.write_csv(f"{output}/home_work_{i:02x}_h3_10.csv")
+        hw10.write_csv(f"{opts.output}/home_work_{i:02x}_h3_10.csv")
