@@ -99,6 +99,9 @@ def create_stop_table(
 if __name__ == "__main__":
     import yaml
     import argparse
+    import structlog
+
+    log = structlog.get_logger()
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -161,6 +164,7 @@ if __name__ == "__main__":
     transformer = Transformer.from_crs(4326, opts.crs)
 
     for i in range(opts.range_start, opts.range_end):
+        log.info(f"detecting stops in partition {i:02x}")
         data = pl.read_parquet(f"{opts.input}/{i:02x}/pings.parquet")
         filtered = filter_pings(
             data, min_pings=stop_detections_config["filtering"]["min_pings_per_day"]
