@@ -1,0 +1,25 @@
+dirs:
+  raw_source: "/mnt/common-hdd/raw-sources/pickwell-sample-data/20250910/copenhagen"
+  output: "/mnt/common-ssd/group-dirs/tkom-2026-project/pickwell"
+
+city: copenhagen_sample
+crs: 31255
+
+days: 
+  - start: 2025-04-07
+    end: 2025-04-13
+
+id_column: aid
+id_type_column: aid_type
+
+columns_to_drop: 
+  - "horizontal_accuracy"
+  - "altitude"
+  - "altitude_accuracy"
+  - "ip"
+  - "model"
+  - "carrier"
+  - "OS"
+  - "OS_version"
+  - "manufacturer"
+  - "location_method"
