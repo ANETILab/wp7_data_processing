@@ -14,3 +14,18 @@ days:
     end: 2024-12-31
   - start: 2025-01-01
     end: 2025-12-31
+
+id_column: "device_aid_hashed"
+id_type_column: "device_aid_type"
+
+columns_to_drop: 
+  - "horizontal_accuracy"
+  - "altitude"
+  - "altitude_accuracy"
+  - "ip"
+  - "model"
+  - "carrier"
+  - "OS"
+  - "OS_version"
+  - "manufacturer"
+  - "location_method"
