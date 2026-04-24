@@ -120,3 +120,10 @@ if __name__ == "__main__":
 
             del p_
         del data
+
+    # merge partitions (runs 45m for Budapest)
+    missing = merge_partitions(f"{OUTPUT}/partitioned")
+
+    Path(f"{OUTPUT}/debug/").mkdir(exist_ok=True, parents=True)
+    with open(f"{OUTPUT}/debug/03_merge_partitions_missing_log.json", "w") as fp:
+        json.dump([(i[0], i[1].strftime("%Y-%m-%d")) for i in missing], fp, indent=1)
