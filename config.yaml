@@ -1,6 +1,6 @@
 dirs:
   raw_source: "/mnt/common-hdd/raw-sources/pickwell/20260205/budapest_region"
-  output: "/mnt/common-hdd/group-dirs/tkom-2026-project"
+  output: "/mnt/common-hdd/group-dirs/tkom-2026-project/pickwell"
 
 city: budapest
 crs: 23700
