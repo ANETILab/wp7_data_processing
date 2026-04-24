@@ -15,6 +15,31 @@ def clean_os_version(x: str) -> float:
     return float(result)
 
 
+def merge_partitions(partition_path: str) -> list[tuple[int, date]]:
+    """
+    Merges the daily partitions, and gives back a list of partition/day tuples if the combination didn't exist.
+    """
+    missing = []
+    for i in range(256):
+        data = pl.DataFrame()
+        for d in days:
+            if not Path(
+                f"{partition_path}/{i:02x}/pings_{d.strftime('%Y_%m_%d')}.parquet"
+            ).is_file():
+                missing.append((i, d))
+                continue
+            dd = pl.read_parquet(
+                f"{partition_path}/{i:02x}/pings_{d.strftime('%Y_%m_%d')}.parquet"
+            )
+            data = pl.concat([data, dd])
+            del dd
+        data.sort(["device_id", "timestamp"]).write_parquet(
+            f"{partition_path}/{i:02x}/pings.parquet"
+        )
+        del data
+    return missing
+
+
 if __name__ == "__main__":
     import structlog
     import argparse
