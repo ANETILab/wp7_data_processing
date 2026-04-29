@@ -83,7 +83,7 @@ def create_stop_table(
         .agg(
             interval_start=pl.col.timestamp.min(),
             interval_stop=pl.col.timestamp.max(),
-            interval_lenght=pl.col.timestamp.max() - pl.col.timestamp.min(),
+            interval_length=pl.col.timestamp.max() - pl.col.timestamp.min(),
             latitude_mean=pl.col.latitude.mean(),
             longitude_mean=pl.col.longitude.mean(),
             latitude_std=pl.col.latitude_proj.std().round(),
