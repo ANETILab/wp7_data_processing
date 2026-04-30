@@ -2,7 +2,6 @@ import infostop
 import numpy as np
 import polars as pl
 from pyproj import Transformer
-from pathlib import Path
 
 
 def filter_pings(df: pl.DataFrame, min_pings: int) -> pl.DataFrame:
@@ -48,7 +47,7 @@ def assign_stop_ids(clustered: pl.DataFrame) -> pl.DataFrame:
         .then(
             (
                 (pl.col("place_label") >= 0)
-                & (pl.col("place_label").shift(1).over("device_id").fill_null(-1) < 0)
+                & (pl.col("place_label").shift(1).over("device_id").fill_null(-1) != pl.col("place_label"))
             )
             .cast(pl.Int32)
             .cum_sum()
@@ -63,34 +62,27 @@ def assign_stop_ids(clustered: pl.DataFrame) -> pl.DataFrame:
 def create_stop_table(
     clustered: pl.DataFrame, transformer: Transformer
 ) -> pl.DataFrame:
-    # create join table for keeping place labels
-    place_lable_jt = (
-        clustered.filter(pl.col.stop_id >= 0)[["device_id", "stop_id", "place_label"]]
-        .unique()
-        .sort(["device_id", "stop_id"])
-    )
-
     # to calculate the standard deviation of the pings in a cluster (stop) in meters, project the coordinates
     projected = transformer.transform(clustered["latitude"], clustered["longitude"])
     clustered = clustered.with_columns(
         latitude_proj=projected[0], longitude_proj=projected[1]
     )
 
-    # aggregate pings to stops
+    # aggregate pings to stops; place_label is constant within a (device_id, stop_id) after assign_stop_ids
     stops = (
         clustered.filter(pl.col.stop_id >= 0)
         .group_by(["device_id", "stop_id"])
         .agg(
             interval_start=pl.col.timestamp.min(),
             interval_stop=pl.col.timestamp.max(),
-            interval_length=pl.col.timestamp.max() - pl.col.timestamp.min(),
+            interval_lenght=pl.col.timestamp.max() - pl.col.timestamp.min(),
             latitude_mean=pl.col.latitude.mean(),
             longitude_mean=pl.col.longitude.mean(),
             latitude_std=pl.col.latitude_proj.std().round(),
             longitude_std=pl.col.longitude_proj.std().round(),
             number_of_pings=pl.col.longitude.count(),
+            place_label=pl.col.place_label.first(),
         )
-        .join(place_lable_jt, on=["device_id", "stop_id"])
         .sort(["device_id", "stop_id"])
     )
     return stops
@@ -98,54 +90,10 @@ def create_stop_table(
 
 if __name__ == "__main__":
     import yaml
-    import argparse
-    import structlog
 
-    log = structlog.get_logger()
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--input",
-        type=str,
-        required=True,
-        help="input directory of the partitioned mobility data",
-    )
-    parser.add_argument(
-        "--output",
-        type=str,
-        required=True,
-        help="output directory",
-    )
-    parser.add_argument(
-        "--config",
-        type=str,
-        required=True,
-        help="config file (YAML)",
-    )
-    parser.add_argument(
-        "--crs",
-        type=int,
-        required=True,
-        help="meter-unit CRS for the area",
-    )
-    parser.add_argument(
-        "--range_start",
-        type=int,
-        required=False,
-        default=0,
-        help="partition range start",
-    )
-    parser.add_argument(
-        "--range_end",
-        type=int,
-        required=False,
-        default=256,
-        help="partition range end",
-    )
-    opts = parser.parse_args()
-    Path(opts.output).mkdir(parents=True, exist_ok=True)
-
-    with open(opts.config, "r") as fp:
+    with open("../config.yaml") as fp:
+        config = yaml.safe_load(fp)
+    with open("05_detect_stops_config.yaml") as fp:
         stop_detections_config = yaml.safe_load(fp)
 
     # configure infostop
@@ -161,11 +109,12 @@ if __name__ == "__main__":
     )
 
     # set up transformer for reprojection
-    transformer = Transformer.from_crs(4326, opts.crs)
+    transformer = Transformer.from_crs(4326, config["crs"])
 
-    for i in range(opts.range_start, opts.range_end):
-        log.info(f"detecting stops in partition {i:02x}")
-        data = pl.read_parquet(f"{opts.input}/{i:02x}/pings.parquet")
+    for i in range(256):
+        data = pl.read_parquet(
+            f"{config['dirs']['output']}/partitioned/{i:02x}/pings.parquet"
+        )
         filtered = filter_pings(
             data, min_pings=stop_detections_config["filtering"]["min_pings_per_day"]
         )
@@ -178,7 +127,7 @@ if __name__ == "__main__":
         clustered = assign_stop_ids(clustered)
 
         stops = create_stop_table(clustered, transformer)
-        stops.write_parquet(f"{opts.output}/{i:02x}.parquet")
+        stops.write_parquet(f"{config['dirs']['output']}/stops/{i:02x}.parquet")
 
         del stops
         del clustered
