@@ -110,6 +110,20 @@ if __name__ == "__main__":
         required=True,
         help="stop detection config file (YAML)",
     )
+    parser.add_argument(
+        "--range_start",
+        type=int,
+        required=False,
+        default=0,
+        help="partition range start",
+    )
+    parser.add_argument(
+        "--range_end",
+        type=int,
+        required=False,
+        default=256,
+        help="partition range end",
+    )
     opts = parser.parse_args()
 
     with open(opts.config, "r") as fp:
@@ -132,7 +146,7 @@ if __name__ == "__main__":
     # set up transformer for reprojection
     transformer = Transformer.from_crs(4326, config["crs"])
 
-    for i in range(256):
+    for i in range(opts.range_start, opts.range_end):
         log.info(f"processing partition {i}")
         data = pl.read_parquet(
             f"{config['dirs']['output']}/partitioned/{i:02x}/pings.parquet"
