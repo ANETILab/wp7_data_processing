@@ -111,14 +111,14 @@ if __name__ == "__main__":
         help="stop detection config file (YAML)",
     )
     parser.add_argument(
-        "--range_start",
+        "--range-start",
         type=int,
         required=False,
         default=0,
         help="partition range start",
     )
     parser.add_argument(
-        "--range_end",
+        "--range-end",
         type=int,
         required=False,
         default=256,
@@ -128,11 +128,11 @@ if __name__ == "__main__":
 
     with open(opts.config, "r") as fp:
         config = yaml.safe_load(fp)
-    with open(opts.stop_detections_config, "r") as fp:
-        stop_detections_config = yaml.safe_load(fp)
+    with open(opts.stop_detection_config, "r") as fp:
+        stop_detection_config = yaml.safe_load(fp)
 
     # configure infostop
-    params = stop_detections_config["infostop"]
+    params = stop_detection_config["infostop"]
 
     model = infostop.Infostop(
         r1=params["r1"],
@@ -152,7 +152,7 @@ if __name__ == "__main__":
             f"{config['dirs']['output']}/partitioned/{i:02x}/pings.parquet"
         )
         filtered = filter_pings(
-            data, min_pings=stop_detections_config["filtering"]["min_pings_per_day"]
+            data, min_pings=stop_detection_config["filtering"]["min_pings_per_day"]
         )
         del data
         filtered = filtered.with_columns(
