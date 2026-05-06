@@ -95,6 +95,7 @@ if __name__ == "__main__":
     import structlog
     import argparse
     import yaml
+    from pathlib import Path
 
     log = structlog.get_logger()
     parser = argparse.ArgumentParser()
@@ -146,6 +147,9 @@ if __name__ == "__main__":
     # set up transformer for reprojection
     transformer = Transformer.from_crs(4326, config["crs"])
 
+    Path(f"{config['dirs']['output']}/{config['city']}/stops").mkdir(
+        parents=True, exist_ok=True
+    )
     for i in range(opts.range_start, opts.range_end):
         log.info(f"processing partition {i}")
         data = pl.read_parquet(
