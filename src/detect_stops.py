@@ -149,7 +149,7 @@ if __name__ == "__main__":
     for i in range(opts.range_start, opts.range_end):
         log.info(f"processing partition {i}")
         data = pl.read_parquet(
-            f"{config['dirs']['output']}/partitioned/{i:02x}/pings.parquet"
+            f"{config['dirs']['output']}/{config['city']}/partitioned/{i:02x}/pings.parquet"
         )
         filtered = filter_pings(
             data, min_pings=stop_detection_config["filtering"]["min_pings_per_day"]
@@ -163,7 +163,9 @@ if __name__ == "__main__":
         clustered = assign_stop_ids(clustered)
 
         stops = create_stop_table(clustered, transformer)
-        stops.write_parquet(f"{config['dirs']['output']}/stops/{i:02x}.parquet")
+        stops.write_parquet(
+            f"{config['dirs']['output']}/{config['city']}/stops/{i:02x}.parquet"
+        )
 
         del stops
         del clustered
