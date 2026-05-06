@@ -47,7 +47,10 @@ def assign_stop_ids(clustered: pl.DataFrame) -> pl.DataFrame:
         .then(
             (
                 (pl.col("place_label") >= 0)
-                & (pl.col("place_label").shift(1).over("device_id").fill_null(-1) != pl.col("place_label"))
+                & (
+                    pl.col("place_label").shift(1).over("device_id").fill_null(-1)
+                    != pl.col("place_label")
+                )
             )
             .cast(pl.Int32)
             .cum_sum()
@@ -89,11 +92,29 @@ def create_stop_table(
 
 
 if __name__ == "__main__":
+    import structlog
+    import argparse
     import yaml
 
-    with open("../config.yaml") as fp:
+    log = structlog.get_logger()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--config",
+        type=str,
+        required=True,
+        help="config file (YAML)",
+    )
+    parser.add_argument(
+        "--stop-detection-config",
+        type=str,
+        required=True,
+        help="stop detection config file (YAML)",
+    )
+    opts = parser.parse_args()
+
+    with open(opts.config, "r") as fp:
         config = yaml.safe_load(fp)
-    with open("05_detect_stops_config.yaml") as fp:
+    with open(opts.stop_detections_config, "r") as fp:
         stop_detections_config = yaml.safe_load(fp)
 
     # configure infostop
@@ -112,6 +133,7 @@ if __name__ == "__main__":
     transformer = Transformer.from_crs(4326, config["crs"])
 
     for i in range(256):
+        log.info(f"processing partition {i}")
         data = pl.read_parquet(
             f"{config['dirs']['output']}/partitioned/{i:02x}/pings.parquet"
         )
