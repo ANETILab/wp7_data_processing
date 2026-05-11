@@ -91,11 +91,37 @@ def create_stop_table(
     return stops
 
 
+def kernel(i: int) -> None:
+    log.info(f"processing partition {i}")
+    data = pl.read_parquet(
+        f"{config['dirs']['output']}/{config['city']}/partitioned/{i:02x}/pings.parquet"
+    )
+    filtered = filter_pings(
+        data, min_pings=stop_detection_config["filtering"]["min_pings_per_day"]
+    )
+    del data
+    filtered = filtered.with_columns(
+        pl.col("timestamp").dt.epoch(time_unit="s").alias("epoch")
+    )
+    clustered = cluster_pings(filtered, model)
+    del filtered
+    clustered = assign_stop_ids(clustered)
+
+    stops = create_stop_table(clustered, transformer)
+    stops.write_parquet(
+        f"{config['dirs']['output']}/{config['city']}/stops/{i:02x}.parquet"
+    )
+
+    del stops
+    del clustered
+
+
 if __name__ == "__main__":
     import structlog
     import argparse
     import yaml
     from pathlib import Path
+    from multiprocessing import Pool
 
     log = structlog.get_logger()
     parser = argparse.ArgumentParser()
@@ -125,6 +151,13 @@ if __name__ == "__main__":
         default=256,
         help="partition range end",
     )
+    parser.add_argument(
+        "--pool",
+        type=int,
+        required=False,
+        default=8,
+        help="threads to use",
+    )
     opts = parser.parse_args()
 
     with open(opts.config, "r") as fp:
@@ -150,26 +183,5 @@ if __name__ == "__main__":
     Path(f"{config['dirs']['output']}/{config['city']}/stops").mkdir(
         parents=True, exist_ok=True
     )
-    for i in range(opts.range_start, opts.range_end):
-        log.info(f"processing partition {i}")
-        data = pl.read_parquet(
-            f"{config['dirs']['output']}/{config['city']}/partitioned/{i:02x}/pings.parquet"
-        )
-        filtered = filter_pings(
-            data, min_pings=stop_detection_config["filtering"]["min_pings_per_day"]
-        )
-        del data
-        filtered = filtered.with_columns(
-            pl.col("timestamp").dt.epoch(time_unit="s").alias("epoch")
-        )
-        clustered = cluster_pings(filtered, model)
-        del filtered
-        clustered = assign_stop_ids(clustered)
-
-        stops = create_stop_table(clustered, transformer)
-        stops.write_parquet(
-            f"{config['dirs']['output']}/{config['city']}/stops/{i:02x}.parquet"
-        )
-
-        del stops
-        del clustered
+    with Pool(opts.pool) as p:
+        p.map(kernel, range(opts.range_start, opts.range_end))
