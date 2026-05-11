@@ -91,7 +91,7 @@ def create_stop_table(
     return stops
 
 
-def kernel(i: int, variant: str = "") -> None:
+def kernel(i: int, path: str, variant: str = "") -> None:
     log.info(f"processing partition {i}")
     data = pl.read_parquet(f"{path}/partitioned/{i:02x}/pings.parquet")
     filtered = filter_pings(
@@ -184,7 +184,9 @@ if __name__ == "__main__":
     with Pool(opts.pool) as p:
         p.starmap(
             kernel,
-            range(opts.range_start, opts.range_end),
-            repeat(path),
-            repeat(stop_detection_config["variant"]),
+            zip(
+                range(opts.range_start, opts.range_end),
+                repeat(path),
+                repeat(stop_detection_config["variant"]),
+            ),
         )
