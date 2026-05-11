@@ -3,6 +3,7 @@ dirs:
   output: "/mnt/common-ssd/group-dirs/tkom-2026-project/pickwell"
 
 city: budapest
+variant: "cph_baseline"
 crs: 23700
 
 days: 
