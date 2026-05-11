@@ -91,11 +91,9 @@ def create_stop_table(
     return stops
 
 
-def kernel(i: int) -> None:
+def kernel(i: int, variant: str = "") -> None:
     log.info(f"processing partition {i}")
-    data = pl.read_parquet(
-        f"{config['dirs']['output']}/{config['city']}/partitioned/{i:02x}/pings.parquet"
-    )
+    data = pl.read_parquet(f"{path}/partitioned/{i:02x}/pings.parquet")
     filtered = filter_pings(
         data, min_pings=stop_detection_config["filtering"]["min_pings_per_day"]
     )
@@ -108,9 +106,7 @@ def kernel(i: int) -> None:
     clustered = assign_stop_ids(clustered)
 
     stops = create_stop_table(clustered, transformer)
-    stops.write_parquet(
-        f"{config['dirs']['output']}/{config['city']}/stops/{i:02x}.parquet"
-    )
+    stops.write_parquet(f"{path}/stops/{variant}/{i:02x}.parquet")
 
     del stops
     del clustered
@@ -122,6 +118,7 @@ if __name__ == "__main__":
     import yaml
     from pathlib import Path
     from multiprocessing import Pool
+    from itertools import repeat
 
     log = structlog.get_logger()
     parser = argparse.ArgumentParser()
@@ -180,8 +177,14 @@ if __name__ == "__main__":
     # set up transformer for reprojection
     transformer = Transformer.from_crs(4326, config["crs"])
 
-    Path(f"{config['dirs']['output']}/{config['city']}/stops").mkdir(
+    path = f"{config['dirs']['output']}/{config['city']}"
+    Path(f"{path}/stops/{stop_detection_config['variant']}").mkdir(
         parents=True, exist_ok=True
     )
     with Pool(opts.pool) as p:
-        p.map(kernel, range(opts.range_start, opts.range_end))
+        p.starmap(
+            kernel,
+            range(opts.range_start, opts.range_end),
+            repeat(path),
+            repeat(stop_detection_config["variant"]),
+        )
