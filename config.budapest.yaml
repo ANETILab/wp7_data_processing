@@ -3,9 +3,9 @@ dirs:
   output: "/mnt/common-ssd/group-dirs/tkom-2026-project/pickwell"
 
 city: budapest
-variant: "cph_baseline"
 crs: 23700
 
+# data properties
 days: 
   - start: 2023-10-01
     end: 2023-12-31
@@ -19,6 +19,7 @@ days:
 id_column: "device_aid_hashed"
 id_type_column: "device_aid_type"
 
+# cleaning
 columns_to_drop: 
   - "horizontal_accuracy"
   - "altitude"
