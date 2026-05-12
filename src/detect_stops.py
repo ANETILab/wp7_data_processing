@@ -119,6 +119,7 @@ if __name__ == "__main__":
     from pathlib import Path
     from multiprocessing import Pool
     from itertools import repeat
+    import shutil
 
     log = structlog.get_logger()
     parser = argparse.ArgumentParser()
@@ -180,6 +181,10 @@ if __name__ == "__main__":
     path = f"{config['dirs']['output']}/{config['city']}"
     Path(f"{path}/stops/{stop_detection_config['variant']}").mkdir(
         parents=True, exist_ok=True
+    )
+    shutil.copy(
+        opts.stop_detection_config,
+        f"{path}/stops/{stop_detection_config['variant']}/stop_detection_config.yaml",
     )
     with Pool(opts.pool) as p:
         p.starmap(
