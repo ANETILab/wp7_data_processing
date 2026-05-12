@@ -1,0 +1,14 @@
+# Stop Detection Pipeline -- Configuration
+variant: "v2"
+
+filtering:
+  min_pings_per_day: 10       # drop devices with fewer daily pings than this
+
+# CPH -- tighter (v2)
+infostop:
+  r1: 30                      # meters -- the maximum roaming distance allowed for two points within the same stay
+  r2: 30                      # meters -- the typical distance between two stays in the same destination
+  min_staying_time: 300       # seconds -- the minimum duration of a stay (10 min)
+  max_time_between: 720       # seconds -- the maximum time difference between two consecutive records for them to be considered within the same stay (12 min)
+  min_size: 2                 # minimum number of pings required inside a stop
+  distance_metric: "haversine"
