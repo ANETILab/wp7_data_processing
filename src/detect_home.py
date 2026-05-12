@@ -72,6 +72,7 @@ def map_to_settlements(
 if __name__ == "__main__":
     import argparse
     from pathlib import Path
+    import shutil
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -108,6 +109,8 @@ if __name__ == "__main__":
     )
     opts = parser.parse_args()
     Path(opts.output).mkdir(parents=True, exist_ok=True)
+
+    shutil.copy(opts.config, f"{opts.output}/home_detection_config.yaml")
 
     with open(opts.config, "r") as fp:
         hd_config = yaml.safe_load(fp)
