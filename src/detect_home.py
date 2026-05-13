@@ -69,6 +69,19 @@ def map_to_settlements(
     return gdf
 
 
+def concat_home_tables(path: str, range_start: int = 0, range_end: int = 256) -> None:
+    for res in range(7, 11):
+        hw = pl.DataFrame()
+        for i in range(range_start, range_end):
+            temp = pl.read_csv(f"{path}/home_work_{i:02x}_h3_{res}.csv")
+            hw = pl.concat([hw, temp])
+            del temp
+        hw = hw.sort("device_id")
+        hw.write_csv(f"{path}/home_work_h3_{res}.csv")
+        hw.write_parquet(f"{path}/home_work_h3_{res}.parquet")
+        del hw
+
+
 if __name__ == "__main__":
     import argparse
     from pathlib import Path
@@ -159,3 +172,5 @@ if __name__ == "__main__":
             data, hd_config, spatial_id="h3_10", device_id="device_id"
         )
         hw10.write_csv(f"{opts.output}/home_work_{i:02x}_h3_10.csv")
+
+    concat_home_tables(opts.output, opts.range_start, opts.range_end)
