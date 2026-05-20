@@ -251,3 +251,123 @@ weekday_holidays: ["2023-03-15", "2023-04-07", "2023-04-10", "2023-05-01", "2023
 weekend_workdays: ["2024-08-03", "2024-12-07", "2024-12-14", "2025-05-17", "2025-10-18", "2025-12-13"]
 ----
 
+== Visitation network
+
+NOTE: calling this "visitation network" is more like a placeholder name. Please, provide a better one!
+
+The visitation network relies on stops that were determined for cite:[juhasz2023amenity] using the infostop algorithm cite:[aslak2020infostop].
+Trips between stops were used for cite:[pinter2025quantifying] to build a network (see xref:pings_to_stops[xrefstyle=short] and xref:stop_network[xrefstyle=short]).
+The main difference here is that only one hop is considered from the estimated home and work locations.
+
+[cols="a,a", frame=none, grid=none, id="building_network"]
+|===
+| image::figures/pings_stops.png[title="The pings are clustered into stops.", id=pings_to_stops]
+| image::figures/blocks_network_real_pos.png[title="Stops are connected if a device had consecutive stops in two blocks.", id=stop_network]
+|===
+
+
+=== One-hop visitation network
+
+image::figures/visitation_network_v2.drawio.png[title="Concept of the 'visitation network', where H is the home hexagon, W is the work hexagon, 3rd places are denoted by yellow squred with the label '3'",id=visittion_network_concept,width="50%"]
+
+For the "Budapest diffusion" project, I have build a one-hop "conncection" (xref:one_hop_connections[xrefstyle=short]), which gathers movements between hexagons, but not complete daily trajectories.
+
+.Hexagons connections (1 hop). Note that source and target are H3 hexagon IDs in integer format.
+[cols="2,3,4,4,2", options="header", id="one_hop_connections"]
+|==========================================================================
+| device_id | day        | source             | target             | weight
+| 1         | 2019-06-20 | 613017553293279231 | 613017553328930815 | 2
+| 1         | 2019-06-20 | 613017553328930815 | 613017553293279231 | 1
+| 1         | 2019-06-30 | 613017553981145087 | 613017553328930815 | 1
+| 1         | 2019-07-02 | 613017553303764991 | 613017553328930815 | 1
+| 1         | 2019-07-06 | 613017553486217215 | 613017553983242239 | 1
+| 1         | 2019-07-06 | 613017553983242239 | 613017553328930815 | 1
+| 1         | 2019-07-11 | 613017553328930815 | 613017554002116607 | 1
+| 1         | 2019-07-11 | 613017554002116607 | 613017553328930815 | 1
+| 1         | 2019-08-06 | 613017553964367871 | 613017553328930815 | 1
+| 1         | 2019-08-10 | 613017553486217215 | 613017553328930815 | 1
+| 1         | 2019-08-10 | 613017553328930815 | 613017553490411519 | 1
+| 1         | 2019-08-10 | 613017553490411519 | 613017553486217215 | 1
+|==========================================================================
+
+For each devices the Home and the Work hexagons are also determined. So, the one-hop "visitation network" is formed as follows:
+
+* collect every connection where the source is the Home and the target is not the Work hexagon (so a 3rd place), and build edge between the home and all the 3rd places.
+* repeat the previous but now the Work should be the source and the the targets are 3rd places.
+
+=== Aggregation
+
+xref:one_hop_connections[xrefstyle=short] is still an intermediate state, the network is aggregated to hexagons.
+For the aggreation the weight is calculated in two ways (see xref:compare_weights[xrefstyle=short] for a comparison sample):
+
+1. summing trips (one device counted more), and
+2. summing unique devices
+
+.Comparing weighting methods
+[cols="4*", options="header", id="compare_weights"]
+|===========================================
+| source          | target          | weight (trip) | weight (unique device)
+| 881e034493fffff | 881e034497fffff | 2 | 1
+| 881e034493fffff | 881e0344adfffff | 2 | 1
+| 881e034493fffff | 881e03636dfffff | 2 | 1
+| 881e034493fffff | 881e03710dfffff | 8 | 1
+| 881e034493fffff | 881e037121fffff | 6 | 1
+| 881e034493fffff | 881e037147fffff | 6 | 1
+| 881e034493fffff | 881e037149fffff | 2 | 1
+| 881e034493fffff | 881e037165fffff | 4 | 2
+| 881e034493fffff | 881e037169fffff | 6 | 3
+| 881e034493fffff | 881e0378ddfffff | 2 | 1
+|===========================================
+
+=== Commuting-aware visitation network
+
+To be able to analyze the visitations, it would be necessary to connect visitations around the home and the work locations by the commuting information.
+The "commuting-aware" visitation network is basically a merged table of the device-based commuting table (home-work), and the connections (connected stops)
+Finnally, it is aggregated by home, work, source and target columns, where the source is either the home or the work hexagon.
+
+Preliminarily, the commuting table was cleaned up a bit.
+Devices without detected home or work places were removed.
+Also, devices were removes whose home or workplaces were detected by less than 4 stops.
+
+
+Let's say user Aino lives in hexagon X, and works in hexagon Y, then her commuting info is X-Y.
+Around her home, she visits hexagons Q, and around her workplace she visits U and V.
+Then, her visitaions look like xref:aino[xrefstyle=short].
+
+Let's say Otso also lives in hexagon X and works in hexagon Y, but he visits hexagon Z around his home, and hexagons U and W around his workspace.
+Then, his visitaions look like xref:otso[xrefstyle=short].
+
+After the aggregation, the table looks like xref:aggregated[xrefstyle=short]. The network also illustrated in xref:aggregated_visual[xrefstyle=short].
+
+.Aino's visitations
+[cols="5*", options="header", id="aino"]
+|============================================
+| device_id | home | work | source | target
+| Aino      | X    | Y    | X      | Q
+| Aino      | X    | Y    | Y      | U
+| Aino      | X    | Y    | Y      | V
+|============================================
+
+.Otso's visitations
+[cols="5*", options="header", id="otso"]
+|============================================
+| device_id | home | work | source | target
+| Otso      | X    | Y    | X      | Z
+| Otso      | X    | Y    | Y      | U
+| Otso      | X    | Y    | Y      | W
+|============================================
+
+.Aggregated (by unique device) commuting-aware visitations
+[cols="5*", options="header", id="aggregated"]
+|=========================================
+| home | work | source | target | weight
+| X    | Y    | X      | Q      | 1
+| X    | Y    | X      | Z      | 1
+| X    | Y    | Y      | U      | 2
+| X    | Y    | Y      | V      | 1
+| X    | Y    | Y      | W      | 1
+|=========================================
+
+
+.Illustration of the aggregated (by unique device) commuting-aware visitations of Aino and Otso.
+image::figures/visitation_network_ao_eq.drawio.png[width=90%,id=aggregated_visual]
