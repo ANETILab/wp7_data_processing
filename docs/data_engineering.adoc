@@ -79,6 +79,7 @@ Given that the data contains 2860417726 records, the ID replacement could save a
 
 TBW
 
+[#sec:partitioning]
 == Partitioning by device ID
 
 For partitioning the data by device IDs, the same method was used as before, with the former mobile positioning data.
@@ -290,6 +291,7 @@ For each devices the Home and the Work hexagons are also determined. So, the one
 * collect every connection where the source is the Home and the target is not the Work hexagon (so a 3rd place), and build edge between the home and all the 3rd places.
 * repeat the previous but now the Work should be the source and the the targets are 3rd places.
 
+[#sec:visitaion_network_aggregation]
 === Aggregation
 
 xref:one_hop_connections[xrefstyle=short] is still an intermediate state, the network is aggregated to hexagons.
@@ -362,3 +364,41 @@ After the aggregation, the table looks like xref:aggregated[xrefstyle=short]. Th
 
 .Illustration of the aggregated (by unique device) commuting-aware visitations of Aino and Otso.
 image::figures/visitation_network_ao_eq.drawio.png[width=90%,id=aggregated_visual]
+
+== data catalogue
+
+Parquet format is used for data engineering level (massive data processing), and CSV for analyzation level (e.g., calculated indicators that people would use in a regression).
+
+The output directory should be configured in the main config file, notebooks rely on it. 
+In this document, it is referenced as `<OUTPUT>`, denoting variables by `<>` signs.
+
+* <OUTPUT>/partitioned/<00-ff>/pings.parquet
+** the dubdirectory inside partitioned is a hexadecimal value betwee 0 and 255 (00-ff, lowercase), refering the partition (see xref:sec:partitioning[xrefstyle=short])
+** a pings.parquet is about 200 MB
+* <OUTPUT>/id_lookup/id_lookup.json
+** a dictionary to translate the raw hased device IDs to numbers
+* <OUTPUT>/id_lookup/partition.json
+** a dictionary to translate the numbered IDs to partitions
+** NB: as JSON keys must be strings, the IDs stored as strings.
+* <OUTPUT>/stops/<VARIANT>/<00-ff>.parquet
+** output tables of the infostop by partion
+** stop detection can be applyed using multiple configurations distinguished by a VARIANT label. The VARIANT can be an empty string (`""`), in which case the output is placed into <OUTPUT>/stops/ folder directly (e.g., `<OUTPUT>/stops/00.parquet`). If VARIANT is not empty, a subfolder will be created (e.g., `<OUTPUT>/stops/much_better_config/00.parquet`).
+** the stop detection config file (`stop_detection_config.yaml`) is copied into the folder to archive the configuration which was used to apply the stop detection.
+* <OUTPUT>/homes/<VARIANT>/home_work_h3_<RESOLUTION>.parquet
+** the "homes" folder contains the home ddetection results by H3 resolution, between 7 and 10
+** the home detection config file (`home_detection_config.yaml`) is copied into the folder to archive the configuration which was used to apply the stop detection.
+** TODO: variant!
+* <OUTPUT>/visitation_network/<RESOLUTION>/connections_<00-ff>.parquet
+** the connections describes a network considering the hexagons as nodes and consecutive stops (by device and day) as edges, which is comparareble to the network used in cite:[pinter2025quantifying].
+** for computational reasons this is stored by partition
+* <OUTPUT>/visitation_network/<RESOLUTION>/edges[_unique_device].csv
+** as opposed to connections_<PARTITION>, which contains connections by device and day, edges remove this level, and aggreges solely to hexagons.
+** there are two ways to aggregate the network: i) by trips (`edges.csv`), and ii) by device (`edges_unique_device.csv`), described in xref:sec:visitaion_network_aggregation[xrefstyle=short]
+* <OUTPUT>/visitation_network/commuting_aware/<AGGREGATION>/<RESOLUTION>.[csv|parquet]
+** commuting-aware visitation network
+** `AGGREGATION` is either `trip` or `device`
+
+
+== references
+
+bibliography::[]
