@@ -273,22 +273,17 @@ image::figures/visitation_network_v2.drawio.png[title="Concept of the 'visitatio
 For the "Budapest diffusion" project, I have build a one-hop "conncection" (xref:one_hop_connections[xrefstyle=short]), which gathers movements between hexagons, but not complete daily trajectories.
 
 .Hexagons connections (1 hop). Note that source and target are H3 hexagon IDs in integer format.
-[cols="2,3,4,4,2", options="header", id="one_hop_connections"]
-|==========================================================================
-| device_id | day        | source             | target             | weight
-| 1         | 2019-06-20 | 613017553293279231 | 613017553328930815 | 2
-| 1         | 2019-06-20 | 613017553328930815 | 613017553293279231 | 1
-| 1         | 2019-06-30 | 613017553981145087 | 613017553328930815 | 1
-| 1         | 2019-07-02 | 613017553303764991 | 613017553328930815 | 1
-| 1         | 2019-07-06 | 613017553486217215 | 613017553983242239 | 1
-| 1         | 2019-07-06 | 613017553983242239 | 613017553328930815 | 1
-| 1         | 2019-07-11 | 613017553328930815 | 613017554002116607 | 1
-| 1         | 2019-07-11 | 613017554002116607 | 613017553328930815 | 1
-| 1         | 2019-08-06 | 613017553964367871 | 613017553328930815 | 1
-| 1         | 2019-08-10 | 613017553486217215 | 613017553328930815 | 1
-| 1         | 2019-08-10 | 613017553328930815 | 613017553490411519 | 1
-| 1         | 2019-08-10 | 613017553490411519 | 613017553486217215 | 1
-|==========================================================================
+[cols="2,3,2,2,2", options="header", id="one_hop_connections"]
+|====================================================
+| device_id | day        | source | target | weight
+| Aino      | 2026-05-19 | Y      | V      | 1
+| Aino      | 2026-05-20 | X      | Q      | 1
+| Aino      | 2026-05-20 | Y      | U      | 1
+| Aino      | 2026-05-21 | Y      | V      | 1
+| Otso      | 2026-05-19 | X      | Z      | 1
+| Otso      | 2026-05-19 | Y      | U      | 1
+| Otso      | 2026-05-20 | Y      | W      | 1
+|====================================================
 
 For each devices the Home and the Work hexagons are also determined. So, the one-hop "visitation network" is formed as follows:
 
@@ -306,17 +301,12 @@ For the aggreation the weight is calculated in two ways (see xref:compare_weight
 .Comparing weighting methods
 [cols="4*", options="header", id="compare_weights"]
 |===========================================
-| source          | target          | weight (trip) | weight (unique device)
-| 881e034493fffff | 881e034497fffff | 2 | 1
-| 881e034493fffff | 881e0344adfffff | 2 | 1
-| 881e034493fffff | 881e03636dfffff | 2 | 1
-| 881e034493fffff | 881e03710dfffff | 8 | 1
-| 881e034493fffff | 881e037121fffff | 6 | 1
-| 881e034493fffff | 881e037147fffff | 6 | 1
-| 881e034493fffff | 881e037149fffff | 2 | 1
-| 881e034493fffff | 881e037165fffff | 4 | 2
-| 881e034493fffff | 881e037169fffff | 6 | 3
-| 881e034493fffff | 881e0378ddfffff | 2 | 1
+| source | target | weight (trip) | weight (unique device)
+| X      | Q      | 1             | 1
+| Y      | U      | 2             | 2
+| Y      | V      | 2             | 1
+| Y      | W      | 1             | 1
+| Y      | Z      | 1             | 1
 |===========================================
 
 === Commuting-aware visitation network
@@ -346,6 +336,7 @@ After the aggregation, the table looks like xref:aggregated[xrefstyle=short]. Th
 | Aino      | X    | Y    | X      | Q
 | Aino      | X    | Y    | Y      | U
 | Aino      | X    | Y    | Y      | V
+| Aino      | X    | Y    | Y      | V
 |============================================
 
 .Otso's visitations
@@ -364,7 +355,7 @@ After the aggregation, the table looks like xref:aggregated[xrefstyle=short]. Th
 | X    | Y    | X      | Q      | 1
 | X    | Y    | X      | Z      | 1
 | X    | Y    | Y      | U      | 2
-| X    | Y    | Y      | V      | 1
+| X    | Y    | Y      | V      | 2
 | X    | Y    | Y      | W      | 1
 |=========================================
 
