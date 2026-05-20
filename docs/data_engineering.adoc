@@ -233,7 +233,7 @@ Weekday holidays and weekend workdays are taken care of.
 Home is a hexagon, where an individual has the most stop in the home intervals, work hexagon is analogously where someone has to most stops during workhours.
 
 .A simple home detection model.
-image::figures/home_detection_model.svg[width=75%,id=home_detection_model]
+image::figures/home_detection_model.png[width=75%,id=home_detection_model]
 
 [#hw_config,yaml]
 .Configuration for the home and workplace detection
