@@ -1,5 +1,5 @@
 # Stop Detection Pipeline -- Configuration
-variant: ""
+variant: "v1"
 
 filtering:
   min_pings_per_day: 10       # drop devices with fewer daily pings than this
