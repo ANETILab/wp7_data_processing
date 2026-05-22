@@ -11,6 +11,7 @@ SPDX-License-Identifier = "BSD-2-Clause"
 path = [
     "README.md",
     "data/h3/**/*.geojson",
+    "data/os_version.yaml",
     "docs/**/*",
     "output/figures/*",
     "data/home_work/**/*.csv",
@@ -46,6 +47,7 @@ path = [
     "pyproject.toml",
     ".python-version",
     "uv.lock",
+    "config.*.yaml"
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "2026 Gergő Pintér"
