@@ -80,6 +80,27 @@ detect_stops.py can also used to process the full data.
 4. 06_detect_home_and_work_locations.ipynb
   - detect_home.py
 
+#### diagram
+
+```mermaid
+flowchart TD
+
+    clean[fa:fa-broom Clean & repartition]
+    sd[fa:fa-location-dot Stop detection]
+    hd[frequency-based]
+    vn[fa:fa-circle-nodes Visitation network]
+    subgraph fa:fa-home Home detection
+        HoWDe[HoWDe]
+        hd
+    end
+
+    sd --> HoWDe[HoWDe]
+
+    clean --> sd
+    sd --> hd
+    sd --> vn
+    hd --> vn
+```
 
 #### examples
 
@@ -99,6 +120,12 @@ run stop detection on the whole copanhagen sample data:
 ```
 uv run src/detect_stops.py --input /mnt/common-ssd/group-dirs/tkom-2026-project/pickwell/copenhagen_sample/partitioned/ --output /mnt/common-ssd/group-dirs/tkom-2026-project/pickwell/copenhagen_sample/stops/ --config src/05_detect_stops_config.yaml --crs 31255
 ```
+
+<!-- uv run src/detect_stops.py --config config.budapest.yaml --stop-detection-config src/05_detect_stops_config_v2.yaml --pool 8
+
+running infostop-based stop detection using 8 threads on our server, it takes about 4 hours to process the full dataset.
+19:41--23:35 
+-->
 
 ## Licensing
 
