@@ -195,23 +195,33 @@ Based on the `stop_id` the pings are aggregated, and the following values are ca
 
 
 === Configuring Infostop
-We used Inforstop before while working with a similar mobile positioning data, from another data aggregator.
-Based on that experience, Sándor Juhász defined parameters for Infostop (see xref:infostop_config[xrefstyle=short]).
+
+We've used Inforstop before while working with a similar mobile positioning data, from another data aggregator.
+// Based on that experience, Sándor Juhász defined parameters for Infostop (see xref:infostop_config[xrefstyle=short]).
+Currently, the default (v1) parameter set is like xref:infostop_config[xrefstyle=short], a stricter configuration (v2) is xref:infostop_config_v2[xrefstyle=short].
 
 [#infostop_config,yaml]
-.Current Infostop configuration
+.Infostop configuration (version 1)"
 ----
 infostop:
-  # meters - spatial radius for stop detection
-  r1: 200
-  # meters - radius for merging nearby stops into places
-  r2: 75
-  # seconds - minimum duration to count as a stop
-  min_staying_time: 240
-  # seconds - max gap within a stop before it's split
-  max_time_between: 7200
-  # minimum number of pings required inside a stop
-  min_size: 2
+  r1: 80                      # meters -- the maximum roaming distance allowed for two points within the same stay
+  r2: 80                      # meters -- the typical distance between two stays in the same destination
+  min_staying_time: 600       # seconds -- the minimum duration of a stay (10 min)
+  max_time_between: 720       # seconds -- the maximum time difference between two consecutive records for them to be considered within the same stay (12 min)
+  min_size: 2                 # minimum number of pings required inside a stop
+  distance_metric: "haversine"
+----
+
+[#infostop_config_v2,yaml]
+.A stricter Infostop configuration (version 2)"
+----
+infostop:
+  r1: 30                      # meters -- the maximum roaming distance allowed for two points within the same stay
+  r2: 30                      # meters -- the typical distance between two stays in the same destination
+  min_staying_time: 300       # seconds -- the minimum duration of a stay (10 min)
+  max_time_between: 720       # seconds -- the maximum time difference between two consecutive records for them to be considered within the same stay (12 min)
+  min_size: 2                 # minimum number of pings required inside a stop
+  distance_metric: "haversine"
 ----
 
 === Altitude
@@ -394,7 +404,7 @@ In this document, it is referenced as `<OUTPUT>`, denoting variables by `<>` sig
 * <OUTPUT>/visitation_network/<RESOLUTION>/edges[_unique_device].csv
 ** as opposed to connections_<PARTITION>, which contains connections by device and day, edges remove this level, and aggreges solely to hexagons.
 ** there are two ways to aggregate the network: i) by trips (`edges.csv`), and ii) by device (`edges_unique_device.csv`), described in xref:sec:visitaion_network_aggregation[xrefstyle=short]
-* <OUTPUT>/visitation_network/commuting_aware/<AGGREGATION>/<RESOLUTION>.[csv|parquet]
+* <OUTPUT>/visitation_network/<RESOLUTION>/commuting_aware/<AGGREGATION>.[csv|parquet]
 ** commuting-aware visitation network
 ** `AGGREGATION` is either `trip` or `device`
 
