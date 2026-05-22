@@ -88,7 +88,9 @@ flowchart TD
     clean[fa:fa-broom Clean & repartition]
     sd[fa:fa-location-dot Stop detection]
     hd[frequency-based]
-    vn[fa:fa-circle-nodes Visitation network]
+    vn[fa:fa-diagram-project Visitation network]
+    connections[fa:fa-circle-nodes Hexagon connections]
+
     subgraph fa:fa-home Home detection
         HoWDe[HoWDe]
         hd
@@ -98,7 +100,8 @@ flowchart TD
 
     clean --> sd
     sd --> hd
-    sd --> vn
+    sd --> connections
+    connections --> vn
     hd --> vn
 ```
 
