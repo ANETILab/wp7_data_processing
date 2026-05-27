@@ -156,8 +156,6 @@ image::../output/descriptives/number_of_unique_devices_dayplot.png[id=number_of_
 |========================================================================================================================================
 
 
-
-
 == Stop detection
 
 As of 9 April, only the first partition (`00`) is being processed, so everything from behind this section refers only to that partition.
@@ -234,6 +232,12 @@ infostop:
 > Because vertical GPS data is so noisy, an object sitting perfectly still on a desk might register altitude fluctuations.
 >
 > -- Antonio Desiderio
+
+
+=== Repartition by date
+
+The reason behind partitioning the data by device IDs was to speed up the data processing, but very often the stops are required from a period but for all devices.
+Thus, the stops are repartitioned by year-month.
 
 == Home detection
 
@@ -407,6 +411,7 @@ In this document, it is referenced as `<OUTPUT>`, denoting variables by `<>` sig
 * <OUTPUT>/visitation_network/<RESOLUTION>/commuting_aware/<AGGREGATION>.[csv|parquet]
 ** commuting-aware visitation network
 ** `AGGREGATION` is either `trip` or `device`
+* <OUTPUT>/monthly_partitioned_stops/<VARIANT>/<YEAR>-<MONTH>.parquet
 
 
 == references
