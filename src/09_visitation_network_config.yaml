@@ -6,3 +6,8 @@ aggregation: device
 filter:
   minimum_stops_for_home: 3
   minimum_stops_for_work: 3
+  from_date: null
+  to_date: null
+  from_hour: null
+  to_hour: null
+  day_of_week: null
