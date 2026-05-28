@@ -402,6 +402,15 @@ After the aggregation, the table looks like xref:aggregated[xrefstyle=short]. Th
 .Illustration of the aggregated (by unique device) commuting-aware visitations of Aino and Otso.
 image::figures/visitation_network_ao_eq.drawio.png[width=90%,id=aggregated_visual]
 
+=== variants
+
+During the project two home detection algorithm is applied and evaluated (a simple, frequency-based and the HoWDe), and both of them can rely on multiple stop detection configurations.
+Aggregation also matters, so there are multiple variants of the visitation network that can be constructed.
+These are represented in xref:visitation_network_variants[xrefstyle=short].
+
+.Structure of the visitation network variants. Solid arrows show the milestone 1 selection.
+image::figures/visitation_network_variants.drawio.png[width=90%,id=visitation_network_variants]
+
 == data catalogue
 
 Parquet format is used for data engineering level (massive data processing), and CSV for analyzation level (e.g., calculated indicators that people would use in a regression).
