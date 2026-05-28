@@ -442,15 +442,19 @@ In this document, it is referenced as `<OUTPUT>`, denoting variables by `<>` sig
 * <OUTPUT>/homes/<VARIANT>/home_work_h3_<RESOLUTION>.parquet
 ** the "homes" folder contains the home ddetection results by H3 resolution, between 7 and 10
 ** the home detection config file (`home_detection_config.yaml`) is copied into the folder to archive the configuration which was used to apply the stop detection.
-** TODO: variant!
-* <OUTPUT>/visitation_network/<RESOLUTION>/connections_<00-ff>.parquet
+** `VARIANT` is the stop detection variant
+* <OUTPUT>/hexagon_network/<VARIANT>/<RESOLUTION>/partials/connections_<00-ff>.parquet
+** `VARIANT` is the stop detection variant
 ** the connections describes a network considering the hexagons as nodes and consecutive stops (by device and day) as edges, which is comparareble to the network used in cite:[pinter2025quantifying].
 ** for computational reasons this is stored by partition
-* <OUTPUT>/visitation_network/<RESOLUTION>/edges[_unique_device].csv
+* <OUTPUT>/hexagon_network/<VARIANT>/<RESOLUTION>/edges_[trip|device].csv
+** `VARIANT` is the stop detection variant
 ** as opposed to connections_<PARTITION>, which contains connections by device and day, edges remove this level, and aggreges solely to hexagons.
 ** there are two ways to aggregate the network: i) by trips (`edges.csv`), and ii) by device (`edges_unique_device.csv`), described in xref:sec:visitaion_network_aggregation[xrefstyle=short]
-* <OUTPUT>/visitation_network/<RESOLUTION>/commuting_aware/<AGGREGATION>.[csv|parquet]
-** commuting-aware visitation network
+* <OUTPUT>/visitation_network/<HOME_DETECTION>/<VARIANT>/<AGGREGATION>/<RES>/.[csv|parquet]
+** commuting-aware, one-hop visitation network
+** `HOME_DETECTION` is either `frequency` or `howde`
+** `VARIANT` is the stop detection variant
 ** `AGGREGATION` is either `trip` or `device`
 * <OUTPUT>/monthly_partitioned_stops/<VARIANT>/<YEAR>-<MONTH>.parquet
 
