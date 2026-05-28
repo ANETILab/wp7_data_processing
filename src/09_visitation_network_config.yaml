@@ -6,8 +6,13 @@ aggregation: device
 filter:
   minimum_stops_for_home: 3
   minimum_stops_for_work: 3
+  # as string
   from_date: null
+  # as string
   to_date: null
+  # as integer
   from_hour: null
+  # as integer
   to_hour: null
+  # as integer from 1 to 7, 1 is Monday
   day_of_week: null
