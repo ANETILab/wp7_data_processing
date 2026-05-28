@@ -192,6 +192,7 @@ Based on the `stop_id` the pings are aggregated, and the following values are ca
 |==============================================================================================================================================================================================
 
 
+[#sec:configuring_infostop]
 === Configuring Infostop
 
 We've used Inforstop before while working with a similar mobile positioning data, from another data aggregator.
@@ -241,7 +242,7 @@ Thus, the stops are repartitioned by year-month.
 
 == Home detection
 
-For the home detection a simplified model (illustrated in xref:home_detection_model[xrefstyle=short]) is used, which defined home hours from 20:00 to 7:00 and the whole at weekends, and defines work hours from 9:00 to 17:00 in weekdays.
+For the home detection a simple, absolute frequency-based model (illustrated in xref:home_detection_model[xrefstyle=short]) is used, which defined home hours from 20:00 to 7:00 and the whole at weekends, and defines work hours from 9:00 to 17:00 in weekdays.
 Weekday holidays and weekend workdays are taken care of.
 Home is a hexagon, where an individual has the most stop in the home intervals, work hexagon is analogously where someone has to most stops during workhours.
 
@@ -264,6 +265,12 @@ weekday_holidays: ["2023-03-15", "2023-04-07", "2023-04-10", "2023-05-01", "2023
 # YYYY-MM-DD as string
 weekend_workdays: ["2024-08-03", "2024-12-07", "2024-12-14", "2025-05-17", "2025-10-18", "2025-12-13"]
 ----
+
+=== HoWDe
+
+The home (and work) location detection algorithm introduced in cite:[de2026howde].
+
+IMPORTANT: TBW
 
 == Hexagon network
 
@@ -404,11 +411,13 @@ image::figures/visitation_network_ao_eq.drawio.png[width=90%,id=aggregated_visua
 
 === variants
 
-During the project two home detection algorithm is applied and evaluated (a simple, frequency-based and the HoWDe), and both of them can rely on multiple stop detection configurations.
+During the project two home detection algorithm is applied and evaluated (a simple, frequency-based and the HoWDe cite:[de2026howde]), and both of them can rely on multiple stop detection configurations.
 Aggregation also matters, so there are multiple variants of the visitation network that can be constructed.
 These are represented in xref:visitation_network_variants[xrefstyle=short].
+Version 1 or 2 (v1 or v2 in the figure) refers to the stop detection configuration (see xref:sec:configuring_infostop[xrefstyle=short]).
+Visitation network is constructed for four levels (7-10) of H3, for all branch, although the figure does not denote it.
 
-.Structure of the visitation network variants. Solid arrows show the milestone 1 selection.
+.Structure of the visitation network variants. Solid arrows show the milestone 1 preference.
 image::figures/visitation_network_variants.drawio.png[width=90%,id=visitation_network_variants]
 
 == data catalogue
