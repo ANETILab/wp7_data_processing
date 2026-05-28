@@ -241,7 +241,6 @@ Thus, the stops are repartitioned by year-month.
 
 == Home detection
 
-
 For the home detection a simplified model (illustrated in xref:home_detection_model[xrefstyle=short]) is used, which defined home hours from 20:00 to 7:00 and the whole at weekends, and defines work hours from 9:00 to 17:00 in weekdays.
 Weekday holidays and weekend workdays are taken care of.
 Home is a hexagon, where an individual has the most stop in the home intervals, work hexagon is analogously where someone has to most stops during workhours.
@@ -266,13 +265,7 @@ weekday_holidays: ["2023-03-15", "2023-04-07", "2023-04-10", "2023-05-01", "2023
 weekend_workdays: ["2024-08-03", "2024-12-07", "2024-12-14", "2025-05-17", "2025-10-18", "2025-12-13"]
 ----
 
-== Visitation network
-
-NOTE: calling this "visitation network" is more like a placeholder name. Please, provide a better one!
-
-The visitation network relies on stops that were determined for cite:[juhasz2023amenity] using the infostop algorithm cite:[aslak2020infostop].
-Trips between stops were used for cite:[pinter2025quantifying] to build a network (see xref:pings_to_stops[xrefstyle=short] and xref:stop_network[xrefstyle=short]).
-The main difference here is that only one hop is considered from the estimated home and work locations.
+== Hexagon network
 
 [cols="a,a", frame=none, grid=none, id="building_network"]
 |===
@@ -280,12 +273,42 @@ The main difference here is that only one hop is considered from the estimated h
 | image::figures/blocks_network_real_pos.png[title="Stops are connected if a device had consecutive stops in two blocks.", id=stop_network]
 |===
 
+The hexagon network is analoguous to the block network used in cite:[pinter2025quantifying] (see xref:pings_to_stops[xrefstyle=short] and xref:stop_network[xrefstyle=short]).
+Consecutive stops of a device within a day are turned into edges between hexagons (at different H3 levels between 7 and 10).
+During the construction of the hexagon network intermediate tables are saved by partition, called "connections", which contains the device_id and the day (see xref:connections_sample[xrefstyle=short]).
+The fourth row means that device 1 had to consecutive stops between hexagon `881e037851fffff` and `881e037857fffff` on 5 May 2025.
 
-=== One-hop visitation network
+.Connections table sample
+[cols="5*", options="header", id="connections_sample"]
+|====================================================================
+| device_id | day        | source          | target          | weight
+| 1         | 2024-10-05 | 881e037853fffff | 881e0378c1fffff | 1     
+| 1         | 2025-05-04 | 881e03781bfffff | 881e037857fffff | 1     
+| 1         | 2025-05-04 | 881e0378cdfffff | 881e03781bfffff | 1     
+| 1         | 2025-05-05 | 881e037851fffff | 881e037857fffff | 2     
+| 1         | 2025-05-05 | 881e037857fffff | 881e037851fffff | 1     
+|====================================================================
+
+The connections tables are then aggregated by the source and target hexagon to build a full network of connections.
+It is possible to aggregat ethe weight in two ways: i) simply add the weights representing every trip by a given device, or ii) only consider how many unique devices had trips between two hexagons.
+Both of them are constructed: edges_trip.csv and edges_device.csv.
+
+NOTE: Note that, currently there is not date filtering in the process, but using the day column it can be easily applied (e.g., only workdays).
+
+== Visitation network
+
+NOTE: calling this "visitation network" is more like a placeholder name. Please, provide a better one!
+
+The visitation network relies on the hexagon network.
+The main difference here is that only one hop is considered from the estimated home and work locations.
+Thus, this could be callad as one-hop (or one-trip) visitation network.
 
 image::figures/visitation_network_v2.drawio.png[title="Concept of the 'visitation network', where H is the home hexagon, W is the work hexagon, 3rd places are denoted by yellow squred with the label '3'",id=visittion_network_concept,width="50%"]
 
-For the "Budapest diffusion" project, I have build a one-hop "conncection" (xref:one_hop_connections[xrefstyle=short]), which gathers movements between hexagons, but not complete daily trajectories.
+// For the "Budapest diffusion" project, I have build a one-hop "conncection" (xref:one_hop_connections[xrefstyle=short]), which gathers movements between hexagons, but not complete daily trajectories.
+
+The one-hop visitation network construction builds upon the connection tables.
+Let's consider xref:one_hop_connections[xrefstyle=short] as a starting point.
 
 .Hexagons connections (1 hop). Note that source and target are H3 hexagon IDs in integer format.
 [cols="2,3,2,2,2", options="header", id="one_hop_connections"]
