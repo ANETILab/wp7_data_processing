@@ -16,3 +16,5 @@ filtering:
   to_hour: null
   # as integer from 1 to 7, 1 is Monday
   day_of_week: null
+# since filtering can be set, an output subfolder can be defined
+variant: ""
