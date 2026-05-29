@@ -8,6 +8,13 @@ SPDX-License-Identifier = "BSD-2-Clause"
 
 
 [[annotations]]
+path = ["src/06_howde.py", "src/06_howde.ipynb", "src/10_repartition_labeled_stops.ipynb]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Sándor Juhász"
+SPDX-License-Identifier = "BSD-2-Clause"
+
+
+[[annotations]]
 path = [
     "README.md",
     "data/h3/**/*.geojson",
