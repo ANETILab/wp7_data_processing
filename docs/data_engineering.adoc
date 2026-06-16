@@ -7,7 +7,9 @@
 :bibtex-file: references.bib
 :bibtex-style: ieee
 :xrefstyle: short
+:toc:
 
+<<<
 
 == Introduction
 
@@ -460,6 +462,7 @@ In this document, it is referenced as `<OUTPUT>`, denoting variables by `<>` sig
 * <OUTPUT>/monthly_partitioned_stops/<VARIANT>/<YEAR>-<MONTH>.parquet
 
 
-== references
+[bibliography]
+== References
 
 bibliography::[]
