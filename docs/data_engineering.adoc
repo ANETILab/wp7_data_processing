@@ -1,4 +1,5 @@
-= data engineering
+= Data Engineering
+:description: Technical documentation of the WP= data engineering task
 :author: Gergő Pintér
 :email: gergo.pinter@uni-corvinus.hu
 :lang: en
@@ -7,9 +8,25 @@
 :bibtex-file: references.bib
 :bibtex-style: ieee
 :xrefstyle: short
+:title-page:
+:title-logo-image: image:themes/front.jpg[top=0,align=center,pdfwidth=100%]
 :toc:
 
 <<<
+
+// |=============================================================================
+// | [.colinegreen]#Project acronym#               | COLINE                                                                                  
+// | [.colinegreen]#Full title#                    | Complex Links of Neighbourhoods                                                          
+// | [.colinegreen]#Work Package#                  | WP7 -- Amenity visits around home and work                                               
+// // | [.colinegreen]#Deliverable number#            |                                                                                     
+// // | [.colinegreen]#Deliverable lead organisation# | Corvinus University of Budapest                                                         
+// // | [.colinegreen]#Reviewer organisation#         |                                                              
+// | [.colinegreen]#Authors#                       | {author}
+// // | [.colinegreen]#Status#                        |                                                                                     
+// // | [.colinegreen]#Date#                          |                                                                                   
+// |=============================================================================
+
+// <<<
 
 == Introduction
 
