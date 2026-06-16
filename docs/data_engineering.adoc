@@ -6,6 +6,7 @@
 :copyright: CC-BY 4.0
 :bibtex-file: references.bib
 :bibtex-style: ieee
+:xrefstyle: short
 
 
 == Introduction
@@ -87,7 +88,7 @@ The first two characters of the hashed ID was used as a partition ID.
 For example: `17d6021bd57f46018332cba788e055d7` -> `17`.
 As the hash is a hexadecimal number, two digits can represent 256 differnet values, so the data is partitioned to 256 groups.
 
-xref:partition_stats[xrefstyle=short] shows some descriptives about the number of records and unique devices across partitions.
+xref:partition_stats[] shows some descriptives about the number of records and unique devices across partitions.
 
 .Partition descriptives
 [cols="2,>2,>2", options="header,unbreakable", id="partition_stats"]
@@ -106,12 +107,12 @@ xref:partition_stats[xrefstyle=short] shows some descriptives about the number o
 == Descriptives
 
 For WP7, we have one full year (2025), and the last three months from 2023, the two first and the last three from 2024.
-xref:number_of_records_dayplot[xrefstyle=short] shows the activity distribution.
+xref:number_of_records_dayplot[] shows the activity distribution.
 Summar days seems to have more activity, though May is especially busy, seems all rigth.
 There are also a few "missing" days in October 2025. There are actvitiy, on those days (11-13), it is just much less then normally would.
 I suspect that there was some kinf of service outage (at one of the providers).
 
-Next, I made the same figure, but with the number of unique devices (xref:number_of_unique_devices_dayplot[xrefstyle=short]).
+Next, I made the same figure, but with the number of unique devices (xref:number_of_unique_devices_dayplot[]).
 During summer there are slightly more devices as expected, the end of 2025 also seems to have more devices than the previous year, which is also good, shows that the data may improving.
 The outage is observable in this Figure as expected.
 However, there is on particular day in October, which is an absolute outlier.
@@ -162,9 +163,9 @@ As of 9 April, only the first partition (`00`) is being processed, so everything
 
 For detecting stops, infostop is used cite:[aslak2020infostop].
 As the partitioned data is also sorted coording to the infostop requirements, the stop detection runs about two and a half minutes on partition `00`.
-After clustering the pings into stops, the data looks like xref:labeled_pings[xrefstyle=short].
+After clustering the pings into stops, the data looks like xref:labeled_pings[].
 We feed the whole observation period with the infostop algorithm, then a consecutive number is associated to the stops (`stop_id`).
-Based on the `stop_id` the pings are aggregated, and the following values are calculated (xref:stops[xrefstyle=short]):
+Based on the `stop_id` the pings are aggregated, and the following values are calculated (xref:stops[]):
 
 * the number of pings in a stop
 * the interval start, stop, length
@@ -196,8 +197,8 @@ Based on the `stop_id` the pings are aggregated, and the following values are ca
 === Configuring Infostop
 
 We've used Inforstop before while working with a similar mobile positioning data, from another data aggregator.
-// Based on that experience, Sándor Juhász defined parameters for Infostop (see xref:infostop_config[xrefstyle=short]).
-Currently, the default (v1) parameter set is like xref:infostop_config[xrefstyle=short], a stricter configuration (v2) is xref:infostop_config_v2[xrefstyle=short].
+// Based on that experience, Sándor Juhász defined parameters for Infostop (see xref:infostop_config[]).
+Currently, the default (v1) parameter set is like xref:infostop_config[], a stricter configuration (v2) is xref:infostop_config_v2[].
 
 [#infostop_config,yaml]
 .Infostop configuration (version 1)"
@@ -242,7 +243,7 @@ Thus, the stops are repartitioned by year-month.
 
 == Home detection
 
-For the home detection a simple, absolute frequency-based model (illustrated in xref:home_detection_model[xrefstyle=short]) is used, which defined home hours from 20:00 to 7:00 and the whole at weekends, and defines work hours from 9:00 to 17:00 in weekdays.
+For the home detection a simple, absolute frequency-based model (illustrated in xref:home_detection_model[]) is used, which defined home hours from 20:00 to 7:00 and the whole at weekends, and defines work hours from 9:00 to 17:00 in weekdays.
 Weekday holidays and weekend workdays are taken care of.
 Home is a hexagon, where an individual has the most stop in the home intervals, work hexagon is analogously where someone has to most stops during workhours.
 
@@ -280,9 +281,9 @@ IMPORTANT: TBW
 | image::figures/blocks_network_real_pos.png[title="Stops are connected if a device had consecutive stops in two blocks.", id=stop_network]
 |===
 
-The hexagon network is analoguous to the block network used in cite:[pinter2025quantifying] (see xref:pings_to_stops[xrefstyle=short] and xref:stop_network[xrefstyle=short]).
+The hexagon network is analoguous to the block network used in cite:[pinter2025quantifying] (see xref:pings_to_stops[] and xref:stop_network[]).
 Consecutive stops of a device within a day are turned into edges between hexagons (at different H3 levels between 7 and 10).
-During the construction of the hexagon network intermediate tables are saved by partition, called "connections", which contains the device_id the day, the hour and for the convienece of later processing the day of week (see xref:connections_sample[xrefstyle=short]).
+During the construction of the hexagon network intermediate tables are saved by partition, called "connections", which contains the device_id the day, the hour and for the convienece of later processing the day of week (see xref:connections_sample[]).
 The second row means that device 1 had to consecutive stops between hexagon `871e037a1ffffff` and `871e03713ffffff` on 17 Juna 2025.
 
 .Connections table sample
@@ -312,10 +313,10 @@ Thus, this could be callad as one-hop (or one-trip) visitation network.
 
 image::figures/visitation_network_v2.drawio.png[title="Concept of the 'visitation network', where H is the home hexagon, W is the work hexagon, 3rd places are denoted by yellow squred with the label '3'",id=visittion_network_concept,width="50%"]
 
-// For the "Budapest diffusion" project, I have build a one-hop "conncection" (xref:one_hop_connections[xrefstyle=short]), which gathers movements between hexagons, but not complete daily trajectories.
+// For the "Budapest diffusion" project, I have build a one-hop "conncection" (xref:one_hop_connections[]), which gathers movements between hexagons, but not complete daily trajectories.
 
 The one-hop visitation network construction builds upon the connection tables.
-Let's consider xref:one_hop_connections[xrefstyle=short] as a starting point.
+Let's consider xref:one_hop_connections[] as a starting point.
 
 .Hexagons connections (1 hop). Note that source and target are H3 hexagon IDs in integer format.
 [cols="2,3,2,2,2", options="header", id="one_hop_connections"]
@@ -338,8 +339,8 @@ For each devices the Home and the Work hexagons are also determined. So, the one
 [#sec:visitaion_network_aggregation]
 === Aggregation
 
-xref:one_hop_connections[xrefstyle=short] is still an intermediate state, the network is aggregated to hexagons.
-For the aggreation the weight is calculated in two ways (see xref:compare_weights[xrefstyle=short] for a comparison sample):
+xref:one_hop_connections[] is still an intermediate state, the network is aggregated to hexagons.
+For the aggreation the weight is calculated in two ways (see xref:compare_weights[] for a comparison sample):
 
 1. summing trips (one device counted more), and
 2. summing unique devices
@@ -368,12 +369,12 @@ Also, devices were removes whose home or workplaces were detected by less than 4
 
 Let's say user Aino lives in hexagon X, and works in hexagon Y, then her commuting info is X-Y.
 Around her home, she visits hexagons Q, and around her workplace she visits U and V.
-Then, her visitaions look like xref:aino[xrefstyle=short].
+Then, her visitaions look like xref:aino[].
 
 Let's say Otso also lives in hexagon X and works in hexagon Y, but he visits hexagon Z around his home, and hexagons U and W around his workspace.
-Then, his visitaions look like xref:otso[xrefstyle=short].
+Then, his visitaions look like xref:otso[].
 
-After the aggregation, the table looks like xref:aggregated[xrefstyle=short]. The network also illustrated in xref:aggregated_visual[xrefstyle=short].
+After the aggregation, the table looks like xref:aggregated[]. The network also illustrated in xref:aggregated_visual[].
 
 .Aino's visitations
 [cols="5*", options="header", id="aino"]
@@ -413,8 +414,8 @@ image::figures/visitation_network_ao_eq.drawio.png[width=90%,id=aggregated_visua
 
 During the project two home detection algorithm is applied and evaluated (a simple, frequency-based and the HoWDe cite:[de2026howde]), and both of them can rely on multiple stop detection configurations.
 Aggregation also matters, so there are multiple variants of the visitation network that can be constructed.
-These are represented in xref:visitation_network_variants[xrefstyle=short].
-Version 1 or 2 (v1 or v2 in the figure) refers to the stop detection configuration (see xref:sec:configuring_infostop[xrefstyle=short]).
+These are represented in xref:visitation_network_variants[].
+Version 1 or 2 (v1 or v2 in the figure) refers to the stop detection configuration (see xref:sec:configuring_infostop[]).
 Visitation network is constructed for four levels (7-10) of H3, for all branch, although the figure does not denote it.
 
 .Structure of the visitation network variants. Solid arrows show the milestone 1 preference.
@@ -428,7 +429,7 @@ The output directory should be configured in the main config file, notebooks rel
 In this document, it is referenced as `<OUTPUT>`, denoting variables by `<>` signs.
 
 * <OUTPUT>/partitioned/<00-ff>/pings.parquet
-** the dubdirectory inside partitioned is a hexadecimal value betwee 0 and 255 (00-ff, lowercase), refering the partition (see xref:sec:partitioning[xrefstyle=short])
+** the dubdirectory inside partitioned is a hexadecimal value betwee 0 and 255 (00-ff, lowercase), refering the partition (see xref:sec:partitioning[])
 ** a pings.parquet is about 200 MB
 * <OUTPUT>/id_lookup/id_lookup.json
 ** a dictionary to translate the raw hased device IDs to numbers
@@ -450,7 +451,7 @@ In this document, it is referenced as `<OUTPUT>`, denoting variables by `<>` sig
 * <OUTPUT>/hexagon_network/<VARIANT>/<RESOLUTION>/edges_[trip|device].csv
 ** `VARIANT` is the stop detection variant
 ** as opposed to connections_<PARTITION>, which contains connections by device and day, edges remove this level, and aggreges solely to hexagons.
-** there are two ways to aggregate the network: i) by trips (`edges.csv`), and ii) by device (`edges_unique_device.csv`), described in xref:sec:visitaion_network_aggregation[xrefstyle=short]
+** there are two ways to aggregate the network: i) by trips (`edges.csv`), and ii) by device (`edges_unique_device.csv`), described in xref:sec:visitaion_network_aggregation[]
 * <OUTPUT>/visitation_network/<HOME_DETECTION>/<VARIANT>/<AGGREGATION>/<RES>/.[csv|parquet]
 ** commuting-aware, one-hop visitation network
 ** `HOME_DETECTION` is either `frequency` or `howde`
