@@ -282,6 +282,7 @@ infostop:
 
 With the stricter (v2) configuration, the stop detection foun stops for additional 62713 devices, and detects 28.5 million more stops. 
 
+.Comparing the stop counts of the devices between the two configuration of the Infotop. The sum of stops means the sum of all stops of all devices.
 [cols="2,2,2,2", options="header",format=csv]
 |===
 include::tables/stop_count_comparison.csv[]
