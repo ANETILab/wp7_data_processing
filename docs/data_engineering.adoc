@@ -10,23 +10,58 @@
 :xrefstyle: short
 :title-page:
 :title-logo-image: image:themes/front.jpg[top=0,align=center,pdfwidth=100%]
-:toc:
+:toc: macro
+:source-highlighter: rouge
+:rouge-style: magritte
+
+<<<
+// [.title]
+// {doctitle}
+
+:sectnums!:
+== Project Information
+:sectnums:
+
+[cols="1,2", frame=none, grid=columns, margin-bottom=5cm]
+|=============================================================================
+| [.colinegreen]#Project acronym#               | COLINE                                                                                  
+| [.colinegreen]#Full title#                    | Complex Links of Neighbourhoods                                                          
+| [.colinegreen]#Work Package#                  | WP7 -- Amenity visits around home and work                                               
+// | [.colinegreen]#Deliverable number#            |                                                                                     
+// | [.colinegreen]#Deliverable lead organisation# | Corvinus University of Budapest                                                         
+// | [.colinegreen]#Reviewer organisation#         |                                                              
+| [.colinegreen]#Authors#                       | {author}
+// | [.colinegreen]#Status#                        |                                                                                     
+// | [.colinegreen]#Date#                          |                                                                                   
+|=============================================================================
+
+// +++
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// <br>
+// +++
+
+// image::themes/front.jpg[role=foo]
 
 <<<
 
-// |=============================================================================
-// | [.colinegreen]#Project acronym#               | COLINE                                                                                  
-// | [.colinegreen]#Full title#                    | Complex Links of Neighbourhoods                                                          
-// | [.colinegreen]#Work Package#                  | WP7 -- Amenity visits around home and work                                               
-// // | [.colinegreen]#Deliverable number#            |                                                                                     
-// // | [.colinegreen]#Deliverable lead organisation# | Corvinus University of Budapest                                                         
-// // | [.colinegreen]#Reviewer organisation#         |                                                              
-// | [.colinegreen]#Authors#                       | {author}
-// // | [.colinegreen]#Status#                        |                                                                                     
-// // | [.colinegreen]#Date#                          |                                                                                   
-// |=============================================================================
+toc::[]
 
-// <<<
+<<<
 
 == Introduction
 
@@ -243,6 +278,15 @@ infostop:
   distance_metric: "haversine"
 ----
 
+=== Comparison
+
+With the stricter (v2) configuration, the stop detection foun stops for additional 62713 devices, and detects 28.5 million more stops. 
+
+[cols="2,2,2,2", options="header",format=csv]
+|===
+include::tables/stop_count_comparison.csv[]
+|===
+
 === Altitude
 
 > I just want to share a little thought regarding the possibility of using altitude in stop detection -- we discussed about this with Riccardo Di Clemente (so shared thoughts).
@@ -429,7 +473,7 @@ After the aggregation, the table looks like xref:aggregated[]. The network also 
 .Illustration of the aggregated (by unique device) commuting-aware visitations of Aino and Otso.
 image::figures/visitation_network_ao_eq.drawio.png[width=90%,id=aggregated_visual]
 
-=== variants
+=== Variants
 
 During the project two home detection algorithm is applied and evaluated (a simple, frequency-based and the HoWDe cite:[de2026howde]), and both of them can rely on multiple stop detection configurations.
 Aggregation also matters, so there are multiple variants of the visitation network that can be constructed.
@@ -440,7 +484,7 @@ Visitation network is constructed for four levels (7-10) of H3, for all branch, 
 .Structure of the visitation network variants. Solid arrows show the milestone 1 preference.
 image::figures/visitation_network_variants.drawio.png[width=90%,id=visitation_network_variants]
 
-== data catalogue
+== Data catalogue
 
 Parquet format is used for data engineering level (massive data processing), and CSV for analyzation level (e.g., calculated indicators that people would use in a regression).
 
