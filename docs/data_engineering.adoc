@@ -286,13 +286,31 @@ Note that the sum of stops (and places) are just the sum of all stops (places) o
 .Comparing the stop counts of the devices between the two configuration of the Infotop. The sum of stops means the sum of all stops of all devices.
 [cols="2,2,2,2", options="header",format=csv]
 |===
-include::tables/stop_count_comparison.csv[]
+stop count,v1,v2,diffrence
+device count,1101097,1163810,62713
+mean,72,92,20
+std,160,209,49
+min,1,1,0
+25%,3,4,1
+50%,15,18,3
+75%,63,80,17
+max,4269,7329,3060
+sum of stops,79007357,107601365,28594008
 |===
 
 .Comparing the place counts of the devices between the two configuration of the Infotop. The sum of places means the sum of all places of all devices.
 [cols="2,2,2,2", options="header",format=csv]
 |===
-include::tables/place_count_comparison.csv[]
+stop count,v1,v2,diffrence
+device count,1101097,1163810,62713
+mean,8,11,3
+std,11,17,6
+min,1,1,0
+25%,2,2,0
+50%,4,5,1
+75%,9,13,4
+max,384,707,323
+sum of places,8510685,13151337,4640652
 |===
 
 === Altitude
