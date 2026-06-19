@@ -24,15 +24,15 @@
 
 [cols="1,2", frame=none, grid=columns, margin-bottom=5cm]
 |=============================================================================
-| [.colinegreen]#Project acronym#               | COLINE                                                                                  
-| [.colinegreen]#Full title#                    | Complex Links of Neighbourhoods                                                          
-| [.colinegreen]#Work Package#                  | WP7 -- Amenity visits around home and work                                               
-// | [.colinegreen]#Deliverable number#            |                                                                                     
-// | [.colinegreen]#Deliverable lead organisation# | Corvinus University of Budapest                                                         
-// | [.colinegreen]#Reviewer organisation#         |                                                              
+| [.colinegreen]#Project acronym#               | COLINE
+| [.colinegreen]#Full title#                    | Complex Links of Neighbourhoods
+| [.colinegreen]#Work Package#                  | WP7 -- Amenity visits around home and work
+// | [.colinegreen]#Deliverable number#            |
+// | [.colinegreen]#Deliverable lead organisation# | Corvinus University of Budapest
+// | [.colinegreen]#Reviewer organisation#         |
 | [.colinegreen]#Authors#                       | {author}
-// | [.colinegreen]#Status#                        |                                                                                     
-// | [.colinegreen]#Date#                          |                                                                                   
+// | [.colinegreen]#Status#                        |
+// | [.colinegreen]#Date#                          |
 |=============================================================================
 
 // +++
@@ -280,12 +280,19 @@ infostop:
 
 === Comparison
 
-With the stricter (v2) configuration, the stop detection foun stops for additional 62713 devices, and detects 28.5 million more stops. 
+With the stricter (v2) configuration, the stop detection found stops for additional 62713 devices, and detects 28.5 million more stops, and 4.6 million more places.
+Note that the sum of stops (and places) are just the sum of all stops (places) of all devices, these are not distinct locations.
 
 .Comparing the stop counts of the devices between the two configuration of the Infotop. The sum of stops means the sum of all stops of all devices.
 [cols="2,2,2,2", options="header",format=csv]
 |===
 include::tables/stop_count_comparison.csv[]
+|===
+
+.Comparing the place counts of the devices between the two configuration of the Infotop. The sum of places means the sum of all places of all devices.
+[cols="2,2,2,2", options="header",format=csv]
+|===
+include::tables/place_count_comparison.csv[]
 |===
 
 === Altitude
