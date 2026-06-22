@@ -281,10 +281,11 @@ infostop:
 === Comparison
 
 With the stricter (v2) configuration, the stop detection found stops for additional 62713 devices, and detects 28.5 million more stops, and 4.6 million more places.
+<<stop_count_comparison>> and <<place_count_comparison>> show the high-level comparison of the detected stops and place using _v1_ and the _v2_ configuration variants.
 Note that the sum of stops (and places) are just the sum of all stops (places) of all devices, these are not distinct locations.
 
 .Comparing the stop counts of the devices between the two configuration of the Infotop. The sum of stops means the sum of all stops of all devices.
-[cols="2,2,2,2", options="header",format=csv]
+[cols="2,2,2,2", options="header",format=csv,id="stop_count_comparison"]
 |===
 stop count,v1,v2,diffrence
 device count,1101097,1163810,62713
@@ -299,7 +300,7 @@ sum of stops,79007357,107601365,28594008
 |===
 
 .Comparing the place counts of the devices between the two configuration of the Infotop. The sum of places means the sum of all places of all devices.
-[cols="2,2,2,2", options="header",format=csv]
+[cols="2,2,2,2", options="header",format=csv,id="place_count_comparison"]
 |===
 stop count,v1,v2,diffrence
 device count,1101097,1163810,62713
@@ -312,6 +313,9 @@ min,1,1,0
 max,384,707,323
 sum of places,8510685,13151337,4640652
 |===
+
+image::figures/stops/v1/stop_intervals.png[title="Stop interval distribution using the _v1_ configuration.", id=stop_intervals_v1]
+image::figures/stops/v2/stop_intervals.png[title="Stop interval distribution using the _v2_ configuration.", id=stop_intervals_v2]
 
 === Altitude
 
