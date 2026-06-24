@@ -82,7 +82,12 @@ if __name__ == "__main__":
     for i in days:
         log.info(i.strftime("%Y-%m-%d"))
         data = read_day(i, config["dirs"]["raw_source"])
-        data = data.with_columns(pl.from_epoch(pl.col("timestamp"), time_unit="s"))
+        data = data.with_columns(
+            pl.from_epoch(pl.col("timestamp"), time_unit="s"),
+            pl.concat_str(
+                [pl.col("device_aid_hashed"), pl.col("device_aid_type")], separator="."
+            ).alias("id_with_type"),
+        )
 
         # Clean OS version
         if "OS_version" not in config["columns_to_drop"]:
@@ -109,7 +114,7 @@ if __name__ == "__main__":
             pl.col(config["id_column"]).str.slice(0, 2).alias("partition")
         )
         # Replace device IDs
-        data = data.with_columns(pl.col(config["id_column"]).replace_strict(lookup))
+        data = data.with_columns(pl.col("id_with_type").replace_strict(lookup))
         data = data.rename({config["id_column"]: "device_id"})
 
         for p in data.partition_by("partition"):
