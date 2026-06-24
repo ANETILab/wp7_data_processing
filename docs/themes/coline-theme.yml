@@ -1,0 +1,73 @@
+extends: default-sans
+font:
+    catalog:
+        merge: true
+        Cantarell:
+            normal: Cantarell/Cantarell-Regular.ttf
+            italic: Cantarell/Cantarell-Italic.ttf
+            bold: Cantarell/Cantarell-Bold.ttf
+            bold_italic: Cantarell/Cantarell-BoldItalic.ttf
+base:
+    font_size: 10
+    # font-family: Cantarell
+page:
+    layout: portrait
+    margin: [1.75cm, 1.5cm, 2.5cm, 1.5cm]
+    size: a4
+heading:
+    h1_font_size: 16
+    h2_font_size: 14
+    h3_font_size: 12
+    h4_font_size: 12
+    font-color: #5CBF7A
+    font-style: bold
+    line-height: 1.2
+    margin-bottom: 10
+title_page:
+    text_align: center
+    title:
+        top: 25%
+        font-color: #5CBF7A
+header:
+    height: 2.5cm
+    # line-height: 1.2
+    image-vertical-align: 12
+    recto:
+        right:
+            content: image:dut_coline_logo.png[pdfwidth=24pt]
+    verso:
+        right:
+            content: $header-recto-right-content
+link:
+    font_color: #007838
+quote:
+    font_size: $base_font_size
+footer:
+    height: 2.5cm
+    # line-height: 1.2
+    border-color: #8ec69e
+    border-width: 0.75
+    font-color: #8ec69e
+    recto:
+        left:
+            content: ""
+        center:
+            content: |
+                {page-number}
+        right:
+            content: ""
+        #     content: |
+        #         {author}
+    verso:
+        left:
+            content: ""
+        center:
+            content: |
+                {page-number}
+        right:
+            content: ""
+            # content: |
+        #         {author}
+role:
+    colinegreen:
+        font-color: #5CBF7A
