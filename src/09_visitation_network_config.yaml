@@ -1,8 +1,6 @@
 stop_detection_variant: v2
 # frequeny | howde
 home_detection: frequency
-# device | trip
-aggregation: device
 filtering:
   minimum_stops_for_home: 3
   minimum_stops_for_work: 3
