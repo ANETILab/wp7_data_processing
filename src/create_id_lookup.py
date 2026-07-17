@@ -20,8 +20,11 @@ def collect_ids(
 
 
 def create_lookup(ids: list[str]) -> dict[str, int]:
-    df = pl.DataFrame([ids], schema=["id_with_type"]).with_row_index(
-        "device_id", offset=1
+    df = (
+        pl.DataFrame([ids], schema=["id_with_type"])
+        .unique()
+        .sort(by="id_with_type")
+        .with_row_index("device_id", offset=1)
     )
     return dict(zip(df["id_with_type"], df["device_id"]))
 
