@@ -519,7 +519,7 @@ image::figures/visitation_network_variants.drawio.png[width=90%,id=visitation_ne
 
 Primarily to match the visitation networks to the telecom dataset, datetime filters were introduced, illustrated by xref:visitation_network_datetime_filters[].
 The visitations can be filtered by day of week (A-B, C shows no filter), hour (D-F), and even date range.
-For example, xref:visitation_network_datetime_filters[]/A shows that only weekdays are considered, xref:visitation_network_datetime_filters[]/F shows that only the first six hours of the weeknds are considered.
+For example, xref:visitation_network_datetime_filters[]/A shows that only weekdays are considered, xref:visitation_network_datetime_filters[]/E shows that only the first six hours of the weekends are considered.
 Note that xref:visitation_network_datetime_filters[] shows six-hour blocks to match the telecom data, but the intervals can be selected by hour, so 13-16 or 20-21 hour intervals are also valid options.
 
 .Illustration of datetime filtering by day of week (A-C) and hour (D-F).
