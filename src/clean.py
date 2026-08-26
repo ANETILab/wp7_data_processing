@@ -41,10 +41,12 @@ def merge_partitions(partition_path: str) -> list[tuple[int, date]]:
 
 
 if __name__ == "__main__":
-    import structlog
     import argparse
+
+    import structlog
     import yaml
-    from common import read_day, daterange
+
+    from common import daterange, read_day
 
     log = structlog.get_logger()
     parser = argparse.ArgumentParser()
@@ -114,7 +116,11 @@ if __name__ == "__main__":
             pl.col(config["id_column"]).str.slice(0, 2).alias("partition")
         )
         # Replace device IDs
-        data = data.with_columns(pl.col("id_with_type").replace_strict(lookup))
+        data = data.with_columns(
+            pl.concat_str(
+                [pl.col("device_aid_hashed"), pl.lit("."), pl.col("device_aid_type")]
+            ).replace_strict(lookup)
+        )
         data = data.rename({config["id_column"]: "device_id"})
 
         for p in data.partition_by("partition"):
