@@ -1,0 +1,18 @@
+stop_detection_variant: v2
+# frequeny | howde
+home_detection: frequency
+filtering:
+  minimum_stops_for_home: 3
+  minimum_stops_for_work: 3
+  # as string, inclusive
+  from_date: null
+  # as string, exclusive
+  to_date: null
+  # as integer, inclusive
+  from_hour: null
+  # as integer, exclusive
+  to_hour: null
+  # as a list of integers from 1 to 7, where 1 is Monday
+  days_of_week: []
+# since filtering can be set, an output subfolder can be defined
+variant: ""
