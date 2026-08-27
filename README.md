@@ -79,6 +79,8 @@ detect_stops.py can also used to process the full data.
   - detect_stops.py
 4. 06_detect_home_and_work_locations.ipynb
   - detect_home.py
+5. 08_build_hexagon_network.ipynb
+6. 09_build_commuting_aware_visitation_network.ipynb
 
 #### diagram
 
