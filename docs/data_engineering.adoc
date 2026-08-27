@@ -132,7 +132,29 @@ Given that the data contains 2860417726 records, the ID replacement could save a
 
 === Clean OS version
 
-TBW
+Cleaning the OS version is for calculating the phone's age.
+It is possible to associate OS release date for devices whose the OS and the OS version are known.
+The release dates are collected in link:https://yaml.org/[YAML] format in `data/os_version.yaml`, collected manually from a Wikipedia pages link:https://en.wikipedia.org/wiki/Android_version_history[Android version history], and link:https://en.wikipedia.org/wiki/IOS_version_history[iOS version history].
+
+As advertisement ID do not survive factory resets or phone changes, it is safe to assume that each device has exactly one OS version. The data comfirms this.
+So, the last day of the activity and the OS version information is gathered for each device.
+Then, the phone's relative age is calculated subtracting the _release date_ from the _last active day_, as in cite:[pinter2021analyzing].
+The relative age is expressed in days, and xref:relative_age[] shows some sample lines.
+Device 8 is using an almost 11-year old Android phone, while device 32 is using an almost 5-year old iPhone.
+
+Note that, OS can be updated on some devices. Some manufacturers like Apple and Google offer multiple years of updates, lower-end devices usually has very limited upgradeability.
+In other words, the relative age is a lower limit, the devices could be even older if the OS was updated.
+
+.Sample records for phone's relarive age
+[cols=">1,1,>1,^2,^2,>2", options="header,unbreakable", format=csv, id="relative_age"]
+|===
+device_id,OS,OS_version,last_active_day,release_date,relative_age
+8,Android,5,2025-10-24,2014-11-04,4007
+30,Android,10,2025-12-26,2019-09-03,2306
+32,iOS,14,2025-07-18,2020-09-16,1766
+64,Android,11,2024-12-24,2020-09-08,1568
+76,Android,8,2025-10-24,2017-08-21,2986
+|===
 
 [#sec:partitioning]
 == Partitioning by device ID
