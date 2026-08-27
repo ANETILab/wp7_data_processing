@@ -85,10 +85,11 @@ def aggregate_by_device(connections: pl.DataFrame) -> pl.DataFrame:
 
 
 if __name__ == "__main__":
-    from pathlib import Path
-    import yaml
     import argparse
+    from pathlib import Path
+
     import structlog
+    import yaml
 
     log = structlog.get_logger()
 
