@@ -11,17 +11,22 @@ Usage:
     python 06_howde.py [config.yaml]   # defaults to 06_howde_config.yaml
 """
 
+import glob
 import os
 import sys
-import glob
 import time
-import yaml
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+import yaml
 
 # ---------------------------------------------------------------------------
 # Config  (must load before pyspark so driver_memory reaches the JVM)
 # ---------------------------------------------------------------------------
-config_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "06_howde_config.yaml")
+config_path = (
+    sys.argv[1]
+    if len(sys.argv) > 1
+    else os.path.join(os.path.dirname(__file__), "06_howde_config.yaml")
+)
 
 with open(config_path) as fp:
     config = yaml.safe_load(fp)
@@ -29,7 +34,7 @@ with open(config_path) as fp:
 cfg_paths = config["paths"]
 cfg_howde = config["howde"]
 cfg_spark = config["spark"]
-cfg_proc  = config["processing"]
+cfg_proc = config["processing"]
 
 # spark.driver.memory must be set before the JVM starts — SparkSession.config is too late.
 # PYSPARK_SUBMIT_ARGS is read by pyspark when it launches the JVM process.
@@ -40,8 +45,8 @@ os.environ["PYSPARK_SUBMIT_ARGS"] = (
 )
 
 import pyspark.sql.functions as F
-from pyspark.sql import SparkSession
 from howde import HoWDe_labelling
+from pyspark.sql import SparkSession
 
 # ---------------------------------------------------------------------------
 # Spark session
@@ -50,20 +55,26 @@ from howde import HoWDe_labelling
 # ThreadPoolExecutor workers truly interleave rather than queue up (FIFO default).
 # shuffle.partitions is scaled to CPU count for local runs — remove for cluster.
 spark = (
-    SparkSession.builder
-    .appName("HoWDeParallel")
+    SparkSession.builder.appName("HoWDeParallel")
     .config("spark.scheduler.mode", cfg_spark["scheduler_mode"])
-    .config("spark.sql.shuffle.partitions", str(os.cpu_count() * cfg_spark["shuffle_partitions_per_cpu"]))  # local only — remove for cluster
-    .config("spark.sql.execution.arrow.pyspark.enabled", str(cfg_spark["arrow_enabled"]).lower())
+    .config(
+        "spark.sql.shuffle.partitions",
+        str(os.cpu_count() * cfg_spark["shuffle_partitions_per_cpu"]),
+    )  # local only — remove for cluster
+    .config(
+        "spark.sql.execution.arrow.pyspark.enabled",
+        str(cfg_spark["arrow_enabled"]).lower(),
+    )
     .config("spark.sql.session.timeZone", cfg_spark["timezone"])
     .getOrCreate()
 )
+
 
 # ---------------------------------------------------------------------------
 # Per-file processing function
 # ---------------------------------------------------------------------------
 def process_file(parquet_path):
-    stem     = os.path.splitext(os.path.basename(parquet_path))[0]
+    stem = os.path.splitext(os.path.basename(parquet_path))[0]
     out_name = stem + cfg_proc["output_suffix"] + ".parquet"
     out_path = os.path.join(cfg_paths["output_dir"], out_name)
 
@@ -75,23 +86,30 @@ def process_file(parquet_path):
         raw = spark.read.parquet(parquet_path)
 
         # UTC offset per stop (accounts for DST: CET = +1h, CEST = +2h)
-        utc_str     = F.date_format(F.col("interval_start"), "yyyy-MM-dd HH:mm:ss")
-        local_str   = F.date_format(
+        utc_str = F.date_format(F.col("interval_start"), "yyyy-MM-dd HH:mm:ss")
+        local_str = F.date_format(
             F.from_utc_timestamp(F.col("interval_start"), cfg_proc["local_timezone"]),
-            "yyyy-MM-dd HH:mm:ss"
+            "yyyy-MM-dd HH:mm:ss",
         )
         offset_secs = F.unix_timestamp(local_str) - F.unix_timestamp(utc_str)
 
         input_data = (
-            raw
-            .withColumnRenamed("device_id", "useruuid")
+            raw.withColumnRenamed("device_id", "useruuid")
             .withColumnRenamed("stop_id", "loc")
             .withColumn("start", F.unix_timestamp(F.col("interval_start")))
-            .withColumn("end",   F.unix_timestamp(F.col("interval_stop")))
-            .withColumn("tz_hour_start",   (offset_secs / 3600).cast("long"))
+            .withColumn("end", F.unix_timestamp(F.col("interval_stop")))
+            .withColumn("tz_hour_start", (offset_secs / 3600).cast("long"))
             .withColumn("tz_minute_start", ((offset_secs % 3600) / 60).cast("long"))
             .withColumn("country", F.lit(cfg_proc["country"]))
-            .select("useruuid", "loc", "start", "end", "tz_hour_start", "tz_minute_start", "country")
+            .select(
+                "useruuid",
+                "loc",
+                "start",
+                "end",
+                "tz_hour_start",
+                "tz_minute_start",
+                "country",
+            )
         )
         input_data = input_data.repartitionByRange(os.cpu_count(), "useruuid")
 
@@ -99,10 +117,20 @@ def process_file(parquet_path):
         pdf = labeled.toPandas()
         pdf.to_parquet(out_path, index=False)
 
-        return {"file": out_name, "status": "ok", "rows": len(pdf), "elapsed": time.perf_counter() - t0}
+        return {
+            "file": out_name,
+            "status": "ok",
+            "rows": len(pdf),
+            "elapsed": time.perf_counter() - t0,
+        }
 
     except Exception as exc:
-        return {"file": out_name, "status": "error", "error": str(exc), "elapsed": time.perf_counter() - t0}
+        return {
+            "file": out_name,
+            "status": "error",
+            "error": str(exc),
+            "elapsed": time.perf_counter() - t0,
+        }
 
 
 # ---------------------------------------------------------------------------
@@ -126,17 +154,21 @@ if __name__ == "__main__":
             res = future.result()
             results.append(res)
             if res["status"] == "ok":
-                print(f"[{i:>3}/{len(input_files)}] OK      {res['file']}  {res['rows']:>8} rows  {res['elapsed']:.1f}s")
+                print(
+                    f"[{i:>3}/{len(input_files)}] OK      {res['file']}  {res['rows']:>8} rows  {res['elapsed']:.1f}s"
+                )
             elif res["status"] == "skipped":
                 print(f"[{i:>3}/{len(input_files)}] SKIPPED {res['file']}")
             else:
-                print(f"[{i:>3}/{len(input_files)}] ERROR   {res['file']}  {res['error']}")
+                print(
+                    f"[{i:>3}/{len(input_files)}] ERROR   {res['file']}  {res['error']}"
+                )
 
     print(f"\nTotal elapsed: {time.perf_counter() - t_total:.1f}s")
 
-    ok      = [r for r in results if r["status"] == "ok"]
+    ok = [r for r in results if r["status"] == "ok"]
     skipped = [r for r in results if r["status"] == "skipped"]
-    errors  = [r for r in results if r["status"] == "error"]
+    errors = [r for r in results if r["status"] == "error"]
 
     print(f"\nCompleted : {len(ok)}")
     print(f"Skipped   : {len(skipped)}")
