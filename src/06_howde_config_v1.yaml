@@ -1,0 +1,29 @@
+# HoWDe Home/Work Detection -- Configuration
+
+paths:
+  input_dir: "/mnt/common-ssd/group-dirs/tkom-2026-project/pickwell/budapest/stops/v1"
+  output_dir: "/mnt/common-ssd/group-dirs/tkom-2026-project/pickwell/budapest/howde/v1"
+
+howde:
+  range_window_home: 28
+  range_window_work: 42
+  C_hours: 0.2
+  C_days_H: 0.2
+  C_days_W: 0.2
+  f_hours_H: 0.6
+  f_hours_W: 0.4
+  f_days_W: 0.5
+  output_format: "stop"
+
+spark:
+  shuffle_partitions_per_cpu: 2   # multiplied by os.cpu_count() in notebook -- remove for cluster
+  arrow_enabled: true
+  timezone: "UTC"
+  scheduler_mode: "FAIR"          # required for concurrent queries to truly interleave on CPUs
+  driver_memory: "32g"            # passed via PYSPARK_SUBMIT_ARGS / spark-submit -- not SparkSession.config
+
+processing:
+  country: "HU"
+  local_timezone: "Europe/Budapest"
+  max_parallel_files: 4           # concurrent files processed via ThreadPoolExecutor
+  output_suffix: "_howde"         # appended to stem: 00.parquet → 00_howde.parquet
