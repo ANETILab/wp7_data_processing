@@ -10,6 +10,7 @@ def load_data_pl(i: int, res: int, path: str) -> pl.DataFrame:
         ).alias(f"h3_{res}"),
         pl.col("interval_start").dt.to_string("%Y-%m-%d").alias("day"),
         pl.col("interval_start").dt.hour().alias("hour"),
+        pl.col("interval_start").dt.minute().alias("minute"),
     )
 
     data = data.sort("device_id", "interval_start", descending=[False, False])
@@ -56,11 +57,11 @@ def build_conncections(path: str, res: int, variant: str) -> pl.DataFrame:
                 .filter(
                     (pl.col(col) != pl.col("target")) & pl.col("target").is_not_null()
                 )
-                .group_by(["device_id", "day", "hour", col, "target"])
+                .group_by(["device_id", "day", "hour", "minute", col, "target"])
                 .len()
             )
             .rename({col: "source", "len": "weight"})
-            .sort(["device_id", "day", "hour"])
+            .sort(["device_id", "day", "hour", "minute"])
         ).with_columns(pl.col.day.str.to_date("%Y-%m-%d").dt.weekday().alias("dow"))
         connections = pl.concat([connections, temp])
         del stops
