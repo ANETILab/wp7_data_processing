@@ -398,19 +398,34 @@ IMPORTANT: TBW
 
 The hexagon network is analoguous to the block network used in cite:[pinter2025quantifying] (see xref:pings_to_stops[] and xref:stop_network[]).
 Consecutive stops of a device within a day are turned into edges between hexagons (at different H3 levels between 7 and 10).
-During the construction of the hexagon network intermediate tables are saved by partition, called "connections", which contains the device_id the day, the hour and for the convienece of later processing the day of week (see xref:connections_sample[]).
-The second row means that device 1 had to consecutive stops between hexagon `871e037a1ffffff` and `871e03713ffffff` on 17 Juna 2025.
+During the construction of the hexagon network intermediate tables are saved by partition, called "connections", which contains the device_id the day, the hour, the minute and for the convienece of later processing the day of week (see xref:connections_sample[]).
+The fourth and sixth rows mean that device 6514 had a consecutive stop between hexagon `891e037a14bffff` and `891e037134fffff` on 17 June 2025.
+The connection table contains the movents minute-level to serve as a foundation of network building.
+Using an aggregation this could aggregated to hour-level, as shown in xref:connections_sample2[], or even further to a day-level.
+With the help of the _day of week_ (dow) column weekdays or weekends can also be aggregated. 
 
 .Connections table sample
-[cols="2,2,1,3,3,2,1", options="header", id="connections_sample"]
-|=================================================================================
-| device_id | day        | hour | source          | target          | weight | dow
-| 6513      | 2025-06-16 | 13   | 871e03713ffffff | 871e037a1ffffff | 1      | 1
-| 6513      | 2025-06-17 | 8    | 871e037a1ffffff | 871e03713ffffff | 2      | 2
-| 6513      | 2025-06-17 | 8    | 871e03713ffffff | 871e037a1ffffff | 1      | 2
-| 6513      | 2025-06-17 | 10   | 871e03713ffffff | 871e037a1ffffff | 1      | 2
-| 6513      | 2025-06-17 | 12   | 871e037a1ffffff | 871e03713ffffff | 1      | 2
-|=================================================================================
+[cols="2,2,1,1,3,3,2,1", options="header", format=csv, id="connections_sample"]
+|===
+device_id,day,hour,minute,source,target,weight,dow
+6514,2025-06-16,10,30,891e037134fffff,891e0371347ffff,1,1
+6514,2025-06-16,13,25,891e0371347ffff,891e037134fffff,1,1
+6514,2025-06-16,13,42,891e037134fffff,891e037a14bffff,1,1
+6514,2025-06-17,8,21,891e037a14bffff,891e037134fffff,1,2
+6514,2025-06-17,8,40,891e037134fffff,891e037a14bffff,1,2
+6514,2025-06-17,8,52,891e037a14bffff,891e037134fffff,1,2
+|===
+
+.Connections table sample -- hour-level aggregation
+[cols="2,2,1,3,3,2,1", options="header", format=csv, id="connections_sample2"]
+|===
+device_id,day,hour,source,target,weight,dow
+6514,2025-06-16,10,891e037134fffff,891e0371347ffff,1,1
+6514,2025-06-16,13,891e0371347ffff,891e037134fffff,1,1
+6514,2025-06-16,13,891e037134fffff,891e037a14bffff,1,1
+6514,2025-06-17,8,891e037134fffff,891e037a14bffff,1,2
+6514,2025-06-17,8,891e037a14bffff,891e037134fffff,2,2
+|===
 
 The connections tables are then aggregated by the source and target hexagon to build a full network of connections.
 It is possible to aggregat ethe weight in two ways: i) simply add the weights representing every trip by a given device, or ii) only consider how many unique devices had trips between two hexagons.
