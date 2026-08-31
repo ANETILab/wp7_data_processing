@@ -575,6 +575,53 @@ filtering:
 variant: "weekdays_00_06"
 ----
 
+== dynamic commuting
+
+Due to the sparseness of the data inferring the home and work locations for short periods does not give usable results.
+So, instead the work and home locations are inferred for th whole data period, and then the movements between the detected home and work locations are calcluated daily.
+
+The daily movents are calculated based on the daily appearances in the home and work hexagons.
+Based on xref:hw_occurences[], let's consider a device that has a stop at the home hexagon on 1st October and two stops at the work hexagons.
+As this means that the device travelled between the home and work hexagons, it commuted to work.
+On 2nd October, device number 1 has no detected stop in the home hexagon, but has a stop in the work hexagons.
+This case could be interpreted as the commuting also happened.
+
+xref:hw_occurences_evaluation[] conceptualizes with Bool algebra when commuting should be counted with a more relaxed and a stricter interpretation.
+Considering fact whether the device had at least one stop in the home and work hexagons.
+The relaxed commuting cares only about stops in the work hexagon, considering that the device spends the night at home no matter what.
+The strict interpretation required a stop in the home _and_ in the work hexagon as well on the same day.
+The relaxed interpretation only considers the work hexagon, and the strict interpretation is the _logical and_ operation.
+
+[NOTE]
+====
+the current implementation uses the strict interpretation
+====
+
+.Sample home and work appearances
+[cols="1,2,1,1", options="header", id="hw_occurences"]
+|===================================
+| device | day        | home | work
+| 1      | 2021-10-01 | 1    | 2
+| 1      | 2021-10-02 | 0    | 1
+| 1      | 2021-10-03 | 2    | 0
+| 1      | 2021-10-04 | 1    | 0
+|===================================
+
+.Relaxed and stricter evaluation of daily commuting
+[cols="1,1,1,1", options="header", id=hw_occurences_evaluation]
+|===================================
+| home | work | relaxed   | strict
+| 0    | 0    | 0         | 0
+| 0    | 1    | 1         | 0
+| 1    | 0    | 0         | 0
+| 1    | 1    | 1         | 1
+|===================================
+
+After collecting daily device commutings, the commuting edges between the home and the work hexagons can be aggregated further by date, or groups of devices.
+xref:daily_2025[] shows the daily commuting counts in the whole observation area in 2025.
+
+image::figures/daily_commutings_2025.png[title="number of daily commuting counts in 2025",id=daily_2025]
+
 == Data catalogue
 
 Parquet format is used for data engineering level (massive data processing), and CSV for analyzation level (e.g., calculated indicators that people would use in a regression).
