@@ -635,7 +635,7 @@ the current implementation uses the strict interpretation
 After collecting daily device commutings, the commuting edges between the home and the work hexagons can be aggregated further by date, or groups of devices.
 xref:daily_2025[] shows the daily commuting counts in the whole observation area in 2025.
 
-image::figures/daily_commutings_2025.png[title="number of daily commuting counts in 2025",id=daily_2025]
+image::figures/strict_daily_commutings_2025.png[title="number of daily commuting counts in 2025 -- strict evaluation",id=daily_2025]
 
 == Data catalogue
 
