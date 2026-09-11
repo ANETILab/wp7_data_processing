@@ -9,12 +9,12 @@
 :bibtex-style: ieee
 :xrefstyle: short
 :title-page:
-:title-logo-image: image:themes/front.jpg[top=0,align=center,pdfwidth=100%]
 :toc: macro
 :source-highlighter: rouge
 :rouge-style: magritte
 
 <<<
+
 // [.title]
 // {doctitle}
 
@@ -384,7 +384,7 @@ weekend_workdays: ["2024-08-03", "2024-12-07", "2024-12-14", "2025-05-17", "2025
 
 === Output schema
 
-xref:home_work[] shows the schema of the home-work detection output. 
+xref:home_work[] shows the schema of the home-work detection output.
 The same is generated for H3 level 7 to 10.
 The `h3_<RESOLUTION>_home` contains a H3 ID at the given resolution, the work is analoguos to the home.
 Columns `count_home` and `count_work` shows how many stops are used to determine the home and the work hexagon, respectively.
@@ -425,7 +425,7 @@ During the construction of the hexagon network intermediate tables are saved by 
 The fourth and sixth rows mean that device 6514 had a consecutive stop between hexagon `891e037a14bffff` and `891e037134fffff` on 17 June 2025.
 The connection table contains the movents minute-level to serve as a foundation of network building.
 Using an aggregation this could aggregated to hour-level, as shown in xref:connections_sample2[], or even further to a day-level.
-With the help of the _day of week_ (dow) column weekdays or weekends can also be aggregated. 
+With the help of the _day of week_ (dow) column weekdays or weekends can also be aggregated.
 
 .Connections table sample
 [cols="2,2,1,1,3,3,2,1", options="header", format=csv, id="connections_sample"]
