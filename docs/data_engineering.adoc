@@ -9,7 +9,6 @@
 :bibtex-style: ieee
 :xrefstyle: short
 :title-page:
-:title-logo-image: image:themes/front.jpg[top=0,align=center,pdfwidth=100%]
 :toc: macro
 :source-highlighter: rouge
 :rouge-style: magritte
