@@ -382,6 +382,29 @@ weekday_holidays: ["2023-03-15", "2023-04-07", "2023-04-10", "2023-05-01", "2023
 weekend_workdays: ["2024-08-03", "2024-12-07", "2024-12-14", "2025-05-17", "2025-10-18", "2025-12-13"]
 ----
 
+=== Output schema
+
+xref:home_work[] shows the schema of the home-work detection output. 
+The same is generated for H3 level 7 to 10.
+The `h3_<RESOLUTION>_home` contains a H3 ID at the given resolution, the work is analoguos to the home.
+Columns `count_home` and `count_work` shows how many stops are used to determine the home and the work hexagon, respectively.
+This makes it possible to filter devices based on the "certainty" of the detection. xref:home_work_histogram_100[] shows histograms for `home_count` and the `work_count` columns capped at 100.
+If there a home or work location could be determined, the values are nulls (see device ID #4 in xref:home_work[]).
+When neither the home and the work location could not have determiend, the device has no record in the output.
+
+.Sample for the home and work detection output at H3 level 8.
+[cols="1,2,1,2,1", options="header",format=csv,id="home_work"]
+|===
+device_id,h3_8_home,count_home,h3_8_work,count_work
+1,881e037857fffff,53,881e037857fffff,35
+2,881e0378c1fffff,4,881e037833fffff,22
+3,881e1d8091fffff,245,881e1d8359fffff,143
+4,881e037abdfffff,11,,
+|===
+
+.Histogram for the count_home and the count_work columns of the home (left), and the work (right) detection output (xref:home_work[]).
+image::figures/home_work_histogram_100.png[width=100%,id=home_work_histogram_100]
+
 === HoWDe
 
 The home (and work) location detection algorithm introduced in cite:[de2026howde].
