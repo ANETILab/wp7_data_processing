@@ -19,6 +19,8 @@ uv run build_commuting_aware_visitation_network.py --config ../config.budapest.y
 uv run 10_repartition_stops.py --config ../config.budapest.yaml --stop-detection-variant v1
 uv run 10_repartition_stops.py --config ../config.budapest.yaml --stop-detection-variant v2
 
+uv run calculate_distance_between_pings.py --config ../config.budapest.yaml
+
 uv run 06_howde.py 06_howde_config_v1.yaml
 uv run 06_howde.py 06_howde_config.yaml
 
