@@ -1,5 +1,5 @@
 = Data Engineering
-:description: Technical documentation of the WP= data engineering task
+:description: Technical documentation of the WP7 data engineering task
 :author: Gergő Pintér
 :email: gergo.pinter@uni-corvinus.hu
 :lang: en
@@ -276,7 +276,7 @@ We've used Inforstop before while working with a similar mobile positioning data
 // Based on that experience, Sándor Juhász defined parameters for Infostop (see xref:infostop_config[]).
 Currently, the default (v1) parameter set is like xref:infostop_config[], a stricter configuration (v2) is xref:infostop_config_v2[].
 
-[#infostop_config,yaml]
+[#infostop_config,yaml, %unbreakable]
 .Infostop configuration (version 1)"
 ----
 infostop:
@@ -288,7 +288,7 @@ infostop:
   distance_metric: "haversine"
 ----
 
-[#infostop_config_v2,yaml]
+[#infostop_config_v2,yaml, %unbreakable]
 .A stricter Infostop configuration (version 2)"
 ----
 infostop:
@@ -365,7 +365,7 @@ Home is a hexagon, where an individual has the most stop in the home intervals, 
 .A simple home detection model.
 image::figures/home_detection_model.png[width=75%,id=home_detection_model]
 
-[#hw_config,yaml]
+[#hw_config,yaml, %unbreakable]
 .Configuration for the home and workplace detection
 ----
 # HH:MM as string
@@ -428,7 +428,7 @@ Using an aggregation this could aggregated to hour-level, as shown in xref:conne
 With the help of the _day of week_ (dow) column weekdays or weekends can also be aggregated.
 
 .Connections table sample
-[cols="2,2,1,1,3,3,2,1", options="header", format=csv, id="connections_sample"]
+[cols="2,2,1,2,3,3,2,1", options="header", format=csv, id="connections_sample"]
 |===
 device_id,day,hour,minute,source,target,weight,dow
 6514,2025-06-16,10,30,891e037134fffff,891e0371347ffff,1,1
@@ -590,7 +590,7 @@ Besides datetime, the minimum number of stops for home and work locations can be
 
 Other elements mentioned in xref:sec:vn_variants[] can be defined like the stop detection variant and the home detection algorithm.
 
-[#vn_config, yaml, %linenums]
+[#vn_config, yaml, %linenums, %unbreakable]
 .Configuration for the visitation network
 ----
 stop_detection_variant: v2
@@ -636,7 +636,7 @@ the current implementation uses the strict interpretation
 ====
 
 .Sample home and work appearances
-[cols="1,2,1,1", options="header", id="hw_occurences"]
+[cols="1,2,1,1", options="header", id="hw_occurences", %unbreakable]
 |===================================
 | device | day        | home | work
 | 1      | 2021-10-01 | 1    | 2
@@ -646,7 +646,7 @@ the current implementation uses the strict interpretation
 |===================================
 
 .Relaxed and stricter evaluation of daily commuting
-[cols="1,1,1,1", options="header", id=hw_occurences_evaluation]
+[cols="1,1,1,1", options="header", id=hw_occurences_evaluation, %unbreakable]
 |===================================
 | home | work | relaxed   | strict
 | 0    | 0    | 0         | 0
