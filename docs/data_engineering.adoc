@@ -28,8 +28,8 @@
 | [.colinegreen]#Full title#                    | Complex Links of Neighbourhoods
 | [.colinegreen]#Work Package#                  | WP7 -- Amenity visits around home and work
 // | [.colinegreen]#Deliverable number#            |
-// | [.colinegreen]#Deliverable lead organisation# | Corvinus University of Budapest
-// | [.colinegreen]#Reviewer organisation#         |
+// | [.colinegreen]#Deliverable lead organization# | Corvinus University of Budapest
+// | [.colinegreen]#Reviewer organization#         |
 | [.colinegreen]#Authors#                       | {author}
 // | [.colinegreen]#Status#                        |
 // | [.colinegreen]#Date#                          |
@@ -197,10 +197,10 @@ It is abound twenty-something, so I though it would be 23, when there was a "Pea
 The issue is that the outlier day is 24 October, which I cannot explain at this point.
 
 .Daily record distribution
-image::../output/descriptives/number_of_records_dayplot.png[id=number_of_records_dayplot]
+image::../output/descriptive/number_of_records_dayplot.png[id=number_of_records_dayplot]
 
 .Number of daily device distribution
-image::../output/descriptives/number_of_unique_devices_dayplot.png[id=number_of_unique_devices_dayplot]
+image::../output/descriptive/number_of_unique_devices_dayplot.png[id=number_of_unique_devices_dayplot]
 
 == Horizontal accuracy
 
@@ -618,7 +618,7 @@ Due to the sparseness of the data inferring the home and work locations for shor
 So, instead the work and home locations are inferred for th whole data period, and then the movements between the detected home and work locations are calculated daily.
 
 The daily movements are calculated based on the daily appearances in the home and work hexagons.
-Based on xref:hw_occurences[], let's consider a device that has a stop at the home hexagon on 1st October and two stops at the work hexagons.
+Based on xref:hw_occurrences[], let's consider a device that has a stop at the home hexagon on 1st October and two stops at the work hexagons.
 As this means that the device traveled between the home and work hexagons, it commuted to work.
 On 2nd October, device number 1 has no detected stop in the home hexagon, but has a stop in the work hexagons.
 This case could be interpreted as the commuting also happened.
@@ -635,7 +635,7 @@ the current implementation uses the strict interpretation
 ====
 
 .Sample home and work appearances
-[cols="1,2,1,1", options="header", id="hw_occurences", %unbreakable]
+[cols="1,2,1,1", options="header", id="hw_occurrences", %unbreakable]
 |===================================
 | device | day        | home | work
 | 1      | 2021-10-01 | 1    | 2
