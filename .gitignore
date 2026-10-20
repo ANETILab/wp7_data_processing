@@ -1,5 +1,6 @@
 untracked/*
 
+cache
 __pycache__
 
 output/debug/*
