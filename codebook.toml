@@ -1,0 +1,15 @@
+dictionaries = ["en_us"]
+words = [
+  "COLINE",
+  "Infostop",
+  "Pickwell",
+  "AAID",
+  "IDFA",
+  "Aino",
+  "Otso",
+  "howde",
+  "drawio",
+
+]
+flag_words = ["todo", "fixme", "TODO", "TBW"]
+ignore_paths = ["**/*.json", ".git/**/*", "target/**/*"]
