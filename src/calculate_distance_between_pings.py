@@ -57,9 +57,9 @@ if __name__ == "__main__":
     with open(opts.config, "r") as fp:
         config = yaml.safe_load(fp)
 
-    DIR = f"{config['dirs']['output']}/{config['city']}"
+    DIR = f"{config['dirs']['output']}/{config['city']}/partitioned"
 
-    Path(f"{DIR}/with_distance/").mkdir(exist_ok=True, parents=True)
+    Path(f"{DIR}/with_speed/").mkdir(exist_ok=True, parents=True)
     for i in range(128, 256):
         df = pl.read_parquet(f"{DIR}/{i:02x}/pings.parquet")
         df = calculate_distance(df)
@@ -69,5 +69,12 @@ if __name__ == "__main__":
             )
         )
         df.drop(
-            ["prev_latitude", "prev_longitude", "current_point", "previous_point"]
-        ).write_parquet(f"{DIR}/with_distance/{i:02x}.parquet")
+            [
+                "prev_latitude",
+                "prev_longitude",
+                "current_point",
+                "previous_point",
+                "id_with_type",
+            ],
+            strict=False,
+        ).write_parquet(f"{DIR}/with_speed/{i:02x}.parquet")
