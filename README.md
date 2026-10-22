@@ -1,5 +1,13 @@
 # data processing repository for DUT/COLINE/WP7
 
+The COLINE -- Complex Links of Neighbourhoods project supported by the EU Partnership's Driving Urban Transition initiative.
+
+> COLINE isn’t just a research initiative -- it’s a vision for data-powered, citizen-oriented urban transformation. By making its datasets and visualizations open-access, COLINE empowers policymakers, researchers, and communities to build smarter, greener, and more inclusive cities.
+>
+> [dut-coline.org](https://www.dut-coline.org/)
+
+The Budapest team mostly focuses on amenity visits and time spent around home and work location.
+
 ## Setup
 
 The [`pyproject.toml`](pyproject.toml) document the required dependencies. It's suggested to use the [uv](https://docs.astral.sh/uv/) packaging tool. In this case, just issue the `uv sync` command to set up a virtual environment with all the necessary dependencies.
