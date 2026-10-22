@@ -28,14 +28,19 @@ def calculate_distance(data: pl.DataFrame) -> pl.DataFrame:
         )
         .with_columns(
             (
-                pld.col("current_point").dist.haversine("previous_point", unit="km")
-                * 1000
+                (
+                    pld.col("current_point").dist.haversine("previous_point", unit="km")
+                    * 1000
+                )
+                .round(0)
+                .cast(pl.Int32, strict=False)
             ).alias("distance_m")
         )
         .with_columns(
             pl.col("timestamp")
             .diff()
             .dt.total_seconds()
+            .cast(pl.Int32, strict=False)
             .over("device_id", order_by="timestamp")
             .alias("time_diff")
         )
