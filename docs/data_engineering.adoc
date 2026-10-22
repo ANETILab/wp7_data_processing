@@ -12,6 +12,7 @@
 :toc: macro
 :source-highlighter: rouge
 :rouge-style: magritte
+:stem:
 
 <<<
 
@@ -179,6 +180,41 @@ xref:partition_stats[] shows some descriptive about the number of records and un
 | 75%        | 14584310          | 6536
 | max        | 16702601          | 6765
 |===================================================
+
+[#sec:calculate_speed]
+== Calculate speed between pings
+
+
+The speed between two pings are calculated considering uniform rectilinear motion, using the stem:[v=d/t] equation, where _d_ is the distance between two pings in meters and _t_ is the time difference in seconds.
+For the spatial distance, the computation uses Haversine distance footnote:[great-circle distance, see link:https://en.wikipedia.org/wiki/Haversine_formula[Haversine formula from Wikipedia] for more details.] between locations.
+The velocity is expressed in _m/s_.
+
+Speed between pings could be used for inferring the mode of transport.
+Walking speed typically falls between 1.10 metres per second (4.0 km/h) and 1.65 metres per second (5.9 km/h) cite:[enwiki:1381049017].
+
+The partitioning step (xref:sec:partitioning[]) already ordered each partition by device ID and timestamp. The distance computation implemented as a window-style operation, and the distance is calculated between the current and the previous rows.
+xref:speed[] shows a sample output.
+Three columns were added to the data in this step: i) `distance_m`: great-circle distance in meters, ii) `time_diff` time difference in seconds, and iii) `speed_mps`, the velocity in meters per second.
+The ping tables enriched by these values are saved as different parquet files, within the `partitioned/with_speed` folder.
+
+IMPORTANT: Note that for the first record of a given device there is no difference.
+Furthermore, the speed is calculated as a simple division with checking the input values.
+
+In other words, the difference and the speed calculation does not consider dates. When a device have sparse appearances the time difference can be as large as days, the spatial distance kilometers making the speed meaningless.
+Filtering might be required when working with the speed values.
+
+.Partitioned pings extended with great-circle distance in meters, time difference in seconds and speed in m/s.
+[cols=">2,>4,>2,>2,>3,>2,>3", options="header,unbreakable", format=csv, id="speed"]
+|===
+device_id,timestamp,longitude,latitude,distance_m,time_diff,speed_mps
+1,2026-10-19T10:42:38,19.033973,47.501812,,,
+1,2026-10-19T10:42:59,19.033497,47.501803,36,21,1.714286
+1,2026-10-19T10:43:07,19.032687,47.501878,61,8,7.625000
+1,2026-10-19T10:44:11,19.032198,47.501977,38,64,0.593750
+2,2026-10-18T17:15:43,19.109530,47.472143,,,
+2,2026-10-18T17:15:49,19.109969,47.471786,52,6,8.666667
+2,2026-10-18T17:18:02,19.116522,47.470600,510,133,3.834586
+|===
 
 == Descriptive
 
