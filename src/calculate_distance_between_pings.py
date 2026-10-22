@@ -27,13 +27,15 @@ def calculate_distance(data: pl.DataFrame) -> pl.DataFrame:
             ).alias("previous_point"),
         )
         .with_columns(
-            pld.col("current_point")
-            .dist.haversine("previous_point", unit="km")
-            .alias("distance_km")
+            (
+                pld.col("current_point").dist.haversine("previous_point", unit="km")
+                * 1000
+            ).alias("distance_m")
         )
         .with_columns(
             pl.col("timestamp")
             .diff()
+            .dt.total_seconds()
             .over("device_id", order_by="timestamp")
             .alias("time_diff")
         )
@@ -63,11 +65,7 @@ if __name__ == "__main__":
     for i in range(128, 256):
         df = pl.read_parquet(f"{DIR}/{i:02x}/pings.parquet")
         df = calculate_distance(df)
-        df = df.with_columns(
-            (pl.col.distance_km * 1000 / pl.col.time_diff.dt.total_seconds()).alias(
-                "speed_mps"
-            )
-        )
+        df = df.with_columns(pl.col.distance_m / pl.col.time_diff.alias("speed_mps"))
         df.drop(
             [
                 "prev_latitude",
