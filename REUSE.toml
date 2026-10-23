@@ -47,7 +47,7 @@ SPDX-FileCopyrightText = "CSL project (https://citationstyles.org)"
 SPDX-License-Identifier = "CC-BY-SA-3.0"
 
 [[annotations]]
-path = ["data/fontawesome/*"]
+path = ["data/fontawesome/*", "web/static/svg/*"]
 precedence = "override"
 SPDX-FileCopyrightText = "2024 Fonticons, Inc. (https://fontawesome.com)"
 SPDX-License-Identifier = "OFL-1.1"
