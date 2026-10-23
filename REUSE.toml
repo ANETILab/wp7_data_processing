@@ -74,7 +74,8 @@ path = [
     "uv.lock",
     "config.*.yaml",
     "codebook.toml",
-    "web/hugo.toml"
+    "web/hugo.toml",
+    ".github/workflows/main.yaml"
 ]
 precedence = "override"
 SPDX-FileCopyrightText = "2026 Gergő Pintér"
