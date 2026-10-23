@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://example.org/</loc>
-    <lastmod>2026-10-23T14:23:38+02:00</lastmod>
+    <loc>https://anetilab.github.io/wp7_data_processing/</loc>
+    <lastmod>2026-10-23T14:48:55+02:00</lastmod>
   </url><url>
-    <loc>https://example.org/docs/data_engineering/</loc>
+    <loc>https://anetilab.github.io/wp7_data_processing/docs/data_engineering/</loc>
   </url><url>
-    <loc>https://example.org/categories/</loc>
+    <loc>https://anetilab.github.io/wp7_data_processing/categories/</loc>
   </url><url>
-    <loc>https://example.org/docs/</loc>
+    <loc>https://anetilab.github.io/wp7_data_processing/docs/</loc>
   </url><url>
-    <loc>https://example.org/tags/</loc>
+    <loc>https://anetilab.github.io/wp7_data_processing/tags/</loc>
   </url>
 </urlset>
