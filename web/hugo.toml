@@ -1,4 +1,4 @@
-# baseURL = "https://anetilab.github.io/wp7_data_processing/"
+baseURL = "https://anetilab.github.io/wp7_data_processing/"
 locale = "en-us"
 title = "Documentation"
 theme = ["hugo-book"]
