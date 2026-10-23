@@ -1,4 +1,4 @@
-# baseURL = "https://ANETILab.github.io/wp7_data_processing"
+baseURL = "/"
 locale = "en-us"
 title = "Documentation"
 theme = ["hugo-book"]
