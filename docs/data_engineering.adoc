@@ -190,7 +190,7 @@ For the spatial distance, the computation uses Haversine distance footnote:[grea
 The velocity is expressed in _m/s_.
 
 Speed between pings could be used for inferring the mode of transport.
-Walking speed typically falls between 1.10 metres per second (4.0 km/h) and 1.65 metres per second (5.9 km/h) cite:[enwiki:1381049017].
+Walking speed typically falls between 1.10 meters per second (4.0 km/h) and 1.65 meters per second (5.9 km/h) cite:[enwiki:1381049017].
 
 The partitioning step (xref:sec:partitioning[]) already ordered each partition by device ID and timestamp. The distance computation implemented as a window-style operation, and the distance is calculated between the current and the previous rows.
 xref:speed[] shows a sample output.
