@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr"
+    data-theme="light"
+    data-layout="centered">
+
+<head>
+  
+  <meta name="generator" content="Hugo 0.168.0">
+  <meta name="generator-theme" content="Book Theme: https://github.com/alex-shpak/hugo-book">
+
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content=" Project Information Project acronym
+COLINE
+Full title
+Complex Links of Neighbourhoods
+Work Package
+WP7 — Amenity visits around home and work
+Authors
+Gergő Pintér
+1. Introduction The mobile positioning data, acquired from Pickwell, contains columns outside device ID, location and timestamp. The main goal of the preprocessing is to normalize and restructure the raw data.
+We intend to use Infostop for stop detection, which requires the data to be sorted by device ID and timestamp. However the raw data is stored daily.
+File structure of the raw data ├──YYYY │ ├── MM │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ │ └── location-82840-part0001.csv.gz (1) the parts contain at most 5 million records, so more than one file should be expected in a day folder
+Table 1. Columns of the raw data column details timestamp
+unix epoch (integer)
+device_aid_hashed
+string represented hexadecimal hash value, 32-character long
+aid_type
+refer to Android or iOS advertisement ID
+latitude
+float
+longitude
+float
+horizontal_accuracy
+float
+altitude
+float
+altitude_accuracy
+float
+location_method
+gps, fused, wifi, or cell
+ip
+IP address, string
+OS
+Android or iOS, shows the same info as the aid_type
+OS_version
+string
+manufacturer
+string
+model
+string
+carrier
+probably network operator
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
+<meta name="color-scheme" content="light dark">
+<meta name="format-detection" content="telephone=no"><meta property="og:url" content="/docs/data_engineering/">
+	<meta property="og:site_name" content="Documentation">
+	<meta property="og:title" content="Documentation">
+	<meta property="og:description" content="Project Information Project acronym
+COLINE
+Full title
+Complex Links of Neighbourhoods
+Work Package
+WP7 — Amenity visits around home and work
+Authors
+Gergő Pintér
+1. Introduction The mobile positioning data, acquired from Pickwell, contains columns outside device ID, location and timestamp. The main goal of the preprocessing is to normalize and restructure the raw data.
+We intend to use Infostop for stop detection, which requires the data to be sorted by device ID and timestamp. However the raw data is stored daily.
+File structure of the raw data ├──YYYY │ ├── MM │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ │ └── location-82840-part0001.csv.gz (1) the parts contain at most 5 million records, so more than one file should be expected in a day folder
+Table 1. Columns of the raw data column details timestamp
+unix epoch (integer)
+device_aid_hashed
+string represented hexadecimal hash value, 32-character long
+aid_type
+refer to Android or iOS advertisement ID
+latitude
+float
+longitude
+float
+horizontal_accuracy
+float
+altitude
+float
+altitude_accuracy
+float
+location_method
+gps, fused, wifi, or cell
+ip
+IP address, string
+OS
+Android or iOS, shows the same info as the aid_type
+OS_version
+string
+manufacturer
+string
+model
+string
+carrier
+probably network operator">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="docs">
+
+
+	<meta itemprop="name" content="Documentation">
+	<meta itemprop="description" content="Project Information Project acronym
+COLINE
+Full title
+Complex Links of Neighbourhoods
+Work Package
+WP7 — Amenity visits around home and work
+Authors
+Gergő Pintér
+1. Introduction The mobile positioning data, acquired from Pickwell, contains columns outside device ID, location and timestamp. The main goal of the preprocessing is to normalize and restructure the raw data.
+We intend to use Infostop for stop detection, which requires the data to be sorted by device ID and timestamp. However the raw data is stored daily.
+File structure of the raw data ├──YYYY │ ├── MM │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ ├── DD │ │ │ └── location-82840-part0000.csv.gz │ │ │ └── location-82840-part0001.csv.gz (1) the parts contain at most 5 million records, so more than one file should be expected in a day folder
+Table 1. Columns of the raw data column details timestamp
+unix epoch (integer)
+device_aid_hashed
+string represented hexadecimal hash value, 32-character long
+aid_type
+refer to Android or iOS advertisement ID
+latitude
+float
+longitude
+float
+horizontal_accuracy
+float
+altitude
+float
+altitude_accuracy
+float
+location_method
+gps, fused, wifi, or cell
+ip
+IP address, string
+OS
+Android or iOS, shows the same info as the aid_type
+OS_version
+string
+manufacturer
+string
+model
+string
+carrier
+probably network operator">
+	<meta itemprop="wordCount" content="5043">
+
+<title>Data Engineering • Documentation</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.png" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="/docs/data_engineering/">
+<link rel="stylesheet" href="/book.min.d2a63061af208ea46d4a5088bdb2c8d297df14bbb9064b630ae0b63dcb664760.css" >
+
+
+
+  
+</head>
+
+<body dir="ltr" class="book-kind-page book-type-docs">
+  <div class="book-container flex">
+    
+<aside class="book-menu" aria-label="Menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<div class="book-brand">
+  <a class="flex align-center" href="/"><span>Documentation</span>
+  </a>
+</div>
+
+
+
+
+
+
+<ul><li><a href="https://www.dut-coline.org/" target="_blank" rel="noopener"><img src="/svg/globe-solid-full.svg" height="20">COLINE</a></li><li><a href="https://github.com/ANETILab/wp7_data_processing" target="_blank" rel="noopener"><img src="/svg/github-brands-solid-full.svg" height="20">Github</a></li></ul>
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/data_engineering/" class="active">
+      Data Engineering</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <header class="book-header hidden">
+      
+  <div class="flex align-center justify-between gap">
+  <input type="checkbox" class="toggle" id="menu-control" />
+  <label for="menu-control" aria-label="Menu">
+    <svg class="book-icon"><use href="/iconset.min.90a7fd302dc1b9bc3c291688faee66a3e60a9209f59b89fa00669e35d6907b3f.svg#menu"></use></svg>
+  </label>
+
+  <div class="book-brand">
+  <a class="flex align-center" href="/"><span>Documentation</span>
+  </a>
+</div>
+
+
+  
+  <input type="checkbox" class="toggle" id="toc-control" />
+  <label for="toc-control" aria-label="Table of Contents">
+    <svg class="book-icon"><use href="/iconset.min.90a7fd302dc1b9bc3c291688faee66a3e60a9209f59b89fa00669e35d6907b3f.svg#toc"></use></svg>
+  </label>
+  
+</div>
+
+ 
+    </header>
+
+    <main class="book-page">
+      
+      
+  
+
+      
+  <article class="markdown book-article"><div id="preamble">
+<div class="sectionbody">
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_project_information">Project Information</h2>
+<div class="sectionbody">
+<table class="tableblock frame-none grid-columns stretch">
+<colgroup>
+<col style="width: 33.3333%;"/>
+<col style="width: 66.6667%;"/>
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="colinegreen">Project acronym</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">COLINE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="colinegreen">Full title</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Complex Links of Neighbourhoods</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="colinegreen">Work Package</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">WP7 — Amenity visits around home and work</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><span class="colinegreen">Authors</span></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gergő Pintér</p></td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">1. Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The mobile positioning data, acquired from Pickwell, contains columns outside device ID, location and timestamp.
+The main goal of the preprocessing is to normalize and restructure the raw data.</p>
+</div>
+<div class="paragraph">
+<p>We intend to use Infostop for stop detection, which requires the data to be sorted by device ID <em>and</em> timestamp.
+However the raw data is stored daily.</p>
+</div>
+<div class="listingblock">
+<div class="title">File structure of the raw data</div>
+<div class="content">
+<pre>   ├──YYYY
+   │   ├── MM
+   │   │   ├── DD
+   │   │   │   └── location-82840-part0000.csv.gz
+   │   │   ├── DD
+   │   │   │   └── location-82840-part0000.csv.gz
+   │   │   ├── DD
+   │   │   │   └── location-82840-part0000.csv.gz
+   │   │   │   └── location-82840-part0001.csv.gz <b class="conum">(1)</b></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>the parts contain at most 5 million records, so more than one file should be expected in a day folder</p>
+</li>
+</ol>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Columns of the raw data</caption>
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">column</th>
+<th class="tableblock halign-left valign-top">details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">timestamp</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unix epoch (integer)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">device_aid_hashed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string represented hexadecimal hash value, 32-character long</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">aid_type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">refer to Android or iOS advertisement ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">latitude</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">longitude</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">horizontal_accuracy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">altitude</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">altitude_accuracy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">float</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">location_method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gps, fused, wifi, or cell</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ip</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IP address, string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android or iOS, shows the same info as the aid_type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">OS_version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">manufacturer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">model</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">carrier</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">probably network operator</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cleaning">2. Cleaning</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The main content of mobile positioning data sets is the device ID, the location and the timestamp.</p>
+</div>
+<div class="sect2">
+<h3 id="_drop_insignificant_columns">2.1. Drop insignificant columns</h3>
+<div class="paragraph">
+<p>To normalize the data, the less significant columns are dropped, including horizontal_accuracy, altitude, altitude_accuracy, ip, model, carrier, OS, OS_version, manufacturer, and location_method.</p>
+</div>
+<div class="paragraph">
+<p>OS and OS version will be processed as a device-based supplementary table.
+On demand, the rest of the columns as well.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_set_timezone">2.2. Set timezone</h3>
+<div class="paragraph">
+<p>The timestamp looks like a unix epoch, which is the number of seconds that have elapsed since 00:00:00 UTC on January 1, 1970. So, the timezone is set to Europe/Budapest.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_replace_device_ids">2.3. Replace device IDs</h3>
+<div class="paragraph">
+<p>The hashed device IDs are 32-character long strings.
+As it is faster to compare integers than strings, I replaced the string IDs to integer ones.
+This also saves storage.
+Considering ASCII represented CSVs, the longest ID it 7 character (as there 1652460 unique devices in the data), which saves 25 bytes as the worst case scenario.
+Given that the data contains 2860417726 records, the ID replacement could save about 66GB of storage, storing uncompressed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_clean_os_version">2.4. Clean OS version</h3>
+<div class="paragraph">
+<p>Cleaning the OS version is for calculating the phone’s age.
+It is possible to associate OS release date for devices whose the OS and the OS version are known.
+The release dates are collected in <a href="https://yaml.org/">YAML</a> format in <code>data/os_version.yaml</code>, collected manually from a Wikipedia pages <a href="https://en.wikipedia.org/wiki/Android_version_history">Android version history</a>, and <a href="https://en.wikipedia.org/wiki/IOS_version_history">iOS version history</a>.</p>
+</div>
+<div class="paragraph">
+<p>As advertisement ID do not survive factory resets or phone changes, it is safe to assume that each device has exactly one OS version. The data confirms this.
+So, the last day of the activity and the OS version information is gathered for each device.
+Then, the phone’s relative age is calculated subtracting the <em>release date</em> from the <em>last active day</em>, as in <span class="citation">[<a href="#pinter2021analyzing">1</a>]</span>.
+The relative age is expressed in days, and <a href="#relative_age">Table 2</a> shows some sample lines.
+Device 8 is using an almost 11-year old Android phone, while device 32 is using an almost 5-year old iPhone.</p>
+</div>
+<div class="paragraph">
+<p>Note that, OS can be updated on some devices. Some manufacturers like Apple and Google offer multiple years of updates, lower-end devices usually has very limited upgradability.
+In other words, the relative age is a lower limit, the devices could be even older if the OS was updated.</p>
+</div>
+<table id="relative_age" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Sample records for phone’s relative age</caption>
+<colgroup>
+<col style="width: 11.1111%;"/>
+<col style="width: 11.1111%;"/>
+<col style="width: 11.1111%;"/>
+<col style="width: 22.2222%;"/>
+<col style="width: 22.2222%;"/>
+<col style="width: 22.2223%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-right valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">OS</th>
+<th class="tableblock halign-right valign-top">OS_version</th>
+<th class="tableblock halign-center valign-top">last_active_day</th>
+<th class="tableblock halign-center valign-top">release_date</th>
+<th class="tableblock halign-right valign-top">relative_age</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2025-10-24</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2014-11-04</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">4007</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2025-12-26</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2019-09-03</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2306</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iOS</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2025-07-18</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2020-09-16</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1766</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2024-12-24</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2020-09-08</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1568</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">76</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Android</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2025-10-24</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">2017-08-21</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2986</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:partitioning">3. Partitioning by device ID</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For partitioning the data by device IDs, the same method was used as before, with the former mobile positioning data.
+The first two characters of the hashed ID was used as a partition ID.
+For example: <code>17d6021bd57f46018332cba788e055d7</code> → <code>17</code>.
+As the hash is a hexadecimal number, two digits can represent 256 different values, so the data is partitioned to 256 groups.</p>
+</div>
+<div class="paragraph">
+<p><a href="#partition_stats">Table 3</a> shows some descriptive about the number of records and unique devices across partitions.</p>
+</div>
+<table id="partition_stats" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. Partition descriptive</caption>
+<colgroup>
+<col style="width: 33.3333%;"/>
+<col style="width: 33.3333%;"/>
+<col style="width: 33.3334%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">statistic</th>
+<th class="tableblock halign-right valign-top">number_of_records</th>
+<th class="tableblock halign-right valign-top">number_of_devices</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mean</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">11173507</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6455</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">std</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2886655</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">115</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">min</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6552223</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6153</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25%</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">8822529</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6382</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50%</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">9466836</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6459</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">75%</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">14584310</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6536</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">max</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">16702601</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6765</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_repartition_by_date">3.1. Repartition by date</h3>
+<div class="paragraph">
+<p>The reason behind partitioning the data by device IDs was to speed up the data processing, but very often the stops are required from a period but for all devices.
+Thus, the stops are repartitioned by year-month.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sec:calculate_speed">4. Calculate speed between pings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The speed between two pings are calculated considering uniform rectilinear motion, using the \$v=d/t\$ equation, where <em>d</em> is the distance between two pings in meters and <em>t</em> is the time difference in seconds.
+For the spatial distance, the computation uses Haversine distance <sup class="footnote">[<a class="footnote" href="#_footnotedef_1" id="_footnoteref_1" title="View footnote.">1</a>]</sup> between locations.
+The velocity is expressed in <em>m/s</em>.</p>
+</div>
+<div class="paragraph">
+<p>Speed between pings could be used for inferring the mode of transport.
+Walking speed typically falls between 1.10 meters per second (4.0 km/h) and 1.65 meters per second (5.9 km/h) <span class="citation">[<a href="#enwiki:1381049017">2</a>]</span>.</p>
+</div>
+<div class="paragraph">
+<p>The partitioning step (<a href="#sec:partitioning">Section 3</a>) already ordered each partition by device ID and timestamp. The distance computation implemented as a window-style operation, and the distance is calculated between the current and the previous rows.
+<a href="#speed">Table 4</a> shows a sample output.
+Three columns were added to the data in this step: i) <code>distance_m</code>: great-circle distance in meters, ii) <code>time_diff</code> time difference in seconds, and iii) <code>speed_mps</code>, the velocity in meters per second.
+The ping tables enriched by these values are saved as different parquet files, within the <code>partitioned/with_speed</code> folder.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Note that for the first record of a given device there is no difference.
+Furthermore, the speed is calculated as a simple division with checking the input values.
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>In other words, the difference and the speed calculation does not consider dates. When a device have sparse appearances the time difference can be as large as days, the spatial distance kilometers making the speed meaningless.
+Filtering might be required when working with the speed values.</p>
+</div>
+<table id="speed" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Partitioned pings extended with great-circle distance in meters, time difference in seconds and speed in m/s.</caption>
+<colgroup>
+<col style="width: 11.1111%;"/>
+<col style="width: 22.2222%;"/>
+<col style="width: 11.1111%;"/>
+<col style="width: 11.1111%;"/>
+<col style="width: 16.6666%;"/>
+<col style="width: 11.1111%;"/>
+<col style="width: 16.6668%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-right valign-top">device_id</th>
+<th class="tableblock halign-right valign-top">timestamp</th>
+<th class="tableblock halign-right valign-top">longitude</th>
+<th class="tableblock halign-right valign-top">latitude</th>
+<th class="tableblock halign-right valign-top">distance_m</th>
+<th class="tableblock halign-right valign-top">time_diff</th>
+<th class="tableblock halign-right valign-top">speed_mps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2026-10-19T10:42:38</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">19.033973</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">47.501812</p></td>
+<td class="tableblock halign-right valign-top"></td>
+<td class="tableblock halign-right valign-top"></td>
+<td class="tableblock halign-right valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2026-10-19T10:42:59</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">19.033497</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">47.501803</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">36</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1.714286</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2026-10-19T10:43:07</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">19.032687</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">47.501878</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">61</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">7.625000</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2026-10-19T10:44:11</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">19.032198</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">47.501977</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">38</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">0.593750</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2026-10-18T17:15:43</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">19.109530</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">47.472143</p></td>
+<td class="tableblock halign-right valign-top"></td>
+<td class="tableblock halign-right valign-top"></td>
+<td class="tableblock halign-right valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2026-10-18T17:15:49</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">19.109969</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">47.471786</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">52</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">6</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">8.666667</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">2026-10-18T17:18:02</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">19.116522</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">47.470600</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">510</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">133</p></td>
+<td class="tableblock halign-right valign-top"><p class="tableblock">3.834586</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_descriptive">5. Descriptive</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For WP7, we have one full year (2025), and the last three months from 2023, the two first and the last three from 2024.
+<a href="#number_of_records_dayplot">Figure 1</a> shows the activity distribution.
+Summer days seems to have more activity, though May is especially busy, seems all right.
+There are also a few &#34;missing&#34; days in October 2025. There are activity, on those days (11-13), it is just much less then normally would.
+I suspect that there was some kind of service outage (at one of the providers).</p>
+</div>
+<div class="paragraph">
+<p>Next, I made the same figure, but with the number of unique devices (<a href="#number_of_unique_devices_dayplot">Figure 2</a>).
+During summer there are slightly more devices as expected, the end of 2025 also seems to have more devices than the previous year, which is also good, shows that the data may improving.
+The outage is observable in this Figure as expected.
+However, there is on particular day in October, which is an absolute outlier.
+It is abound twenty-something, so I though it would be 23, when there was a &#34;Peace March&#34; (a kind of pro government demonstration).</p>
+</div>
+<div class="paragraph">
+<p>The issue is that the outlier day is 24 October, which I cannot explain at this point.</p>
+</div>
+<div id="number_of_records_dayplot" class="imageblock">
+<div class="content">
+<img src="/figures/number_of_records_dayplot.png" alt="number of records dayplot"/>
+</div>
+<div class="title">Figure 1. Daily record distribution</div>
+</div>
+<div id="number_of_unique_devices_dayplot" class="imageblock">
+<div class="content">
+<img src="/figures/number_of_unique_devices_dayplot.png" alt="number of unique devices dayplot"/>
+</div>
+<div class="title">Figure 2. Number of daily device distribution</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_horizontal_accuracy">6. Horizontal accuracy</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Horizontal accuracy descriptive of 2023 months</caption>
+<colgroup>
+<col style="width: 13.3333%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 13.3341%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">location method</th>
+<th class="tableblock halign-left valign-top">aid type</th>
+<th class="tableblock halign-left valign-top">mean</th>
+<th class="tableblock halign-left valign-top">std</th>
+<th class="tableblock halign-left valign-top">min</th>
+<th class="tableblock halign-left valign-top">25%</th>
+<th class="tableblock halign-left valign-top">50%</th>
+<th class="tableblock halign-left valign-top">75%</th>
+<th class="tableblock halign-left valign-top">90%</th>
+<th class="tableblock halign-left valign-top">95%</th>
+<th class="tableblock halign-left valign-top">99%</th>
+<th class="tableblock halign-left valign-top">max</th>
+<th class="tableblock halign-left valign-top">count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cell</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">378.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">500.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13.8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">75.85</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">560.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1244.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1244.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1250</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1250</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fused</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">36.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">152.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">49.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">797</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">120791690</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fused</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IDFA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">37.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">147</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">53.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">798</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3000.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19892424</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">26.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">165</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3000.8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">166274686</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IDFA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">78.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">66</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">165</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">57717589</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wifi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">495.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">763.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">962.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1745.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2007.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2828.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3000.8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28651</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wifi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IDFA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">401.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">692.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">698.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1589.8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1892.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2699.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2998.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6193</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. Horizontal accuracy descriptive of 2024 months</caption>
+<colgroup>
+<col style="width: 13.3333%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 6.6666%;"/>
+<col style="width: 13.3341%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">location method</th>
+<th class="tableblock halign-left valign-top">aid type</th>
+<th class="tableblock halign-left valign-top">mean</th>
+<th class="tableblock halign-left valign-top">std</th>
+<th class="tableblock halign-left valign-top">min</th>
+<th class="tableblock halign-left valign-top">25%</th>
+<th class="tableblock halign-left valign-top">50%</th>
+<th class="tableblock halign-left valign-top">75%</th>
+<th class="tableblock halign-left valign-top">90%</th>
+<th class="tableblock halign-left valign-top">95%</th>
+<th class="tableblock halign-left valign-top">99%</th>
+<th class="tableblock halign-left valign-top">max</th>
+<th class="tableblock halign-left valign-top">count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cell</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13.8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cell</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IDFA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">38</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fused</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">37.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">156.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">49.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">799</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">183387215</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fused</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IDFA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">34.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">137.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">48.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">700</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25983776</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">59.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">164</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3000.9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">278714910</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IDFA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30.5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">82.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">31.8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">66</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">165</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3001</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">85369524</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wifi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">463</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">737.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">892.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1678.1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1963.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2776.3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3000.6</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12667</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">wifi</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IDFA</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">440</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">704.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">862.2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1615.7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1907.4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2678</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2985.8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2405</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_stop_detection">7. Stop detection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As of 9 April, only the first partition (<code>00</code>) is being processed, so everything from behind this section refers only to that partition.</p>
+</div>
+<div class="paragraph">
+<p>For detecting stops, Infostop is used <span class="citation">[<a href="#aslak2020infostop">3</a>]</span>.
+As the partitioned data is also sorted according to the Infostop requirements, the stop detection runs about two and a half minutes on partition <code>00</code>.
+After clustering the pings into stops, the data looks like <a href="#labeled_pings">Table 7</a>.
+We feed the whole observation period with the Infostop algorithm, then a consecutive number is associated to the stops (<code>stop_id</code>).
+Based on the <code>stop_id</code> the pings are aggregated, and the following values are calculated (<a href="#stops">Table 8</a>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the number of pings in a stop</p>
+</li>
+<li>
+<p>the interval start, stop, length</p>
+</li>
+<li>
+<p>the center of the pings, and</p>
+</li>
+<li>
+<p>the standard deviation of the longitude and latitude in meters (meter-based projection is required).</p>
+</li>
+</ul>
+</div>
+<table id="labeled_pings" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 7. After infostop, the labeled places</caption>
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 12.5%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">timestamp</th>
+<th class="tableblock halign-left valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">device_aid_type</th>
+<th class="tableblock halign-left valign-top">latitude</th>
+<th class="tableblock halign-left valign-top">longitude</th>
+<th class="tableblock halign-left valign-top">place_label</th>
+<th class="tableblock halign-left valign-top">stop_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-02 07:24:06+02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47.6612</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19.0764</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-02 07:35:29+02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47.6612</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19.0763</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-05 11:06:43+02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AAID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47.4984</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19.0404</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+</tbody>
+</table>
+<table id="stops" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 8. After stop detection</caption>
+<colgroup>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+<col style="width: 12%;"/>
+<col style="width: 12%;"/>
+<col style="width: 12%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+<col style="width: 8%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device id</th>
+<th class="tableblock halign-left valign-top">stop id</th>
+<th class="tableblock halign-left valign-top">interval start</th>
+<th class="tableblock halign-left valign-top">interval stop</th>
+<th class="tableblock halign-left valign-top">interval lenght</th>
+<th class="tableblock halign-left valign-top">lat mean</th>
+<th class="tableblock halign-left valign-top">lon mean</th>
+<th class="tableblock halign-left valign-top">lat std</th>
+<th class="tableblock halign-left valign-top">lon std</th>
+<th class="tableblock halign-left valign-top">ping count</th>
+<th class="tableblock halign-left valign-top">place label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-02 07:24:06 +02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-02 07:35:29 +02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 days 00:11:23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47.6612</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19.0764</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-05 11:06:43 +02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-05 11:22:57 +02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 days 00:16:14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47.4984</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19.0404</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-05 17:49:22 +02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-05 17:59:54 +02:00</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 days 00:10:32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">47.4767</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19.0751</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="sec:configuring_infostop">7.1. Configuring Infostop</h3>
+<div class="paragraph">
+<p>We’ve used Infostop before while working with a similar mobile positioning data, from another data aggregator.
+Currently, the default (v1) parameter set is like <a href="#infostop_config">Infostop configuration (version 1)&#34;</a>, a stricter configuration (v2) is <a href="#infostop_config_v2">A stricter Infostop configuration (version 2)&#34;</a>.</p>
+</div>
+<div id="infostop_config" class="listingblock">
+<div class="title">Infostop configuration (version 1)&#34;</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml">infostop:
+  r1: 80                      # meters -- the maximum roaming distance allowed for two points within the same stay
+  r2: 80                      # meters -- the typical distance between two stays in the same destination
+  min_staying_time: 600       # seconds -- the minimum duration of a stay (10 min)
+  max_time_between: 720       # seconds -- the maximum time difference between two consecutive records for them to be considered within the same stay (12 min)
+  min_size: 2                 # minimum number of pings required inside a stop
+  distance_metric: &#34;haversine&#34;</code></pre>
+</div>
+</div>
+<div id="infostop_config_v2" class="listingblock">
+<div class="title">A stricter Infostop configuration (version 2)&#34;</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml">infostop:
+  r1: 30                      # meters -- the maximum roaming distance allowed for two points within the same stay
+  r2: 30                      # meters -- the typical distance between two stays in the same destination
+  min_staying_time: 300       # seconds -- the minimum duration of a stay (10 min)
+  max_time_between: 720       # seconds -- the maximum time difference between two consecutive records for them to be considered within the same stay (12 min)
+  min_size: 2                 # minimum number of pings required inside a stop
+  distance_metric: &#34;haversine&#34;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_comparison">7.2. Comparison</h3>
+<div class="paragraph">
+<p>With the stricter (v2) configuration, the stop detection found stops for additional 62713 devices, and detects 28.5 million more stops, and 4.6 million more places.
+<a href="#stop_count_comparison">Table 9</a> and <a href="#place_count_comparison">Table 10</a> show the high-level comparison of the detected stops and place using <em>v1</em> and the <em>v2</em> configuration variants.
+Note that the sum of stops (and places) are just the sum of all stops (places) of all devices, these are not distinct locations.</p>
+</div>
+<table id="stop_count_comparison" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 9. Comparing the stop counts of the devices between the two configuration of the Infostop. The sum of stops means the sum of all stops of all devices.</caption>
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">stop count</th>
+<th class="tableblock halign-left valign-top">v1</th>
+<th class="tableblock halign-left valign-top">v2</th>
+<th class="tableblock halign-left valign-top">difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">device count</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1101097</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1163810</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">62713</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">72</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">92</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">20</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">std</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">160</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">209</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">49</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">75%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">63</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">max</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4269</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7329</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3060</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sum of stops</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">79007357</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">107601365</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">28594008</p></td>
+</tr>
+</tbody>
+</table>
+<table id="place_count_comparison" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 10. Comparing the place counts of the devices between the two configuration of the Infostop. The sum of places means the sum of all places of all devices.</caption>
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">stop count</th>
+<th class="tableblock halign-left valign-top">v1</th>
+<th class="tableblock halign-left valign-top">v2</th>
+<th class="tableblock halign-left valign-top">difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">device count</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1101097</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1163810</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">62713</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">std</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">50%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">75%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">max</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">384</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">707</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">323</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sum of places</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8510685</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13151337</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4640652</p></td>
+</tr>
+</tbody>
+</table>
+<div id="stop_intervals_v1" class="imageblock">
+<div class="content">
+<img src="/figures/stops/v1/stop_intervals.png" alt="stop intervals"/>
+</div>
+<div class="title">Figure 3. Stop interval distribution using the <em>v1</em> configuration.</div>
+</div>
+<div id="stop_intervals_v2" class="imageblock">
+<div class="content">
+<img src="/figures/stops/v2/stop_intervals.png" alt="stop intervals"/>
+</div>
+<div class="title">Figure 4. Stop interval distribution using the <em>v2</em> configuration.</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_altitude">7.3. Altitude</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>I just want to share a little thought regarding the possibility of using altitude in stop detection — we discussed about this with Riccardo Di Clemente (so shared thoughts).
+GPS calculates positioning based on the geometry of the satellites up in the sky. As such, we get a highly accurate horizontal position given your device is properly surrounded — that’s not fully true for altitude. Think of it this way: the intersection of range spheres from satellites that are all above you produces a much tighter constraint horizontally than vertically. The &#34;cone&#34; of uncertainty from the satellite geometry is elongated along the vertical axis.
+Because of this lopsided geometry, the Vertical Dilution of Precision (VDOP) is inherently weaker than the horizontal geometry. As a rule of physics, GPS altitude is typically 1.5 to 3 times less accurate than latitude and longitude (HDOP).
+In practical numbers, if you have an horizontal accuracy about 5-10 meters → 15-30 m vertical accuracy (that’s a building height).
+Whatever stop detection algorithms you are using, they will look for a high density of GPS points within a tight radius (a sphere, in the case with altitude) over a specific amount of time.
+Because vertical GPS data is so noisy, an object sitting perfectly still on a desk might register altitude fluctuations.</p>
+</div>
+</blockquote>
+<div class="attribution">
+— Antonio Desiderio
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_home_detection">8. Home detection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For the home detection a simple, absolute frequency-based model (illustrated in <a href="#home_detection_model">Figure 5</a>) is used, which defined home hours from 20:00 to 7:00 and the whole at weekends, and defines work hours from 9:00 to 17:00 in weekdays.
+Weekday holidays and weekend workdays are taken care of.
+Home is a hexagon, where an individual has the most stop in the home intervals, work hexagon is analogously where someone has to most stops during work-hours.</p>
+</div>
+<div id="home_detection_model" class="imageblock">
+<div class="content">
+<img src="/figures/home_detection_model.png" alt="home detection model" width="75%"/>
+</div>
+<div class="title">Figure 5. A simple home detection model.</div>
+</div>
+<div id="hw_config" class="listingblock">
+<div class="title">Configuration for the home and workplace detection</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"># HH:MM as string
+home_hours:
+  begin: &#34;20:00&#34;
+  end: &#34;07:00&#34;
+# HH:MM as string
+work_hours:
+  begin: &#34;09:00&#34;
+  end: &#34;17:00&#34;
+# YYYY-MM-DD as string
+weekday_holidays: [&#34;2023-03-15&#34;, &#34;2023-04-07&#34;, &#34;2023-04-10&#34;, &#34;2023-05-01&#34;, &#34;2023-05-29&#34;, &#34;2023-10-23&#34;, &#34;2023-11-01&#34;, &#34;2023-11-01&#34;, &#34;2023-12-25&#34;, &#34;2023-12-26&#34;, &#34;2024-01-01&#34;, &#34;2024-03-15&#34;, &#34;2024-03-29&#34;, &#34;2024-04-01&#34;, &#34;2024-05-01&#34;, &#34;2024-05-20&#34;, &#34;2024-08-19&#34;, &#34;2024-08-20&#34;, &#34;2024-10-23&#34;, &#34;2024-11-01&#34;, &#34;2024-12-24&#34;, &#34;2024-12-25&#34;, &#34;2024-12-26&#34;, &#34;2024-12-27&#34;, &#34;2025-01-01&#34;, &#34;2025-04-18&#34;, &#34;2025-04-21&#34;, &#34;2025-05-01&#34;, &#34;2025-05-02&#34;, &#34;2025-06-09&#34;, &#34;2025-08-20&#34;, &#34;2025-10-23&#34;, &#34;2025-10-24&#34;, &#34;2025-12-24&#34;, &#34;2025-12-25&#34;, &#34;2025-12-26&#34;]
+# YYYY-MM-DD as string
+weekend_workdays: [&#34;2024-08-03&#34;, &#34;2024-12-07&#34;, &#34;2024-12-14&#34;, &#34;2025-05-17&#34;, &#34;2025-10-18&#34;, &#34;2025-12-13&#34;]</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_output_schema">8.1. Output schema</h3>
+<div class="paragraph">
+<p><a href="#home_work">Table 11</a> shows the schema of the home-work detection output.
+The same is generated for H3 level 7 to 10.
+The <code>h3_&lt;RESOLUTION&gt;_home</code> contains a H3 ID at the given resolution, the work is analogous to the home.
+Columns <code>count_home</code> and <code>count_work</code> shows how many stops are used to determine the home and the work hexagon, respectively.
+This makes it possible to filter devices based on the &#34;certainty&#34; of the detection. <a href="#home_work_histogram_100">Figure 6</a> shows histograms for <code>home_count</code> and the <code>work_count</code> columns capped at 100.
+If there a home or work location could be determined, the values are nulls (see device ID #4 in <a href="#home_work">Table 11</a>).
+When neither the home and the work location could not have determined, the device has no record in the output.</p>
+</div>
+<table id="home_work" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 11. Sample for the home and work detection output at H3 level 8.</caption>
+<colgroup>
+<col style="width: 14.2857%;"/>
+<col style="width: 28.5714%;"/>
+<col style="width: 14.2857%;"/>
+<col style="width: 28.5714%;"/>
+<col style="width: 14.2858%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">h3_8_home</th>
+<th class="tableblock halign-left valign-top">count_home</th>
+<th class="tableblock halign-left valign-top">h3_8_work</th>
+<th class="tableblock halign-left valign-top">count_work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e037857fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">53</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e037857fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">35</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e0378c1fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e037833fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">22</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e1d8091fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">245</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e1d8359fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">143</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e037abdfffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+<div id="home_work_histogram_100" class="imageblock">
+<div class="content">
+<img src="/figures/home_work_histogram_100.png" alt="home work histogram 100" width="100%"/>
+</div>
+<div class="title">Figure 6. Histogram for the count_home and the count_work columns of the home (left), and the work (right) detection output (<a href="#home_work">Table 11</a>).</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_howde">8.2. HoWDe</h3>
+<div class="paragraph">
+<p>The home (and work) location detection algorithm introduced in <span class="citation">[<a href="#de2026howde">4</a>]</span>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+TBW
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hexagon_network">9. Hexagon network</h2>
+<div class="sectionbody">
+<table id="building_network" class="tableblock frame-none grid-none stretch">
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div id="pings_to_stops" class="imageblock">
+<div class="content">
+<img src="/figures/pings_stops.png" alt="pings stops"/>
+</div>
+<div class="title">Figure 7. The pings are clustered into stops.</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div id="stop_network" class="imageblock">
+<div class="content">
+<img src="/figures/blocks_network_real_pos.png" alt="blocks network real pos"/>
+</div>
+<div class="title">Figure 8. Stops are connected if a device had consecutive stops in two blocks.</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The hexagon network is analogous to the block network used in <span class="citation">[<a href="#pinter2025quantifying">5</a>]</span> (see <a href="#pings_to_stops">Figure 7</a> and <a href="#stop_network">Figure 8</a>).
+Consecutive stops of a device within a day are turned into edges between hexagons (at different H3 levels between 7 and 10).
+During the construction of the hexagon network intermediate tables are saved by partition, called &#34;connections&#34;, which contains the device_id the day, the hour, the minute and for the convenience of later processing the day of week (see <a href="#connections_sample">Table 12</a>).
+The fourth and sixth rows mean that device 6514 had a consecutive stop between hexagon <code>891e037a14bffff</code> and <code>891e037134fffff</code> on 17 June 2025.
+The connection table contains the movements minute-level to serve as a foundation of network building.
+Using an aggregation this could aggregated to hour-level, as shown in <a href="#connections_sample2">Table 13</a>, or even further to a day-level.
+With the help of the <em>day of week</em> (dow) column weekdays or weekends can also be aggregated.</p>
+</div>
+<table id="connections_sample" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 12. Connections table sample</caption>
+<colgroup>
+<col style="width: 12.5%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 6.25%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 18.75%;"/>
+<col style="width: 18.75%;"/>
+<col style="width: 12.5%;"/>
+<col style="width: 6.25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">day</th>
+<th class="tableblock halign-left valign-top">hour</th>
+<th class="tableblock halign-left valign-top">minute</th>
+<th class="tableblock halign-left valign-top">source</th>
+<th class="tableblock halign-left valign-top">target</th>
+<th class="tableblock halign-left valign-top">weight</th>
+<th class="tableblock halign-left valign-top">dow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">30</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e0371347ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">25</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e0371347ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">42</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037a14bffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037a14bffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">40</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037a14bffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">52</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037a14bffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+</tbody>
+</table>
+<table id="connections_sample2" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 13. Connections table sample — hour-level aggregation</caption>
+<colgroup>
+<col style="width: 14.2857%;"/>
+<col style="width: 14.2857%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 21.4285%;"/>
+<col style="width: 21.4285%;"/>
+<col style="width: 14.2857%;"/>
+<col style="width: 7.1431%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">day</th>
+<th class="tableblock halign-left valign-top">hour</th>
+<th class="tableblock halign-left valign-top">source</th>
+<th class="tableblock halign-left valign-top">target</th>
+<th class="tableblock halign-left valign-top">weight</th>
+<th class="tableblock halign-left valign-top">dow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e0371347ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e0371347ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037a14bffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037a14bffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6514</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-06-17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037a14bffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">891e037134fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The connections tables are then aggregated by the source and target hexagon to build a full network of connections.
+It is possible to aggregate the weight in two ways: i) simply add the weights representing every trip by a given device, or ii) only consider how many unique devices had trips between two hexagons.
+Both of them are constructed: edges_trip.csv and edges_device.csv.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Note that, the date-time filtering could be added later in the process, currently present at the visitation network construction stage.
+</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_visitation_network">10. Visitation network</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+calling this &#34;visitation network&#34; is more like a placeholder name. Please, provide a better one!
+</td>
+</tr>
+</tbody></table>
+</div>
+<div class="paragraph">
+<p>The visitation network relies on the hexagon network.
+The main difference here is that only one hop is considered from the estimated home and work locations.
+Thus, this could be called as one-hop (or one-trip) visitation network.</p>
+</div>
+<div id="visitation_network_concept" class="imageblock">
+<div class="content">
+<img src="/figures/visitation_network_v2.drawio.png" alt="visitation network v2.drawio" width="50%"/>
+</div>
+<div class="title">Figure 9. Concept of the &#39;visitation network&#39;, where H is the home hexagon, W is the work hexagon, 3rd places are denoted by yellow squares with the label &#39;3&#39;</div>
+</div>
+<div class="paragraph">
+<p>The one-hop visitation network construction builds upon the connection tables.
+Let’s consider <a href="#one_hop_connections">Table 14</a> as a starting point.</p>
+</div>
+<table id="one_hop_connections" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 14. Hexagons connections (1 hop). Note that source and target are H3 hexagon IDs in integer format.</caption>
+<colgroup>
+<col style="width: 18.1818%;"/>
+<col style="width: 27.2727%;"/>
+<col style="width: 18.1818%;"/>
+<col style="width: 18.1818%;"/>
+<col style="width: 18.1819%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">day</th>
+<th class="tableblock halign-left valign-top">source</th>
+<th class="tableblock halign-left valign-top">target</th>
+<th class="tableblock halign-left valign-top">weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-05-19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">V</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-05-20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-05-20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">U</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-05-21</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">V</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otso</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-05-19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otso</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-05-19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">U</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otso</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2026-05-20</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For each devices the Home and the Work hexagons are also determined. So, the one-hop &#34;visitation network&#34; is formed as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>collect every connection where the source is the Home and the target is not the Work hexagon (so a 3rd place), and build edge between the home and all the 3rd places.</p>
+</li>
+<li>
+<p>repeat the previous but now the Work should be the source and the the targets are 3rd places.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="sec:visitation_network_aggregation">10.1. Aggregation</h3>
+<div class="paragraph">
+<p><a href="#one_hop_connections">Table 14</a> is still an intermediate state, the network is aggregated to hexagons.
+For the aggregation the weight is calculated in two ways (see <a href="#compare_weights">Table 15</a> for a comparison sample):</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>summing trips (one device counted more), and</p>
+</li>
+<li>
+<p>summing unique devices</p>
+</li>
+</ol>
+</div>
+<table id="compare_weights" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 15. Comparing weighting methods</caption>
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">source</th>
+<th class="tableblock halign-left valign-top">target</th>
+<th class="tableblock halign-left valign-top">weight (trip)</th>
+<th class="tableblock halign-left valign-top">weight (unique device)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">U</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">V</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_commuting_aware_visitation_network">10.2. Commuting-aware visitation network</h3>
+<div class="paragraph">
+<p>To be able to analyze the visitations, it would be necessary to connect visitations around the home and the work locations by the commuting information.
+The &#34;commuting-aware&#34; visitation network is basically a merged table of the device-based commuting table (home-work), and the connections (connected stops)
+Finally, it is aggregated by home, work, source and target columns, where the source is either the home or the work hexagon.</p>
+</div>
+<div class="paragraph">
+<p>Preliminarily, the commuting table was cleaned up a bit.
+Devices without detected home or work places were removed.
+Also, devices were removes whose home or workplaces were detected by less than 4 stops.</p>
+</div>
+<div class="paragraph">
+<p>Let’s say user Aino lives in hexagon X, and works in hexagon Y, then her commuting info is X-Y.
+Around her home, she visits hexagons Q, and around her workplace she visits U and V.
+Then, her visitations look like <a href="#aino">Table 16</a>.</p>
+</div>
+<div class="paragraph">
+<p>Let’s say Otso also lives in hexagon X and works in hexagon Y, but he visits hexagon Z around his home, and hexagons U and W around his workspace.
+Then, his visitations look like <a href="#otso">Table 17</a>.</p>
+</div>
+<div class="paragraph">
+<p>After the aggregation, the table looks like <a href="#aggregated">Table 18</a>. The network also illustrated in <a href="#aggregated_visual">Figure 10</a>.</p>
+</div>
+<table id="aino" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 16. Aino’s visitations</caption>
+<colgroup>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">home</th>
+<th class="tableblock halign-left valign-top">work</th>
+<th class="tableblock halign-left valign-top">source</th>
+<th class="tableblock halign-left valign-top">target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">U</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">V</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aino</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">V</p></td>
+</tr>
+</tbody>
+</table>
+<table id="otso" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 17. Otso’s visitations</caption>
+<colgroup>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device_id</th>
+<th class="tableblock halign-left valign-top">home</th>
+<th class="tableblock halign-left valign-top">work</th>
+<th class="tableblock halign-left valign-top">source</th>
+<th class="tableblock halign-left valign-top">target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otso</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otso</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">U</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Otso</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W</p></td>
+</tr>
+</tbody>
+</table>
+<table id="aggregated" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 18. Aggregated (by unique device) commuting-aware visitations</caption>
+<colgroup>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">home</th>
+<th class="tableblock halign-left valign-top">work</th>
+<th class="tableblock halign-left valign-top">source</th>
+<th class="tableblock halign-left valign-top">target</th>
+<th class="tableblock halign-left valign-top">weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Q</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Z</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">U</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">V</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Y</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">W</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+<div id="aggregated_visual" class="imageblock">
+<div class="content">
+<img src="/figures/visitation_network_ao_eq.drawio.png" alt="visitation network ao eq.drawio" width="90%"/>
+</div>
+<div class="title">Figure 10. Illustration of the aggregated (by unique device) commuting-aware visitations of Aino and Otso.</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sec:vn_variants">10.3. Variants</h3>
+<div class="paragraph">
+<p>During the project two home detection algorithm is applied and evaluated (a simple, frequency-based and the HoWDe <span class="citation">[<a href="#de2026howde">4</a>]</span>), and both of them can rely on multiple stop detection configurations.
+Aggregation also matters, so there are multiple variants of the visitation network that can be constructed.
+These are represented in <a href="#visitation_network_variants">Figure 11</a>.
+Version 1 or 2 (v1 or v2 in the figure) refers to the stop detection configuration (see <a href="#sec:configuring_infostop">Section 7.1</a>).
+Visitation network is constructed for four levels (7-10) of H3, for all branch, although the figure does not denote it.</p>
+</div>
+<div id="visitation_network_variants" class="imageblock">
+<div class="content">
+<img src="/figures/visitation_network_variants.drawio.png" alt="visitation network variants.drawio" width="90%"/>
+</div>
+<div class="title">Figure 11. Structure of the visitation network variants. Solid arrows show the milestone 1 preference.</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_datetime_filtering">10.4. Datetime filtering</h3>
+<div class="paragraph">
+<p>Primarily to match the visitation networks to the telecom dataset, datetime filters were introduced, illustrated by <a href="#visitation_network_datetime_filters">Figure 12</a>.
+The visitations can be filtered by day of week (A-B, C shows no filter), hour (D-F), and even date range.
+For example, <a href="#visitation_network_datetime_filters">Figure 12</a>/A shows that only weekdays are considered, <a href="#visitation_network_datetime_filters">Figure 12</a>/E shows that only the first six hours of the weekends are considered.
+Note that <a href="#visitation_network_datetime_filters">Figure 12</a> shows six-hour blocks to match the telecom data, but the intervals can be selected by hour, so 13-16 or 20-21 hour intervals are also valid options.</p>
+</div>
+<div id="visitation_network_datetime_filters" class="imageblock">
+<div class="content">
+<img src="/figures/visitation_network_datetime_filters.drawio.png" alt="visitation network datetime filters.drawio" width="90%"/>
+</div>
+<div class="title">Figure 12. Illustration of datetime filtering by day of week (A-C) and hour (D-F).</div>
+</div>
+<div class="paragraph">
+<p>The <a href="#vn_config">Configuration for the visitation network</a> shows the configuration for the night hours of weekdays (<a href="#visitation_network_datetime_filters">Figure 12</a>/D).
+Besides datetime, the minimum number of stops for home and work locations can be set. By default these are symmetrically 3, which means only those devices are considered for the visitation network building that had home and work location detection from at least 3 stops both locations.</p>
+</div>
+<div class="paragraph">
+<p>Other elements mentioned in <a href="#sec:vn_variants">Section 10.3</a> can be defined like the stop detection variant and the home detection algorithm.</p>
+</div>
+<div id="vn_config" class="listingblock">
+<div class="title">Configuration for the visitation network</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml">stop_detection_variant: v2
+# frequency | howde
+home_detection: frequency
+filtering:
+  minimum_stops_for_home: 3
+  minimum_stops_for_work: 3
+  # as string, inclusive
+  from_date: null
+  # as string, exclusive
+  to_date: null
+  # as integer, inclusive
+  from_hour: 0
+  # as integer, exclusive
+  to_hour: 6
+  # as a list of integers from 1 to 7, where 1 is Monday
+  days_of_week: [1, 2, 3, 4, 5]
+# since filtering can be set, an output subfolder can be defined
+variant: &#34;weekdays_00_06&#34;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dynamic_commuting">11. dynamic commuting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Due to the sparseness of the data inferring the home and work locations for short periods does not give usable results.
+So, instead the work and home locations are inferred for th whole data period, and then the movements between the detected home and work locations are calculated daily.</p>
+</div>
+<div class="paragraph">
+<p>The daily movements are calculated based on the daily appearances in the home and work hexagons.
+Based on <a href="#hw_occurrences">Table 19</a>, let’s consider a device that has a stop at the home hexagon on 1st October and two stops at the work hexagons.
+As this means that the device traveled between the home and work hexagons, it commuted to work.
+On 2nd October, device number 1 has no detected stop in the home hexagon, but has a stop in the work hexagons.
+This case could be interpreted as the commuting also happened.</p>
+</div>
+<div class="paragraph">
+<p><a href="#hw_occurrences_evaluation">Table 20</a> conceptualizes with Bool algebra when commuting should be counted with a more relaxed and a stricter interpretation.
+Considering fact whether the device had at least one stop in the home and work hexagons.
+The relaxed commuting cares only about stops in the work hexagon, considering that the device spends the night at home no matter what.
+The strict interpretation required a stop in the home <em>and</em> in the work hexagon as well on the same day.
+The relaxed interpretation only considers the work hexagon, and the strict interpretation is the <em>logical and</em> operation.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tbody><tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>the current implementation uses the strict interpretation</p>
+</div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<table id="hw_occurrences" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 19. Sample home and work appearances</caption>
+<colgroup>
+<col style="width: 20%;"/>
+<col style="width: 40%;"/>
+<col style="width: 20%;"/>
+<col style="width: 20%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">device</th>
+<th class="tableblock halign-left valign-top">day</th>
+<th class="tableblock halign-left valign-top">home</th>
+<th class="tableblock halign-left valign-top">work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2021-10-01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2021-10-02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2021-10-03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2021-10-04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+</tbody>
+</table>
+<table id="hw_occurrences_evaluation" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 20. Relaxed and stricter evaluation of daily commuting</caption>
+<colgroup>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+<col style="width: 25%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">home</th>
+<th class="tableblock halign-left valign-top">work</th>
+<th class="tableblock halign-left valign-top">relaxed</th>
+<th class="tableblock halign-left valign-top">strict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>After collecting daily device commuting trips, the commuting edges between the home and the work hexagons can be aggregated further by date, or groups of devices.
+<a href="#daily_2025">Figure 13</a> shows the daily commuting counts in the whole observation area in 2025.</p>
+</div>
+<div id="daily_2025" class="imageblock">
+<div class="content">
+<img src="/figures/strict_daily_commutings_2025.png" alt="strict daily commutings 2025"/>
+</div>
+<div class="title">Figure 13. number of daily commuting counts in 2025 — strict evaluation</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data_catalogue">12. Data catalogue</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Parquet format is used for data engineering level (massive data processing), and CSV for analyzation level (e.g., calculated indicators that people would use in a regression).</p>
+</div>
+<div class="paragraph">
+<p>The output directory should be configured in the main config file, notebooks rely on it.
+In this document, it is referenced as <code>&lt;OUTPUT&gt;</code>, denoting variables by <code>&lt;&gt;</code> signs.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>&lt;OUTPUT&gt;/partitioned/&lt;00-ff&gt;/pings.parquet</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the subdirectory inside partitioned is a hexadecimal value betwee 0 and 255 (00-ff, lowercase), referring the partition (see <a href="#sec:partitioning">Section 3</a>)</p>
+</li>
+<li>
+<p>a pings.parquet is about 200 MB</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/id_lookup/id_lookup.json</p>
+<div class="ulist">
+<ul>
+<li>
+<p>a dictionary to translate the raw hashed device IDs to numbers</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/id_lookup/partition.json</p>
+<div class="ulist">
+<ul>
+<li>
+<p>a dictionary to translate the numbered IDs to partitions</p>
+</li>
+<li>
+<p>NB: as JSON keys must be strings, the IDs stored as strings.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/stops/&lt;VARIANT&gt;/&lt;00-ff&gt;.parquet</p>
+<div class="ulist">
+<ul>
+<li>
+<p>output tables of the Infostop by partition</p>
+</li>
+<li>
+<p>stop detection can be applied using multiple configurations distinguished by a VARIANT label. The VARIANT can be an empty string (<code>&#34;&#34;</code>), in which case the output is placed into &lt;OUTPUT&gt;/stops/ folder directly (e.g., <code>&lt;OUTPUT&gt;/stops/00.parquet</code>). If VARIANT is not empty, a subfolder will be created (e.g., <code>&lt;OUTPUT&gt;/stops/much_better_config/00.parquet</code>).</p>
+</li>
+<li>
+<p>the stop detection config file (<code>stop_detection_config.yaml</code>) is copied into the folder to archive the configuration which was used to apply the stop detection.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/homes/&lt;VARIANT&gt;/home_work_h3_&lt;RESOLUTION&gt;.parquet</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the &#34;homes&#34; folder contains the home detection results by H3 resolution, between 7 and 10</p>
+</li>
+<li>
+<p>the home detection config file (<code>home_detection_config.yaml</code>) is copied into the folder to archive the configuration which was used to apply the stop detection.</p>
+</li>
+<li>
+<p><code>VARIANT</code> is the stop detection variant</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/hexagon_network/&lt;VARIANT&gt;/&lt;RESOLUTION&gt;/partials/connections_&lt;00-ff&gt;.parquet</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>VARIANT</code> is the stop detection variant</p>
+</li>
+<li>
+<p>the connections describes a network considering the hexagons as nodes and consecutive stops (by device and day) as edges, which is comparable to the network used in <span class="citation">[<a href="#pinter2025quantifying">5</a>]</span>.</p>
+</li>
+<li>
+<p>for computational reasons this is stored by partition</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/hexagon_network/&lt;VARIANT&gt;/&lt;RESOLUTION&gt;/edges_[trip|device].csv</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>VARIANT</code> is the stop detection variant</p>
+</li>
+<li>
+<p>as opposed to connections_&lt;PARTITION&gt;, which contains connections by device and day, edges remove this level, and aggregates solely to hexagons.</p>
+</li>
+<li>
+<p>there are two ways to aggregate the network: i) by trips (<code>edges.csv</code>), and ii) by device (<code>edges_unique_device.csv</code>), described in <a href="#sec:visitation_network_aggregation">Section 10.1</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/visitation_network/&lt;HOME_DETECTION&gt;/&lt;VARIANT&gt;/&lt;AGGREGATION&gt;/&lt;RES&gt;/.[csv|parquet]</p>
+<div class="ulist">
+<ul>
+<li>
+<p>commuting-aware, one-hop visitation network</p>
+</li>
+<li>
+<p><code>HOME_DETECTION</code> is either <code>frequency</code> or <code>howde</code></p>
+</li>
+<li>
+<p><code>VARIANT</code> is the stop detection variant</p>
+</li>
+<li>
+<p><code>AGGREGATION</code> is either <code>trip</code> or <code>device</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>&lt;OUTPUT&gt;/monthly_partitioned_stops/&lt;VARIANT&gt;/&lt;YEAR&gt;-&lt;MONTH&gt;.parquet</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_references">References</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a id="pinter2021analyzing"></a>[1] G. Pintér and I. Felde, “Analyzing the Behavior and Financial Status of Soccer Fans from a Mobile Phone Network Perspective: Euro 2016, a Case Study,” <em>Information</em>, vol. 12, no. 11, p. 468, 2021, doi: 10.3390/info12110468.</p>
+</div>
+<div class="paragraph">
+<p><a id="enwiki:1381049017"></a>[2] Wikipedia contributors, “Preferred walking speed — Wikipedia, The Free Encyclopedia.” <a class="bare" href="https://en.wikipedia.org/w/index.php?title=Preferred_walking_speed&amp;oldid=1381049017">https://en.wikipedia.org/w/index.php?title=Preferred_walking_speed&amp;oldid=1381049017</a> , 2026.</p>
+</div>
+<div class="paragraph">
+<p><a id="aslak2020infostop"></a>[3] U. Aslak and L. Alessandretti, “Infostop: Scalable stop-location detection in multi-user mobility data.” 2020.</p>
+</div>
+<div class="paragraph">
+<p><a id="de2026howde"></a>[4] De SojoSı́lvia, L. Lucchini, O. D. Langle-Chimal, S. P. Fraiberger, and L. Alessandretti, “HoWDe: A validated algorithm for Home and Work location Detection,” <em>Computers, Environment and Urban Systems</em>, vol. 126, p. 102397, 2026.</p>
+</div>
+<div class="paragraph">
+<p><a id="pinter2025quantifying"></a>[5] G. Pintér and B. Lengyel, “Quantifying barriers of urban mobility,” <em>Cities</em>, vol. 167, p. 106322, 2025.</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr/>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. great-circle distance, see <a href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula from Wikipedia</a> for more details.
+</div>
+</div>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+ 
+        
+  
+ 
+        
+        
+  
+  <div class="book-copyright flex justify-center">
+    <small>Documentation - © Gergő Pintér <a href="https://creativecommons.org/licenses/by/4.0/legalcode">CC BY 4.0</a></small>
+
+  </div>
+  
+ 
+        
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay" aria-hidden="true"></label>
+    </main>
+
+    
+  
+  <aside class="book-toc" aria-label="Table of Contents">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#_project_information">Project Information</a></li>
+    <li><a href="#_introduction">1. Introduction</a></li>
+    <li><a href="#_cleaning">2. Cleaning</a></li>
+    <li><a href="#sec:partitioning">3. Partitioning by device ID</a></li>
+    <li><a href="#sec:calculate_speed">4. Calculate speed between pings</a></li>
+    <li><a href="#_descriptive">5. Descriptive</a></li>
+    <li><a href="#_horizontal_accuracy">6. Horizontal accuracy</a></li>
+    <li><a href="#_stop_detection">7. Stop detection</a></li>
+    <li><a href="#_home_detection">8. Home detection</a></li>
+    <li><a href="#_hexagon_network">9. Hexagon network</a></li>
+    <li><a href="#_visitation_network">10. Visitation network</a></li>
+    <li><a href="#_dynamic_commuting">11. dynamic commuting</a></li>
+    <li><a href="#_data_catalogue">12. Data catalogue</a></li>
+    <li><a href="#_references">References</a></li>
+  </ul>
+</nav>
+
+
+
+
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </div>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
