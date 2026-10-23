@@ -1,3 +1,5 @@
 public/*
 static/figures/*
 .hugo_build.lock
+# CI copies stuff there
+content/docs
