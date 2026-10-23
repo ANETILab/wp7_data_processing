@@ -1,0 +1,60 @@
+# baseURL = "https://ANETILab.github.io/wp7_data_processing"
+locale = "en-us"
+title = "Documentation"
+theme = ["hugo-book"]
+
+disablePathToLower = true
+enableGitInfo = true
+
+copyright = "© Gergő Pintér link:https://creativecommons.org/licenses/by/4.0/legalcode[CC BY 4.0]"
+
+[params]
+BookTheme = "light"
+BookToC = true
+BookRepo = "https://github.com/ANETILab/wp7_data_processing"
+BookLastChangeLink = "{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}"
+BookDateFormat = "January 2, 2006"
+BookSearch = false
+
+[[menu.before]]
+  name = "COLINE"
+  pre = "<img src=\"/svg/globe-solid-full.svg\" height=\"20\">"
+  url = "https://www.dut-coline.org/"
+  weight = 1
+  [menu.before.params]
+    bookNewTab = true
+
+[[menu.before]]
+  name = "Github"
+  pre = "<img src=\"/svg/github-brands-solid-full.svg\" height=\"20\">"
+  url = "https://github.com/ANETILab/wp7_data_processing"
+  weight = 10
+  [menu.before.params]
+    # bookIcon = "edit"       # Icon name to display next to the item
+    bookNewTab = true        # Open the link in a new tab
+
+[markup]
+  [markup.tableOfContents]
+    endLevel = 2
+    ordered = false
+    startLevel = 2
+  [markup.asciiDocExt]
+    backend = "html5"
+    extensions = ["asciidoctor-bibtex"]
+    failureLevel = "fatal"
+    noHeaderOrFooter = true
+    preserveTOC = false
+    safeMode = "unsafe"
+    sectionNumbers = true
+    trace = false
+    verbose = false
+    workingFolderCurrent = true
+    [markup.asciiDocExt.attributes]
+    bibtex-file = "content/docs/references.bib"
+    imagesdir = "/"
+
+[security]
+[security.exec]
+    allow = ["^(dart-)?sass$", "^go$", "^git$", "^node$", "^postcss$", "^asciidoctor$"]
+
+files = ["!*.bib"]
