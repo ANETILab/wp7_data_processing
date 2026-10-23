@@ -240,10 +240,10 @@ It is abound twenty-something, so I though it would be 23, when there was a "Pea
 The issue is that the outlier day is 24 October, which I cannot explain at this point.
 
 .Daily record distribution
-image::../output/descriptive/number_of_records_dayplot.png[id=number_of_records_dayplot]
+image::figures/number_of_records_dayplot.png[id=number_of_records_dayplot]
 
 .Number of daily device distribution
-image::../output/descriptive/number_of_unique_devices_dayplot.png[id=number_of_unique_devices_dayplot]
+image::figures/number_of_unique_devices_dayplot.png[id=number_of_unique_devices_dayplot]
 
 == Horizontal accuracy
 
