@@ -181,6 +181,13 @@ xref:partition_stats[] shows some descriptive about the number of records and un
 | max        | 16702601          | 6765
 |===================================================
 
+
+=== Repartition by date
+
+The reason behind partitioning the data by device IDs was to speed up the data processing, but very often the stops are required from a period but for all devices.
+Thus, the stops are repartitioned by year-month.
+
+
 [#sec:calculate_speed]
 == Calculate speed between pings
 
@@ -385,12 +392,6 @@ image::figures/stops/v2/stop_intervals.png[title="Stop interval distribution usi
 > Because vertical GPS data is so noisy, an object sitting perfectly still on a desk might register altitude fluctuations.
 >
 > -- Antonio Desiderio
-
-
-=== Repartition by date
-
-The reason behind partitioning the data by device IDs was to speed up the data processing, but very often the stops are required from a period but for all devices.
-Thus, the stops are repartitioned by year-month.
 
 == Home detection
 
