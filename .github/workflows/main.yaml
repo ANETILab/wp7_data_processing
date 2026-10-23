@@ -25,8 +25,8 @@ jobs:
               run: |
                   cp -r docs/figures web/static/
                   mkdir -p web/content/docs
-                  cp docs/*.adoc content/docs/
-                  cp docs/references.bib content/docs/
+                  cp docs/*.adoc web/content/docs/
+                  cp docs/references.bib web/content/docs/
 
             - name: build site
               run: |
