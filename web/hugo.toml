@@ -18,7 +18,7 @@ BookSearch = false
 
 [[menu.before]]
   name = "COLINE"
-  pre = "<img src=\"/svg/globe-solid-full.svg\" height=\"20\">"
+  pre = "<img src=\"/wp7_data_processing/svg/globe-solid-full.svg\" height=\"20\">"
   url = "https://www.dut-coline.org/"
   weight = 1
   [menu.before.params]
@@ -26,7 +26,7 @@ BookSearch = false
 
 [[menu.before]]
   name = "Github"
-  pre = "<img src=\"/svg/github-brands-solid-full.svg\" height=\"20\">"
+  pre = "<img src=\"/wp7_data_processing/svg/github-brands-solid-full.svg\" height=\"20\">"
   url = "https://github.com/ANETILab/wp7_data_processing"
   weight = 10
   [menu.before.params]
@@ -51,7 +51,7 @@ BookSearch = false
     workingFolderCurrent = true
     [markup.asciiDocExt.attributes]
     bibtex-file = "content/docs/references.bib"
-    imagesdir = "/"
+    imagesdir = "/wp7_data_processing/"
 
 [security]
 [security.exec]
