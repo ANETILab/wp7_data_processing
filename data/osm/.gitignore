@@ -1,0 +1,3 @@
+*.osm.pbf
+**/amenities/*.wkt.csv
+!**/amenities/*cleaned.wkt.csv
