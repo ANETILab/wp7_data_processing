@@ -1,7 +1,7 @@
 require "fileutils"
 
-area = "pest"
-osm_file = "pest_county-260802.osm.pbf"
+area = "budapest"
+osm_file = "budapest-260802.osm.pbf"
 
 categories = ["amenity", "leisure", "office", "shop", "tourism"]
 categories.each do |category|
