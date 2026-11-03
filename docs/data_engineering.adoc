@@ -696,6 +696,263 @@ xref:daily_2025[] shows the daily commuting counts in the whole observation area
 
 image::figures/strict_daily_commutings_2025.png[title="number of daily commuting counts in 2025 -- strict evaluation",id=daily_2025]
 
+[#calculate_isochrones]
+== Walking distance from hexagons
+
+Calculating walking distance is fast using the open source routing engine called link:https://github.com/valhalla/valhalla[Valhalla].
+I prefer this over other routeing engines, because it does not require to run a server (like link:https://giscience.github.io/openrouteservice/[OpenRouteService]) during data analysis in Python. Valhalla is also a service, which processes OSM data and saves it as a special graph format, which can be directly loaded by the pyValhalla package and all the routing can still be done efficiently without running the service.
+
+Valhalla as a routing engine can give back the route between two points in a city with directions like Google Maps, the distance of the route, the trajectory, and time required to take by the given mean of transport like walking, biking, or drivng a car.
+It can also determine isochrones, the area accessigble from a point in a given time, see xref:isochrones[xrefstyle=short].
+
+image::figures/valhalla_isochrone.png[title="Areas acessible by walking",id=isochrones,width="50%"]
+
+I've calculated the 15-minute walking distances from the centroid of every level 8-10 hexagon for Budapest.
+To get the hexagons which are accessible in 15 minutes (by walk), one just need to select the matching hexagons with the isochrone.
+One might want only those hexagons that are completely wihtin the isochrone (xref:hexagons_within[xrefstyle=short]), or even the intersecting ones (xref:hexagons_intersects[xrefstyle=short]). The filled hexagon is the focal one, the black polygon is the accessible area.
+Using larger H3 levels, the `within` predicate will be insufficient because the hexagons become too large for a 15-minute walking area.
+
+
+[cols="a,a", frame=none, grid=none]
+|===
+| image::figures/hexagons_within_15min_walk.png[title="Selecting accessible hexagons that are completely within the isochrone.",id=hexagons_within]
+| image::figures/hexagons_intersects_15min_walk.png[title="Selecting accessible hexagons that are touches the isochrone even a little bit.",id=hexagons_intersects]
+|===
+
+[#manual_querying]
+=== Python example for determining the accessibile hexagons from a hexagon
+
+[source,python]
+----
+import geopandas as gpd
+
+walk_area = gpd.read_file(f"../data/isochrone/budapest/walk/15/8.geojson") <1>
+hexagons = gpd.read_file(f"../data/h3/budapest/8.geojson") <2>
+selected = walk_area[walk_area["h3"] == '881e03781bfffff'].geometry.values[0] <3>
+hexagons[hexagons["geometry"].intersects(selected)] <4>
+----
+<1> The path considers this repository and the calling Python code to be in the src folder.
+<2> Loading the precalculated walking area polygons (xref:isochrones_sample[xrefstyle=short]).
+<3> Filter walking area by a hexagon ID, and store the geometry (shapely.Polygon) to a variable called `selected`
+<4> Query the hexagons intersecting (xref:hexagons_intersects[xrefstyle=short]) with the walking area. Using `within` instead of `intersects` produce output like in xref:hexagons_within[xrefstyle=short].
+
+=== accessibility area output schema
+
+* geometries are in EPSG:4326 projection
+* costing denotes whether the area is calculated by walking (walk) or biking (bicycle)
+** as of 2026-11-03 only walking is provided
+* range is in minute
+* the isochrones are available in GeoJSON format
+
+.Sample of data/isochrones/budapest/walk/15/10.geojson. NB: geometries are shortened in the sample, consequently not valid.
+
+[cols="2,1,1,7", options="header", id="isochrones_sample"]
+|=====================================================================================================================
+| h3              | costing | range | geometry
+| 8a1e0378d1a7fff | walk    | 15    | POLYGON \((19.10955 47.489806, [...], 18.950553 47.519195))
+| 8a1e0378c4f7fff | walk    | 15    | POLYGON \((19.068158 47.481433, [...], 19.068158 47.481433))
+| 8a1e1cb69157fff | walk    | 15    | POLYGON \((18.988689 47.396083, [...], 18.988689 47.396083))
+| 8a1e03633c8ffff | walk    | 15    | POLYGON \((19.165135 47.485633, [...], 19.165135 47.485633))
+| 8a1e03798677fff | walk    | 15    | POLYGON \((19.036836 47.424354, [...], 19.036836 47.424354))
+|=====================================================================================================================
+
+=== Join table
+
+Instead of manual querying described in xref:manual_querying[xrefstyle=short], one can use the pre-calculated join tables, saved in `output/budapest/accessible_hexagons/<RESOLUTION>/walk_15.csv`.
+Note that level 10 table is so big (152MB) that GitHub does not allow it to push, so that table is gzipped.
+Pandas can read gzipped csv without uncompression.
+
+.Join table for 15-mintute walking distances (intersection) at level 8 hexagons
+[cols="2*", options="header", id="h3_to_h3"]
+|==================================
+| h3              | accessible
+| 881e034493fffff | 881e034493fffff
+| 881e034493fffff | 881e034497fffff
+| 881e034493fffff | 881e037145fffff
+| 881e034493fffff | 881e03714dfffff
+| 881e034493fffff | 881e037169fffff
+| 881e034497fffff | 881e034493fffff
+| 881e034497fffff | 881e034497fffff
+| 881e034497fffff | 881e0344bbfffff
+| 881e034497fffff | 881e037169fffff
+| 881e034497fffff | 881e03716dfffff
+|==================================
+
+[#cleaning_steps]
+== Collect amenities for the hexagons
+
+1. Get OpenStreetMap data from Geofabrik, such as link:https://download.geofabrik.de/europe/hungary.html[Hungary]
+2. Filter to an area, e.g. Budapest, or Pest county
+** optional, to save space
+3. Extract POIs (amenities)
+  - In OSM terminology "amenity" is only one of the 5 POI types: amenity, leisure, office, shop, and tourism. When "amenity" is mentioned in this document, all the five types are considered.
+4. Clean the extracted amenity objects.
+  - OSM has multiple optional attribute that can be provided for an amenity, like opening hours, but most of them are not filled.
+  - During the cleaning step, only the following columns are kept: "osm_id", "osm_type", "amenity_type", "amenity_subtype", "category", "name", "geometry_type", "geometry".
+  - The object in OSM data can be either node, way or relation, that is the "osm_type". It was kept for debugging purposes, it is usually dropped later in the processing.
+  - Amenity type is one of the five aforementioned POI types.
+  - Amenity subtype can be something like restaurant, school, atm, playground, artwork, etc.
+  - The "category" is formed from the amenity type and subtype, with a colon as a delimiter, like: `amenity:restaurant`, `amenity:school`, `amenity:atm`, `leisure:playground,` `tourism:artwork`.
+5. Create higher-level categories
+  - There are 591 unique category in OSM (for Budapest) defined as above, which is way too granular.
+  - Some of these categories are just not provide value in a typical 15-minute city project, like `amenity:bench`, `amenity:waste_basket`, or `amenity:parking_space`. So, there is a list of amenity categories (OSM-level), that are proposed to be dropped for further analysis, called `data/categories_to_drop.yaml`.
+  - There is also a high-level categorization based on cite:[abbiasov202415], which introduces 9 categories, called essential categories (see below).
+6. Determine the amenity portfolio of a hexagon.
+
+== Essential Function Categories and Associated NAICS Code
+
+* Abbiasov et al. uses NAICS (North American Industry Classification System) codes in nine categories (see below).
+* In the OpenStreetMap wiki, there is an "unofficial" NAICS to OSM tag mapping page: https://wiki.openstreetmap.org/wiki/NAICS/2017 or https://wiki.openstreetmap.org/wiki/NAICS/2022
+  ** note that cite:[abbiasov202415] allways uses 6-digit codes, but often the shorter, direct parent can be mapped to OSM categories.
+* Based on this mapping the "essential" amenity categories has been defined as in YAML format, with some tweaks
+** the resository containes it: `data/essential_amenities.yaml``
+
+
+.Amenity categories and respective NAICS codes based on from Table S1, cite:[abbiasov202415]
+[cols="2,4", options="header"]
+|=================================================================================
+| Category                | 6-Digit NAICS Code
+| Healthcare              | 621111, 621112, 621410, 621492, 621493, 621498, 622110
+| Drugstores              | 446110
+| Schools                 | 611110
+| Religious Organizations | 813110
+| Restaurants             | 722511, 722513, 722514, 722515
+| Groceries               | 445110, 445120
+| Parks                   | 712190
+| Cultural Institutions   | 711190, 711310, 712110
+| Services                | 491110, 522110, 812111, 812112, 812113, 812320
+|=================================================================================
+
+=== Categories
+==== Healthcare
+
+* 6211: Offices of Physicians, `amenity=doctors` OR `healthcare=doctor`
+** 621111: Offices of Physicians (except Mental Health Specialists)
+** 621112: Offices of Physicians, Mental Health Specialists
+* 6214: Outpatient Care Centers
+** 621410: Family Planning Centers
+*** **no OSM equivalent in the OSM wiki**
+** 621492: Kidney Dialysis Centers
+*** **no OSM equivalent in the OSM wiki**
+** 621493: Freestanding Ambulatory Surgical and Emergency Centers
+*** **no OSM equivalent in the OSM wiki**
+** 621498: All Other Outpatient Care Centers
+*** **no OSM equivalent in the OSM wiki**
+* 622: Hospitals, `amenity=hospital` OR `healthcare=hospital`
+** 622110: General Medical and Surgical Hospitals
+
+The "missing" outpatient care centers should be handled by hospitals in the OSM data.
+
+==== Drugstores
+
+* 44611: Pharmacies and Drug Stores, `shop=chemist` OR `amenity=pharmacy`
+** 446110: Pharmacies and Drug Stores
+
+==== Schools
+
+* 61111: Elementary and Secondary Schools, `amenity=school` OR `amenity=kindergarten` OR `amenity=preschool`
+** 611110: Elementary and Secondary Schools
+
+==== Religious Organizations
+
+* 8131: Religious Organizations, `office=religion` OR `office=parish` OR `amenity=place_of_worship`
+** 813110: Religious Organizations
+
+==== Restaurants
+
+* 722511: Full-Service Restaurants, `amenity=restaurant`
+* 722513: Limited-Service Restaurants, `amenity=fast_food` OR `amenity=food_court`
+* 722514: Cafeterias, Grill Buffets, and Buffets, `fast_food=cafeteria`
+* 722515: Snack and Nonalcoholic Beverage Bars, `amenity=cafe` OR `amenity=ice_cream`
+
+==== Groceries
+
+* 44511: Supermarkets and Other Grocery (except Convenience) Stores, `shop=supermarket` OR `shop=grocery`
+** 445110: Supermarkets and Other Grocery (except Convenience) Stores
+* 44512: Convenience Stores, `shop=convenience`
+** 445120: Convenience Stores
+
+==== Parks
+
+* 71219: Nature Parks and Other Similar Institutions, `zoo=wildlife_park` OR `zoo=safari_park`
+** 712190: Nature Parks and Other Similar Institutions
+
+Zoos `tourism=zoo` could be a general OSM type.
+
+===== public parks
+
+As NAICS code are for business activities, public parks cannot be represented, however, they are integral part of the recreation and should be part of the 15-minute city concept.
+So, the following is advised to include: `leisure=park`, `leisure=playground`, and `leisure=nature_reserve`.
+
+
+==== Cultural Institutions
+
+** 711190: Other Performing Arts Companies
+** **no OSM equivalent in the OSM wiki**
+* 711310: Promoters of Performing Arts, Sports, and Similar Events with Facilities
+** **no OSM equivalent in the OSM wiki**
+* 71211: Museums, `tourism=museum`
+** 712110: Museums
+
+===== solutions for missing OSM types
+
+Although, OSM wiki does not associate POIs to these NAICS codes, the following ones could be used:
+
+* `amenity=arts_centre`,
+* `tourism=gallery`,
+* `amenity=theatre`,
+** `amenity=theatre + theatre:type=concert_hall`, which is a special case of the previous
+
+Optionally `amenity=cinema` or `leisure=stadium` can be added as sport facilities mentioned in the description.
+
+==== Services
+
+* 491: Postal Service, `amenity=post_office`
+** 491110: Postal Service
+* 5221: Depository Credit Intermediation, `amenity=bank`
+* 522110: Commercial Banking
+* 812111: Barber Shops, `shop=hairdresser`
+* 812112: Beauty Salons, `shop=beauty` OR `leisure=tanning_salon`
+* 812113: Nail Salons, `beauty=nails`
+* 8123: Drycleaning and Laundry Services, `shop=laundry` OR `shop=dry_cleaning`
+** 812320: Drycleaning and Laundry Services (except Coin-Operated)
+
+== Accessible amenities
+
+The OSM amenities are mapped for each hexagon (level 8-10), and saved as long formatted CSVs (see xref:portfolio_sample[xrefstyle=short]).
+One with the "raw" OSM categories and one with the essential categories (see xref:essential_portfolio_sample[xrefstyle=short]).
+
+.Sample of amenitiy portfolio of level 10 hexagons, using the low-level OSM categories.
+[cols="2,2,1", options="header", id="portfolio_sample"]
+|==================================================
+| h3              | category                | count
+| 8a1e034495a7fff | amenity:fast_food       | 1
+| 8a1e0344a197fff | leisure:picnic_table    | 1
+| 8a1e0344a19ffff | amenity:bench           | 6
+| 8a1e0344a19ffff | amenity:bicycle_parking | 1
+| 8a1e0344a19ffff | amenity:drinking_water  | 2
+| 8a1e0344a19ffff | amenity:waste_basket    | 3
+| 8a1e0344a1affff | amenity:kindergarten    | 1
+| 8a1e0344a257fff | tourism:information     | 1
+| 8a1e0344a38ffff | shop:tyres              | 1
+| 8a1e0344a407fff | amenity:bench           | 10
+|==================================================
+
+.Sample of essential amenitiy portfolio of level 10 hexagons.
+[cols="2,2,1", options="header", id="essential_portfolio_sample"]
+|=============================================
+| h3              | essential_category | count
+| 8a1e034495a7fff | restaurants        | 1
+| 8a1e0344a1affff | schools            | 1
+| 8a1e0344a497fff | restaurants        | 2
+| 8a1e0344a617fff | parks              | 1
+| 8a1e0344a617fff | restaurants        | 1
+| 8a1e0344a637fff | drugstores         | 1
+| 8a1e0344a637fff | groceries          | 1
+| 8a1e0344a637fff | restaurants        | 1
+| 8a1e0344a637fff | services           | 1
+|=============================================
+
 == Data catalogue
 
 Parquet format is used for data engineering level (massive data processing), and CSV for analyzation level (e.g., calculated indicators that people would use in a regression).
