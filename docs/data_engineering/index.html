@@ -148,7 +148,7 @@ model
 string
 carrier
 probably network operator">
-	<meta itemprop="wordCount" content="5043">
+	<meta itemprop="wordCount" content="6557">
 
 <title>Data Engineering • Documentation</title>
 <link rel="icon" href="/wp7_data_processing/favicon.svg" type="image/svg+xml">
@@ -2315,7 +2315,829 @@ The relaxed interpretation only considers the work hexagon, and the strict inter
 </div>
 </div>
 <div class="sect1">
-<h2 id="_data_catalogue">12. Data catalogue</h2>
+<h2 id="calculate_isochrones">12. Walking distance from hexagons</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Calculating walking distance is fast using the open source routing engine called <a href="https://github.com/valhalla/valhalla">Valhalla</a>.
+I prefer this over other routeing engines, because it does not require to run a server (like <a href="https://giscience.github.io/openrouteservice/">OpenRouteService</a>) during data analysis in Python. Valhalla is also a service, which processes OSM data and saves it as a special graph format, which can be directly loaded by the pyValhalla package and all the routing can still be done efficiently without running the service.</p>
+</div>
+<div class="paragraph">
+<p>Valhalla as a routing engine can give back the route between two points in a city with directions like Google Maps, the distance of the route, the trajectory, and time required to take by the given mean of transport like walking, biking, or drivng a car.
+It can also determine isochrones, the area accessigble from a point in a given time, see <a href="#isochrones">Figure 14</a>.</p>
+</div>
+<div id="isochrones" class="imageblock">
+<div class="content">
+<img src="/wp7_data_processing/figures/valhalla_isochrone.png" alt="valhalla isochrone" width="50%"/>
+</div>
+<div class="title">Figure 14. Areas acessible by walking</div>
+</div>
+<div class="paragraph">
+<p>I’ve calculated the 15-minute walking distances from the centroid of every level 8-10 hexagon for Budapest.
+To get the hexagons which are accessible in 15 minutes (by walk), one just need to select the matching hexagons with the isochrone.
+One might want only those hexagons that are completely wihtin the isochrone (<a href="#hexagons_within">Figure 15</a>), or even the intersecting ones (<a href="#hexagons_intersects">Figure 16</a>). The filled hexagon is the focal one, the black polygon is the accessible area.
+Using larger H3 levels, the <code>within</code> predicate will be insufficient because the hexagons become too large for a 15-minute walking area.</p>
+</div>
+<table class="tableblock frame-none grid-none stretch">
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div id="hexagons_within" class="imageblock">
+<div class="content">
+<img src="/wp7_data_processing/figures/hexagons_within_15min_walk.png" alt="hexagons within 15min walk"/>
+</div>
+<div class="title">Figure 15. Selecting accessible hexagons that are completely within the isochrone.</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div id="hexagons_intersects" class="imageblock">
+<div class="content">
+<img src="/wp7_data_processing/figures/hexagons_intersects_15min_walk.png" alt="hexagons intersects 15min walk"/>
+</div>
+<div class="title">Figure 16. Selecting accessible hexagons that are touches the isochrone even a little bit.</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="manual_querying">12.1. Python example for determining the accessibile hexagons from a hexagon</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="python">import geopandas as gpd
+
+walk_area = gpd.read_file(f&#34;../data/isochrone/budapest/walk/15/8.geojson&#34;) <b class="conum">(1)</b>
+hexagons = gpd.read_file(f&#34;../data/h3/budapest/8.geojson&#34;) <b class="conum">(2)</b>
+selected = walk_area[walk_area[&#34;h3&#34;] == &#39;881e03781bfffff&#39;].geometry.values[0] <b class="conum">(3)</b>
+hexagons[hexagons[&#34;geometry&#34;].intersects(selected)] <b class="conum">(4)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The path considers this repository and the calling Python code to be in the src folder.</p>
+</li>
+<li>
+<p>Loading the precalculated walking area polygons (<a href="#isochrones_sample">Table 21</a>).</p>
+</li>
+<li>
+<p>Filter walking area by a hexagon ID, and store the geometry (shapely.Polygon) to a variable called <code>selected</code></p>
+</li>
+<li>
+<p>Query the hexagons intersecting (<a href="#hexagons_intersects">Figure 16</a>) with the walking area. Using <code>within</code> instead of <code>intersects</code> produce output like in <a href="#hexagons_within">Figure 15</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_accessibility_area_output_schema">12.2. accessibility area output schema</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>geometries are in EPSG:4326 projection</p>
+</li>
+<li>
+<p>costing denotes whether the area is calculated by walking (walk) or biking (bicycle)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>as of 2026-11-03 only walking is provided</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>range is in minute</p>
+</li>
+<li>
+<p>the isochrones are available in GeoJSON format</p>
+</li>
+</ul>
+</div>
+<table id="isochrones_sample" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 21. Sample of data/isochrones/budapest/walk/15/10.geojson. NB: geometries are shortened in the sample, consequently not valid.</caption>
+<colgroup>
+<col style="width: 18.1818%;"/>
+<col style="width: 9.0909%;"/>
+<col style="width: 9.0909%;"/>
+<col style="width: 63.6364%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">h3</th>
+<th class="tableblock halign-left valign-top">costing</th>
+<th class="tableblock halign-left valign-top">range</th>
+<th class="tableblock halign-left valign-top">geometry</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0378d1a7fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">walk</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POLYGON ((19.10955 47.489806, […​], 18.950553 47.519195))</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0378c4f7fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">walk</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POLYGON ((19.068158 47.481433, […​], 19.068158 47.481433))</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e1cb69157fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">walk</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POLYGON ((18.988689 47.396083, […​], 18.988689 47.396083))</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e03633c8ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">walk</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POLYGON ((19.165135 47.485633, […​], 19.165135 47.485633))</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e03798677fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">walk</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POLYGON ((19.036836 47.424354, […​], 19.036836 47.424354))</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_join_table">12.3. Join table</h3>
+<div class="paragraph">
+<p>Instead of manual querying described in <a href="#manual_querying">Section 12.1</a>, one can use the pre-calculated join tables, saved in <code>output/budapest/accessible_hexagons/&lt;RESOLUTION&gt;/walk_15.csv</code>.
+Note that level 10 table is so big (152MB) that GitHub does not allow it to push, so that table is gzipped.
+Pandas can read gzipped csv without uncompression.</p>
+</div>
+<table id="h3_to_h3" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 22. Join table for 15-mintute walking distances (intersection) at level 8 hexagons</caption>
+<colgroup>
+<col style="width: 50%;"/>
+<col style="width: 50%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">h3</th>
+<th class="tableblock halign-left valign-top">accessible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034493fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034493fffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034493fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034497fffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034493fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e037145fffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034493fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e03714dfffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034493fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e037169fffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034497fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034493fffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034497fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034497fffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034497fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e0344bbfffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034497fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e037169fffff</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e034497fffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">881e03716dfffff</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cleaning_steps">13. Collect amenities for the hexagons</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Get OpenStreetMap data from Geofabrik, such as <a href="https://download.geofabrik.de/europe/hungary.html">Hungary</a></p>
+</li>
+<li>
+<p>Filter to an area, e.g. Budapest, or Pest county</p>
+<div class="ulist">
+<ul>
+<li>
+<p>optional, to save space</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Extract POIs (amenities)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In OSM terminology &#34;amenity&#34; is only one of the 5 POI types: amenity, leisure, office, shop, and tourism. When &#34;amenity&#34; is mentioned in this document, all the five types are considered.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Clean the extracted amenity objects.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>OSM has multiple optional attribute that can be provided for an amenity, like opening hours, but most of them are not filled.</p>
+</li>
+<li>
+<p>During the cleaning step, only the following columns are kept: &#34;osm_id&#34;, &#34;osm_type&#34;, &#34;amenity_type&#34;, &#34;amenity_subtype&#34;, &#34;category&#34;, &#34;name&#34;, &#34;geometry_type&#34;, &#34;geometry&#34;.</p>
+</li>
+<li>
+<p>The object in OSM data can be either node, way or relation, that is the &#34;osm_type&#34;. It was kept for debugging purposes, it is usually dropped later in the processing.</p>
+</li>
+<li>
+<p>Amenity type is one of the five aforementioned POI types.</p>
+</li>
+<li>
+<p>Amenity subtype can be something like restaurant, school, atm, playground, artwork, etc.</p>
+</li>
+<li>
+<p>The &#34;category&#34; is formed from the amenity type and subtype, with a colon as a delimiter, like: <code>amenity:restaurant</code>, <code>amenity:school</code>, <code>amenity:atm</code>, <code>leisure:playground,</code> <code>tourism:artwork</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Create higher-level categories</p>
+<div class="ulist">
+<ul>
+<li>
+<p>There are 591 unique category in OSM (for Budapest) defined as above, which is way too granular.</p>
+</li>
+<li>
+<p>Some of these categories are just not provide value in a typical 15-minute city project, like <code>amenity:bench</code>, <code>amenity:waste_basket</code>, or <code>amenity:parking_space</code>. So, there is a list of amenity categories (OSM-level), that are proposed to be dropped for further analysis, called <code>data/categories_to_drop.yaml</code>.</p>
+</li>
+<li>
+<p>There is also a high-level categorization based on <span class="citation">[<a href="#abbiasov202415">6</a>]</span>, which introduces 9 categories, called essential categories (see below).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Determine the amenity portfolio of a hexagon.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_essential_function_categories_and_associated_naics_code">14. Essential Function Categories and Associated NAICS Code</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Abbiasov et al. uses NAICS (North American Industry Classification System) codes in nine categories (see below).</p>
+</li>
+<li>
+<p>In the OpenStreetMap wiki, there is an &#34;unofficial&#34; NAICS to OSM tag mapping page: <a class="bare" href="https://wiki.openstreetmap.org/wiki/NAICS/2017">https://wiki.openstreetmap.org/wiki/NAICS/2017</a> or <a class="bare" href="https://wiki.openstreetmap.org/wiki/NAICS/2022">https://wiki.openstreetmap.org/wiki/NAICS/2022</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>note that <span class="citation">[<a href="#abbiasov202415">6</a>]</span> allways uses 6-digit codes, but often the shorter, direct parent can be mapped to OSM categories.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Based on this mapping the &#34;essential&#34; amenity categories has been defined as in YAML format, with some tweaks</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the resository containes it: <code>data/essential_amenities.yaml`</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 23. Amenity categories and respective NAICS codes based on from Table S1, <span class="citation">[<a href="#abbiasov202415">6</a>]</span></caption>
+<colgroup>
+<col style="width: 33.3333%;"/>
+<col style="width: 66.6667%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Category</th>
+<th class="tableblock halign-left valign-top">6-Digit NAICS Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Healthcare</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">621111, 621112, 621410, 621492, 621493, 621498, 622110</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Drugstores</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">446110</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Schools</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">611110</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Religious Organizations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">813110</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Restaurants</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">722511, 722513, 722514, 722515</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Groceries</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">445110, 445120</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parks</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">712190</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cultural Institutions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">711190, 711310, 712110</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">491110, 522110, 812111, 812112, 812113, 812320</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_categories">14.1. Categories</h3>
+<div class="sect3">
+<h4 id="_healthcare">14.1.1. Healthcare</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>6211: Offices of Physicians, <code>amenity=doctors</code> OR <code>healthcare=doctor</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>621111: Offices of Physicians (except Mental Health Specialists)</p>
+</li>
+<li>
+<p>621112: Offices of Physicians, Mental Health Specialists</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>6214: Outpatient Care Centers</p>
+<div class="ulist">
+<ul>
+<li>
+<p>621410: Family Planning Centers</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>no OSM equivalent in the OSM wiki</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>621492: Kidney Dialysis Centers</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>no OSM equivalent in the OSM wiki</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>621493: Freestanding Ambulatory Surgical and Emergency Centers</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>no OSM equivalent in the OSM wiki</strong></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>621498: All Other Outpatient Care Centers</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>no OSM equivalent in the OSM wiki</strong></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>622: Hospitals, <code>amenity=hospital</code> OR <code>healthcare=hospital</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>622110: General Medical and Surgical Hospitals</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The &#34;missing&#34; outpatient care centers should be handled by hospitals in the OSM data.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_drugstores">14.1.2. Drugstores</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>44611: Pharmacies and Drug Stores, <code>shop=chemist</code> OR <code>amenity=pharmacy</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>446110: Pharmacies and Drug Stores</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_schools">14.1.3. Schools</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>61111: Elementary and Secondary Schools, <code>amenity=school</code> OR <code>amenity=kindergarten</code> OR <code>amenity=preschool</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>611110: Elementary and Secondary Schools</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_religious_organizations">14.1.4. Religious Organizations</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>8131: Religious Organizations, <code>office=religion</code> OR <code>office=parish</code> OR <code>amenity=place_of_worship</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>813110: Religious Organizations</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_restaurants">14.1.5. Restaurants</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>722511: Full-Service Restaurants, <code>amenity=restaurant</code></p>
+</li>
+<li>
+<p>722513: Limited-Service Restaurants, <code>amenity=fast_food</code> OR <code>amenity=food_court</code></p>
+</li>
+<li>
+<p>722514: Cafeterias, Grill Buffets, and Buffets, <code>fast_food=cafeteria</code></p>
+</li>
+<li>
+<p>722515: Snack and Nonalcoholic Beverage Bars, <code>amenity=cafe</code> OR <code>amenity=ice_cream</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_groceries">14.1.6. Groceries</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>44511: Supermarkets and Other Grocery (except Convenience) Stores, <code>shop=supermarket</code> OR <code>shop=grocery</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>445110: Supermarkets and Other Grocery (except Convenience) Stores</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>44512: Convenience Stores, <code>shop=convenience</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>445120: Convenience Stores</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_parks">14.1.7. Parks</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>71219: Nature Parks and Other Similar Institutions, <code>zoo=wildlife_park</code> OR <code>zoo=safari_park</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>712190: Nature Parks and Other Similar Institutions</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Zoos <code>tourism=zoo</code> could be a general OSM type.</p>
+</div>
+<div class="sect4">
+<h5 id="_public_parks">public parks</h5>
+<div class="paragraph">
+<p>As NAICS code are for business activities, public parks cannot be represented, however, they are integral part of the recreation and should be part of the 15-minute city concept.
+So, the following is advised to include: <code>leisure=park</code>, <code>leisure=playground</code>, and <code>leisure=nature_reserve</code>.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cultural_institutions">14.1.8. Cultural Institutions</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>711190: Other Performing Arts Companies</p>
+</li>
+<li>
+<p><strong>no OSM equivalent in the OSM wiki</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>711310: Promoters of Performing Arts, Sports, and Similar Events with Facilities</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>no OSM equivalent in the OSM wiki</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>71211: Museums, <code>tourism=museum</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>712110: Museums</p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="_solutions_for_missing_osm_types">solutions for missing OSM types</h5>
+<div class="paragraph">
+<p>Although, OSM wiki does not associate POIs to these NAICS codes, the following ones could be used:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>amenity=arts_centre</code>,</p>
+</li>
+<li>
+<p><code>tourism=gallery</code>,</p>
+</li>
+<li>
+<p><code>amenity=theatre</code>,</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>amenity=theatre + theatre:type=concert_hall</code>, which is a special case of the previous</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Optionally <code>amenity=cinema</code> or <code>leisure=stadium</code> can be added as sport facilities mentioned in the description.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_services">14.1.9. Services</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>491: Postal Service, <code>amenity=post_office</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>491110: Postal Service</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>5221: Depository Credit Intermediation, <code>amenity=bank</code></p>
+</li>
+<li>
+<p>522110: Commercial Banking</p>
+</li>
+<li>
+<p>812111: Barber Shops, <code>shop=hairdresser</code></p>
+</li>
+<li>
+<p>812112: Beauty Salons, <code>shop=beauty</code> OR <code>leisure=tanning_salon</code></p>
+</li>
+<li>
+<p>812113: Nail Salons, <code>beauty=nails</code></p>
+</li>
+<li>
+<p>8123: Drycleaning and Laundry Services, <code>shop=laundry</code> OR <code>shop=dry_cleaning</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>812320: Drycleaning and Laundry Services (except Coin-Operated)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accessible_amenities">15. Accessible amenities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The OSM amenities are mapped for each hexagon (level 8-10), and saved as long formatted CSVs (see <a href="#portfolio_sample">Table 24</a>).
+One with the &#34;raw&#34; OSM categories and one with the essential categories (see <a href="#essential_portfolio_sample">Table 25</a>).</p>
+</div>
+<table id="portfolio_sample" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 24. Sample of amenitiy portfolio of level 10 hexagons, using the low-level OSM categories.</caption>
+<colgroup>
+<col style="width: 40%;"/>
+<col style="width: 40%;"/>
+<col style="width: 20%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">h3</th>
+<th class="tableblock halign-left valign-top">category</th>
+<th class="tableblock halign-left valign-top">count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e034495a7fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amenity:fast_food</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a197fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">leisure:picnic_table</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a19ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amenity:bench</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a19ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amenity:bicycle_parking</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a19ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amenity:drinking_water</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a19ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amenity:waste_basket</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a1affff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amenity:kindergarten</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a257fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tourism:information</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a38ffff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">shop:tyres</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a407fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">amenity:bench</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+</tr>
+</tbody>
+</table>
+<table id="essential_portfolio_sample" class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 25. Sample of essential amenitiy portfolio of level 10 hexagons.</caption>
+<colgroup>
+<col style="width: 40%;"/>
+<col style="width: 40%;"/>
+<col style="width: 20%;"/>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">h3</th>
+<th class="tableblock halign-left valign-top">essential_category</th>
+<th class="tableblock halign-left valign-top">count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e034495a7fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">restaurants</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a1affff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">schools</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a497fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">restaurants</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a617fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parks</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a617fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">restaurants</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a637fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">drugstores</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a637fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">groceries</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a637fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">restaurants</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8a1e0344a637fff</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data_catalogue">16. Data catalogue</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Parquet format is used for data engineering level (massive data processing), and CSV for analyzation level (e.g., calculated indicators that people would use in a regression).</p>
@@ -2470,6 +3292,9 @@ In this document, it is referenced as <code>&lt;OUTPUT&gt;</code>, denoting vari
 <div class="paragraph">
 <p><a id="pinter2025quantifying"></a>[5] G. Pintér and B. Lengyel, “Quantifying barriers of urban mobility,” <em>Cities</em>, vol. 167, p. 106322, 2025.</p>
 </div>
+<div class="paragraph">
+<p><a id="abbiasov202415"></a>[6] T. Abbiasov <em>et al.</em>, “The 15-minute city quantified using human mobility data,” <em>Nature Human Behaviour</em>, vol. 8, no. 3, pp. 445–455, 2024.</p>
+</div>
 </div>
 </div>
 <div id="footnotes">
@@ -2541,7 +3366,11 @@ In this document, it is referenced as <code>&lt;OUTPUT&gt;</code>, denoting vari
     <li><a href="#_hexagon_network">9. Hexagon network</a></li>
     <li><a href="#_visitation_network">10. Visitation network</a></li>
     <li><a href="#_dynamic_commuting">11. dynamic commuting</a></li>
-    <li><a href="#_data_catalogue">12. Data catalogue</a></li>
+    <li><a href="#calculate_isochrones">12. Walking distance from hexagons</a></li>
+    <li><a href="#cleaning_steps">13. Collect amenities for the hexagons</a></li>
+    <li><a href="#_essential_function_categories_and_associated_naics_code">14. Essential Function Categories and Associated NAICS Code</a></li>
+    <li><a href="#_accessible_amenities">15. Accessible amenities</a></li>
+    <li><a href="#_data_catalogue">16. Data catalogue</a></li>
     <li><a href="#_references">References</a></li>
   </ul>
 </nav>
