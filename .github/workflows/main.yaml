@@ -1,11 +1,12 @@
 name: CI
-
 on:
     push:
         branches: ["main"]
-
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+        paths:
+            - "docs/**"
+    pull_request:
+        paths:
+            - "docs/**"
 
 jobs:
     build:
@@ -14,7 +15,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                submodules: recursive
+                  submodules: recursive
 
             - name: install dependencies
               run: |
