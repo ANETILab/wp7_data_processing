@@ -1,0 +1,51 @@
+healthcare:
+  - "amenity:doctors"
+  - "healthcare:doctor"
+  - "amenity:hospital"
+  - "healthcare:hospital"
+drugstores:
+  - "amenity:pharmacy"
+  - "shop:chemist"
+schools:
+  - "amenity:school"
+  - "amenity:kindergarten"
+  - "amenity:preschool"
+religious_organizations:
+  - "amenity:place_of_worship"
+  - "office:religion"
+  - "office:parish"
+restaurants:
+  - "amenity:restaurant"
+  - "amenity:fast_food"
+  - "amenity:food_court"
+  # - "fast_food:cafeteria"
+  - "amenity:cafe"
+  - "amenity:ice_cream"
+groceries:
+  - "shop:supermarket"
+  - "shop:grocery"
+  - "shop:convenience"
+parks:
+  - "leisure:park"
+  - "leisure:playground"
+  - "leisure:nature_reserve"
+  # - "zoo:wildlife_park"
+  # - "zoo:safari_park"
+  - "tourism:zoo"
+  
+cultural_institutions:
+  - "tourism:museum"
+  - "amenity:arts_centre"
+  - "tourism:gallery"
+  - "amenity:theatre"
+  - "amenity:cinema"
+  # - "leisure:stadium"
+services:
+  - "amenity:post_office"
+  - "amenity:bank"
+  - "shop:hairdresser"
+  - "shop:beauty"
+  - "leisure:tanning_salon"
+  - "beauty:nails"
+  - "shop:laundry"
+  - "shop:dry_cleaning"

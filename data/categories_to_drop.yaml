@@ -1,0 +1,36 @@
+- amenity:grit_bin
+- amenity:parking
+- amenity:parking_entrance
+- amenity:parking_space
+- amenity:atm
+- amenity:bureau_de_change
+- amenity:baby_hatch
+- amenity:post_box
+- amenity:post_depot
+# facilities
+- amenity:bbq
+- amenity:bench
+- amenity:dog_toilet
+- amenity:drinking_water
+- amenity:give_box
+- amenity:parcel_locker
+- amenity:shelter
+- amenity:shower
+- amenity:telephone
+- amenity:toilets
+- amenity:water_point
+- amenity:watering_place
+# facilities end
+# waste management
+- amenity:sanitary_dump_station
+- amenity:recycling
+- amenity:waste_basket
+- amenity:waste_disposal
+- amenity:waste_transfer_station
+# waste management end
+- amenity:clock
+- amenity:vending_machine
+- amenity:lounger
+- amenity:photo_booth
+- tourism:viewpoint
+- leisure:picnic_table
