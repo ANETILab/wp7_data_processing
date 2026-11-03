@@ -95,7 +95,7 @@ if __name__ == "__main__":
         amenities["geometry"] = amenities["geometry"].apply(from_wkt)
         amenities = gpd.GeoDataFrame(amenities, geometry="geometry", crs=4326)
     except FileNotFoundError:
-        amenities = prepare(f"../data/osm/{opts.area}/amenities")
+        amenities = prepare(f"{opts.output}/{opts.area}/amenities")
         amenities[keep].to_csv(
             f"{opts.output}/{opts.area}/amenities/amenities_cleaned.wkt.csv",
             index=False,
