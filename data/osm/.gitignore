@@ -1,3 +1,4 @@
 *.osm.pbf
 **/amenities/*.wkt.csv
 !**/amenities/*cleaned.wkt.csv
+!**/amenities/*with_h3.wkt.csv
