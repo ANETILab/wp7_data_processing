@@ -24,6 +24,7 @@ dependencies = [
     "seaborn>=0.13.2",
     "structlog>=25.5.0",
     "tabulate>=0.10.0",
+    "pyvalhalla>=3.9",
 ]
 
 [dependency-groups]
