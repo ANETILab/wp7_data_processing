@@ -916,6 +916,15 @@ wheels = [
 ]
 
 [[package]]
+name = "networkx"
+version = "3.7"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/dc/76/3af777226b63a5e64a6b36b1ec5855c14e2b94a37096d4760e595fc43511/networkx-3.7.tar.gz", hash = "sha256:fd77a511bd90f39f3d016351345b52cf5319b813bdca01de3f755d3cca62e96a", size = 1866482 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7e/cd/fe58041e9011f307c490e3e17dd48cc516448f7c698a3f2d9d9d65d7e6a8/networkx-3.7-py3-none-any.whl", hash = "sha256:e3fd2c13a7814cee3746340d8d7f8598a67f16a58bf47fb7f8793fab6efca1b0", size = 2142205 },
+]
+
+[[package]]
 name = "numpy"
 version = "2.4.3"
 source = { registry = "https://pypi.org/simple" }
@@ -963,6 +972,23 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/07/12/8160bea39da3335737b10308df4f484235fd297f556745f13092aa039d3b/numpy-2.4.3-cp314-cp314t-win32.whl", hash = "sha256:5e10da9e93247e554bb1d22f8edc51847ddd7dde52d85ce31024c1b4312bfba0", size = 6154547 },
     { url = "https://files.pythonhosted.org/packages/42/f3/76534f61f80d74cc9cdf2e570d3d4eeb92c2280a27c39b0aaf471eda7b48/numpy-2.4.3-cp314-cp314t-win_amd64.whl", hash = "sha256:45f003dbdffb997a03da2d1d0cb41fbd24a87507fb41605c0420a3db5bd4667b", size = 12633645 },
     { url = "https://files.pythonhosted.org/packages/1f/b6/7c0d4334c15983cec7f92a69e8ce9b1e6f31857e5ee3a413ac424e6bd63d/numpy-2.4.3-cp314-cp314t-win_arm64.whl", hash = "sha256:4d382735cecd7bcf090172489a525cd7d4087bc331f7df9f60ddc9a296cf208e", size = 10565454 },
+]
+
+[[package]]
+name = "osmnx"
+version = "2.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "geopandas" },
+    { name = "networkx" },
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "requests" },
+    { name = "shapely" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/97/28/88068f1e7e9c6f31da91fed370d2b4a17933fc0b534d6b435db54ad8b9e8/osmnx-2.2.0.tar.gz", hash = "sha256:da7dd76814f3c8c8eee913e1f13f1505d74e946fcd5e015a0d3e2f7de5280576", size = 95136 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b3/fd/23e4594b0f3a3dc95a7783c38b66785a7194b9d4f72f963ef7a9ff06ce87/osmnx-2.2.0-py3-none-any.whl", hash = "sha256:1df6d0cacedfd2189e33fda9358af631d54eaec545d613bf022ae769f8f179cd", size = 108068 },
 ]
 
 [[package]]
@@ -1940,6 +1966,7 @@ dependencies = [
     { name = "howde" },
     { name = "infostop" },
     { name = "matplotlib" },
+    { name = "osmnx" },
     { name = "polars" },
     { name = "polars-distance" },
     { name = "polars-h3" },
@@ -1969,6 +1996,7 @@ requires-dist = [
     { name = "howde", specifier = ">=2.0.0" },
     { name = "infostop", specifier = ">=0.2.1" },
     { name = "matplotlib", specifier = ">=3.10.8" },
+    { name = "osmnx", specifier = ">=2.2.0" },
     { name = "polars", specifier = ">=1.39.3" },
     { name = "polars-distance", specifier = ">=0.5.3" },
     { name = "polars-h3", specifier = ">=0.6.1" },
