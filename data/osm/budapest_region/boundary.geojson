@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "bounding_box",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 18.355461, 46.796517 ], [ 20.394567, 46.796517 ], [ 20.394567, 48.16239699 ], [ 18.355461, 48.16239699 ], [ 18.355461, 46.796517 ] ] ] } }
+]
+}
