@@ -26,6 +26,7 @@ dependencies = [
     "tabulate>=0.10.0",
     "pyvalhalla>=3.9",
     "osmnx>=2.2.0",
+    "osmium>=4.3.2",
 ]
 
 [dependency-groups]
